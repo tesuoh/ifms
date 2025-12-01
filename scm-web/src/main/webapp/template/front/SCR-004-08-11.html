@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<!-- CSS & javascript (JSP 파일 include) 시작 -->
+	<head>
+		<title>보호구역 통합관리시스템</title>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name = "viewport" content = "user-scalable=no, width=device-width">
+		<meta name="author" content="보호구역 통합관리시스템">
+		<!-- description -->
+		<meta name="description" content="보호구역 통합관리시스템 프로젝트">
+		<!-- keywords -->
+		<meta name="keywords" content="">
+		<!-- favicon -->
+		<link rel="shortcut icon" href="../../com/img/common/icon/favicon.ico">
+		<link rel="apple-touch-icon" href="../../com/img/common/icon/favicon.ico">
+
+		<!-- ==============================================================
+			플러그인
+		============================================================== -->
+		<!-- 공통 -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/font-awesome/css/font-awesome.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/simple-line-icons/simple-line-icons.css" />
+		<script type="text/javascript" src="../../com/plugins/jquery.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/js.cookie.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+
+		<!-- bootstrap -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap/css/bootstrap.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+		<!-- bootstrap-datepicker -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-timepicker/css/bootstrap-timepicker.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.kr.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.kr.js"></script>
+		<script type="text/javascript" src="../../com/js/bootstrap-datepicker.kr.js"></script>
+		<script type="text/javascript" src="../../com/js/components-date-time-pickers.js"></script>
+
+		<!-- bootstrap-fileinput -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-fileinput/bootstrap-fileinput.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
+
+		<!-- bootstrap-tabdrop -->
+		<script type="text/javascript" src="../../com/plugins/bootstrap-tabdrop/js/bootstrap-tabdrop.js"></script>
+
+		<!-- jstree -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/jstree/dist/themes/default/style.css" />
+		<script type="text/javascript" src="../../com/plugins/jstree/dist/jstree.js"></script>
+		<script type="text/javascript" src="../../com/js/ui-tree.js"></script>
+
+		<!-- div 크기 변경 감지 https://marcj.github.io/css-element-queries/ -->
+		<script type="text/javascript" src="../../com/plugins/css-element-queries/ResizeSensor.js"></script>
+		<script type="text/javascript" src="../../com/plugins/css-element-queries/ElementQueries.js"></script>
+		
+		<!-- 전체 레이어 모달 팝업 -->
+		<link type="text/css" rel="stylesheet" href="../../com/plugins/magnific-popup/magnific-popup.css">
+		<script type="text/javascript" src="../../com/plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+		<!-- 컨텐츠 셀렉트 -->
+		<script type="text/javascript" src="../../com/plugins/slideNav/slideNav.js"></script>
+
+		<!-- 상단메뉴 -->
+		<link type="text/css" rel="stylesheet" href="../../com/plugins/menu/css/menu.css">
+		<script type="text/javascript" src="../../com/plugins/menu/js/custom.js"></script>
+
+		<!-- ==============================================================
+			공통 커스텀
+		============================================================== -->	
+		<!-- 스타일 css -->
+		<link rel="stylesheet" type="text/css" href="../../com/css/components.css" />
+		<link type="text/css" rel="stylesheet" href="../../com/css/style.css">
+
+		<!-- 전체 조합 css -->
+		<link type="text/css" rel="stylesheet" href="../../com/css/common.css">
+		<link type="text/css" rel="stylesheet" href="../../com/css/common-ie.css">
+
+		<!-- 공통 script -->
+		<script type="text/javascript" src="../../com/js/app.js"></script>
+		<script type="text/javascript" src="../../com/js/common.js"></script>
+
+		<!-- KRDS 스크립트 : 패턴 페이지 -->
+		<script type="text/javascript" src="../../com/js/ui-pattern-script.js"></script>
+
+		<!-- ==============================================================
+			프론트
+		============================================================== -->
+		<!-- 레이아웃 CSS -->
+		<link type="text/css" rel="stylesheet" href="../../com/css/front.css">
+		<link type="text/css" rel="stylesheet" href="../../com/css/portal.css"><!-- !!! 필독 : 포털화면들은 "portal.css"를 추가 -->
+		<link type="text/css" rel="stylesheet" href="../../com/css/responsive.css">
+
+		<!-- !!! 필독 : JSP 상하단 include 예시 완료 후 삭제 !!!!!!! -->
+		<script type="text/javascript" src="../../com/include/include.js"></script>
+
+	</head>
+	<!-- CSS & javascript (JSP 파일 include) 끝 -->
+
+	<body class="page-front page-sub page-portal page-sidebar-none"><!-- !!! 필독 : 대민에서는 class="page-front page-sub page-portal page-sidebar-none" 이렇게 4개의 class로만 구성합니다. -->
+		<!-- 헤더 (JSP 파일 include) 시작 -->
+		<header id="header">
+		</header>
+		<!-- 헤더 (JSP 파일 include) 끝 -->
+
+		<!-- 페이지 컨테이너 시작 -->
+		<section id="container" class="page-container">
+
+			<div class="page-content-wrapper">
+
+				<!-- 컨텐츠 시작 -->
+				<div id="contents" class="page-content"><!-- !!! 필독 : [웹 접근성] 본문 바로가기 id="contents", 주메뉴 바로가기  id="navbar" -->
+
+					<div class="page-content-inner">
+
+						<!-- 카테고리 시작 -->
+						<div class="category-wrapper">
+							<ul class="page-category">
+								<li class="category-item"><a href="#">FAQ</a></li>
+							</ul>
+						</div>
+						<!-- 카테고리 끝 -->
+
+						<!-- 페이지 타이틀 시작 -->
+						<h1 class="page-title"><span>FAQ</span></h1>
+						<p class="page-title-sub">
+							페이지 타이틀 설명 페이지 타이틀 설명 페이지 타이틀 설명 페이지 타이틀 설명 <br>
+							페이지 타이틀 설명 페이지 타이틀 설명 페이지 타이틀 설명
+						</p>
+						<!-- 페이지 타이틀 끝 -->
+
+						<!-- 내용 시작 -->
+						<div class="content-wrapper">
+
+							<!-- 컨텐츠 행 시작 -->
+							<div class="contents-row">
+
+								<!-- Tab 시작 -->
+								<ul class="nav nav-tabs">
+									<li class="active">
+										<a href="#tab_1_1" data-toggle="tab" class="nav-tab"> 카테고리1 </a>
+									</li>
+									<li>
+										<a href="#tab_1_2" data-toggle="tab" class="nav-tab"> 카테고리2 </a>
+									</li>
+									<li>
+										<a href="#tab_1_3" data-toggle="tab" class="nav-tab"> 카테고리2 </a>
+									</li>
+									<li>
+										<a href="#tab_1_4" data-toggle="tab" class="nav-tab"> 카테고리2 </a>
+									</li>
+									<li>
+										<a href="#tab_1_5" data-toggle="tab" class="nav-tab"> 카테고리2 </a>
+									</li>
+								</ul>
+								<div class="tab-content">
+	
+									<!-- 탭 컨텐츠 01 시작 -->
+									<div class="tab-pane active in" id="tab_1_1">
+
+										<!-- Accordions 시작 -->
+										<div class="panel-group accordion accordion-custom">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle accordion-toggle-styled" 
+															data-toggle="collapse" 
+															data-parent="#accordion1" 
+															href="#collapse_1">
+															<span class="accordion-num">1</span>
+															<span class="accordion-text">보호구역 통합관리시스템 서비스 접속 가능 브라우저 종류 보호구역 통합관리시스템 서비스 접속 가능 브라우저 종류 </span>
+														</a>
+                                                    </h4>
+                                                </div>
+												<!-- class="in" 추가시 열림상태 -->
+                                                <div id="collapse_1" class="panel-collapse collapse in">
+                                                    <div class="panel-body">
+														<div class="comment-reply">
+															보호구역 통합관리시스템 서비스는 Microsoft Edge, Google Chrome 을 지원하고 있습니다.
+															해당 응용 프로그램은 공급사의 홈페이지에서 다운로드 가능하며,
+															사용자는 PC 에서 항상 최신버전을 유지하시면 원활한 서비스를 이용하실 수 있습니다.
+														</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+														<!-- class="collapsed" 추가시 닫힘상태 -->
+                                                        <a class="accordion-toggle accordion-toggle-styled collapsed" 
+															data-toggle="collapse" 
+															data-parent="#accordion2" 
+															href="#collapse_2"> 
+															<span class="accordion-num">2</span>
+															<span class="accordion-text">보호구역 통합관리시스템 서비스 접속 가능 브라우저 종류 보호구역 통합관리시스템 서비스 접속 가능 브라우저 종류 </span>
+														</a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapse_2" class="panel-collapse collapse">
+													<div class="panel-body">
+														<div class="comment-reply">
+															보호구역 통합관리시스템 서비스는 Microsoft Edge, Google Chrome 을 지원하고 있습니다.
+															해당 응용 프로그램은 공급사의 홈페이지에서 다운로드 가능하며,
+															사용자는 PC 에서 항상 최신버전을 유지하시면 원활한 서비스를 이용하실 수 있습니다.
+														</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+														<!-- class="collapsed" 추가시 닫힘상태 -->
+                                                        <a class="accordion-toggle accordion-toggle-styled collapsed" 
+															data-toggle="collapse" 
+															data-parent="#accordion3" 
+															href="#collapse_3"> 
+															<span class="accordion-num">3</span>
+															<span class="accordion-text">보호구역 통합관리시스템 서비스 접속 가능 브라우저 종류 보호구역 통합관리시스템 서비스 접속 가능 브라우저 종류 </span>
+														</a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapse_3" class="panel-collapse collapse">
+													<div class="panel-body">
+														<div class="comment-reply">
+															보호구역 통합관리시스템 서비스는 Microsoft Edge, Google Chrome 을 지원하고 있습니다.
+															해당 응용 프로그램은 공급사의 홈페이지에서 다운로드 가능하며,
+															사용자는 PC 에서 항상 최신버전을 유지하시면 원활한 서비스를 이용하실 수 있습니다.
+														</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+														<!-- class="collapsed" 추가시 닫힘상태 -->
+                                                        <a class="accordion-toggle accordion-toggle-styled collapsed" 
+															data-toggle="collapse" 
+															data-parent="#accordion4" 
+															href="#collapse_4"> 
+															<span class="accordion-num">4</span>
+															<span class="accordion-text">보호구역 통합관리시스템 서비스 접속 가능 브라우저 종류 보호구역 통합관리시스템 서비스 접속 가능 브라우저 종류 </span>
+														</a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapse_4" class="panel-collapse collapse">
+													<div class="panel-body">
+														<div class="comment-reply">
+															보호구역 통합관리시스템 서비스는 Microsoft Edge, Google Chrome 을 지원하고 있습니다.
+															해당 응용 프로그램은 공급사의 홈페이지에서 다운로드 가능하며,
+															사용자는 PC 에서 항상 최신버전을 유지하시면 원활한 서비스를 이용하실 수 있습니다.
+														</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+														<!-- class="collapsed" 추가시 닫힘상태 -->
+                                                        <a class="accordion-toggle accordion-toggle-styled collapsed" 
+															data-toggle="collapse" 
+															data-parent="#accordion5" 
+															href="#collapse_5"> 
+															<span class="accordion-num">5</span>
+															<span class="accordion-text">보호구역 통합관리시스템 서비스 접속 가능 브라우저 종류 보호구역 통합관리시스템 서비스 접속 가능 브라우저 종류 </span>
+														</a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapse_5" class="panel-collapse collapse">
+													<div class="panel-body">
+														<div class="comment-reply">
+															보호구역 통합관리시스템 서비스는 Microsoft Edge, Google Chrome 을 지원하고 있습니다.
+															해당 응용 프로그램은 공급사의 홈페이지에서 다운로드 가능하며,
+															사용자는 PC 에서 항상 최신버전을 유지하시면 원활한 서비스를 이용하실 수 있습니다.
+														</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+										<!-- Accordions 끝 -->
+
+										<!-- 페이징 시작 -->
+										<div class="pagination-wrapper">
+											<div class="pagination-info">
+												<span class="info-page-total">총 120개</span>
+												<label class="input-label-none" for="infoPageNum">몇줄씩보기</label>
+												<select id="infoPageNum" class="bs-select form-control">
+													<option>5</option>
+													<option>10</option>
+													<option>15</option>
+													<option>20</option>
+													<option>ALL</option>
+												</select>
+												<span class="info-select-text">줄씩보기</span>
+											</div>
+											<div class="pagination-panel">
+												<a href="javascript:void(0);" class="icon icon-arrow-start" title="처음으로">처음으로</a>
+												<a href="javascript:void(0);" class="icon icon-arrow-left" title="이전">이전</a>
+
+												<label class="input-label-none" for="paginationInput">현재페이지</label>
+												<input type="text" id="paginationInput" class="form-control pagination-panel-input" maxlenght="5" value="1">
+
+												<span class="pagination-panel-total">/ 3</span>
+
+												<a href="javascript:void(0);" class="icon icon-arrow-right" title="다음">다음</a>
+												<a href="javascript:void(0);" class="icon icon-arrow-end" title="끝으로">끝으로</a>
+											</div>
+										</div>
+										<!-- 페이징 끝 -->
+									</div>
+									<!-- 탭 컨텐츠 01 끝 -->
+	
+									<!-- 탭 컨텐츠 02 시작 -->
+									<div class="tab-pane" id="tab_1_2">
+										카테고리2
+									</div>
+									<!-- 탭 컨텐츠 02 끝 -->
+	
+									<!-- 탭 컨텐츠 03 시작 -->
+									<div class="tab-pane" id="tab_1_3">
+										카테고리3
+									</div>
+									<!-- 탭 컨텐츠 03 끝 -->
+	
+									<!-- 탭 컨텐츠 04 시작 -->
+									<div class="tab-pane" id="tab_1_4">
+										카테고리4
+									</div>
+									<!-- 탭 컨텐츠 04 끝 -->
+	
+									<!-- 탭 컨텐츠 05 시작 -->
+									<div class="tab-pane" id="tab_1_5">
+										카테고리5
+									</div>
+									<!-- 탭 컨텐츠 05 끝 -->
+	
+								</div>
+								<!-- Tab 끝 -->
+
+							</div>
+							<!-- 컨텐츠 행 끝 -->
+
+						</div>
+						<!-- 내용 끝 -->
+						
+					</div>
+
+				</div>
+				<!-- 컨텐츠 끝 -->
+
+			</div>
+
+		</section>
+		<!-- 페이지 컨테이너 끝 -->
+
+		<!-- footer (JSP 파일 include) 시작 -->
+		<footer id="footer" class="page-footer">
+		</footer>
+		<!-- footer (JSP 파일 include) 끝 -->
+
+		
+
+	</body>
+
+	<!-- 필독 !!!!!! JSP 상하단 include 예시 완료 후 삭제 !!!!!!! 시작 -->
+	<script>
+		//상단메뉴
+		header(0);
+		function header(index) {
+			$include_pageHeader.prependTo("header");
+			$include_pageHeader.find(".navbar-nav > li").removeClass("active"); // 상단 메뉴의 활성화를 모두 삭제
+			$include_pageHeader.find(".navbar-nav > li").eq(1).addClass("active"); // 현재 페이지의 상단 메뉴의 활성화
+		}
+
+		//풋터
+		footer();
+		function footer() {
+		 	$include_footer.prependTo("footer");
+		}
+	</script>
+	<!-- 필독 !!!!!! JSP 상하단 include 예시 완료 후 삭제 !!!!!!! 끝 -->
+
+</html>

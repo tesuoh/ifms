@@ -1,0 +1,78 @@
+/*
+ * Nanum Gothic (Korean) http://www.google.com/fonts/earlyaccess
+ */
+@font-face {
+  font-family: 'NanumGothic';
+  font-style: normal;
+  font-weight: 400;
+  src: local('NanumGothic'),
+       url(../font/NanumGothic-Regular.eot),
+       url(../font/NanumGothic-Regular.eot?#iefix) format('embedded-opentype'),
+       url(../font/NanumGothic-Regular.woff2) format('woff2'),
+       url(../font/NanumGothic-Regular.woff) format('woff'),
+       url(../font/NanumGothic-Regular.ttf) format('truetype'),
+       local('Gulim');
+       /*
+       url(../font/NanumGothic-Regular.svg#NanumGothic) format('svg');
+       */
+}
+
+@font-face {
+  font-family: '나눔고딕';
+  font-style: normal;
+  font-weight: 400;
+    src: local('NanumGothic'),
+    url(../font/NanumGothic-Regular.eot),
+    url(../font/NanumGothic-Regular.eot?#iefix) format('embedded-opentype'),
+    url(../font/NanumGothic-Regular.woff2) format('woff2'),
+    url(../font/NanumGothic-Regular.woff) format('woff'),
+    url(../font/NanumGothic-Regular.ttf) format('truetype'),
+    local('Gulim');
+    /*
+    url(../font/NanumGothic-Regular.svg#NanumGothic) format('svg');
+    */
+}
+
+
+@font-face {
+    font-family: 'NanumGothic';
+    font-weight: bold;
+    src:
+            url(../font/NanumGothic-Bold.woff2) format('woff2'),
+            url(../font/NanumGothic-Bold.eot);
+
+}
+
+@font-face {
+    font-family: '나눔고딕';
+    font-weight: bold;
+    src:
+            url(../font/NanumGothic-Bold.woff2) format('woff2'),
+            url(../font/NanumGothic-Bold.eot);
+
+}
+
+@font-face {
+    font-family: '나눔고딕 ExtraBold';
+
+    src:
+            url(../font/NanumGothic-ExtraBold.woff2) format('woff2'),
+            url(../font/NanumGothic-ExtraBold.eot);
+
+    /*
+    url(../font/NanumGothic-Regular.svg#NanumGothic) format('svg');
+    */
+}
+
+
+@font-face {
+    font-family: 'NanumGothicExtraBold';
+    src:
+            url(../font/NanumGothic-ExtraBold.woff2) format('woff2'),
+            url(../font/NanumGothic-ExtraBold.eot);
+
+    /*
+    url(../font/NanumGothic-Regular.svg#NanumGothic) format('svg');
+    */
+}
+ 

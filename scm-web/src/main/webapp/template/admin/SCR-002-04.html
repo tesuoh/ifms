@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<!-- CSS & javascript (JSP 파일 include) 시작 -->
+	<head>
+		<title>보호구역 통합관리시스템</title>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name = "viewport" content = "user-scalable=no, width=device-width">
+		<meta name="author" content="보호구역 통합관리시스템">
+		<!-- description -->
+		<meta name="description" content="보호구역 통합관리시스템 프로젝트">
+		<!-- keywords -->
+		<meta name="keywords" content="">
+		<!-- favicon -->
+		<link rel="shortcut icon" href="../../com/img/common/icon/favicon.ico">
+		<link rel="apple-touch-icon" href="../../com/img/common/icon/favicon.ico">
+
+		<!-- ==============================================================
+			플러그인
+		============================================================== -->
+		<!-- 공통 -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/font-awesome/css/font-awesome.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/simple-line-icons/simple-line-icons.css" />
+		<script type="text/javascript" src="../../com/plugins/jquery.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/js.cookie.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+
+		<!-- bootstrap -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap/css/bootstrap.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+		<!-- bootstrap-datepicker -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-timepicker/css/bootstrap-timepicker.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.kr.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.kr.js"></script>
+		<script type="text/javascript" src="../../com/js/bootstrap-datepicker.kr.js"></script>
+		<script type="text/javascript" src="../../com/js/components-date-time-pickers.js"></script>
+
+		<!-- bootstrap-fileinput -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-fileinput/bootstrap-fileinput.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
+
+		<!-- bootstrap-tabdrop -->
+		<script type="text/javascript" src="../../com/plugins/bootstrap-tabdrop/js/bootstrap-tabdrop.js"></script>
+
+		<!-- jstree -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/jstree/dist/themes/default/style.css" />
+		<script type="text/javascript" src="../../com/plugins/jstree/dist/jstree.js"></script>
+		<script type="text/javascript" src="../../com/js/ui-tree.js"></script>
+
+		<!-- div 크기 변경 감지 https://marcj.github.io/css-element-queries/ -->
+		<script type="text/javascript" src="../../com/plugins/css-element-queries/ResizeSensor.js"></script>
+		<script type="text/javascript" src="../../com/plugins/css-element-queries/ElementQueries.js"></script>
+		
+		<!-- 전체 레이어 모달 팝업 -->
+		<link type="text/css" rel="stylesheet" href="../../com/plugins/magnific-popup/magnific-popup.css">
+		<script type="text/javascript" src="../../com/plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+		<!-- 컨텐츠 셀렉트 -->
+		<script type="text/javascript" src="../../com/plugins/slideNav/slideNav.js"></script>
+
+		<!-- 상단메뉴 -->
+		<link type="text/css" rel="stylesheet" href="../../com/plugins/menu/css/menu.css">
+		<script type="text/javascript" src="../../com/plugins/menu/js/custom.js"></script>
+
+		<!-- ==============================================================
+			공통 커스텀
+		============================================================== -->	
+		<!-- 스타일 css -->
+		<link rel="stylesheet" type="text/css" href="../../com/css/components.css" />
+		<link type="text/css" rel="stylesheet" href="../../com/css/style.css">
+
+		<!-- 전체 조합 css -->
+		<link type="text/css" rel="stylesheet" href="../../com/css/common.css">
+		<link type="text/css" rel="stylesheet" href="../../com/css/common-ie.css">
+
+		<!-- 공통 script -->
+		<script type="text/javascript" src="../../com/js/app.js"></script>
+		<script type="text/javascript" src="../../com/js/common.js"></script>
+
+		<!-- KRDS 스크립트 : 패턴 페이지 -->
+		<script type="text/javascript" src="../../com/js/ui-pattern-script.js"></script>
+
+		<!-- ==============================================================
+			프론트
+		============================================================== -->
+		<!-- 레이아웃 CSS -->
+		<link type="text/css" rel="stylesheet" href="../../com/css/front.css">
+		<link type="text/css" rel="stylesheet" href="../../com/css/admin.css"><!-- !!! 필독 : 행정화면들은 "admin.css"를 추가 -->
+
+		<!-- !!! 필독 : JSP 상하단 include 예시 완료 후 삭제 !!!!!!! -->
+		<script type="text/javascript" src="../../com/include/include.js"></script>
+
+	</head>
+	<!-- CSS & javascript (JSP 파일 include) 끝 -->
+
+	<body class="page-front page-sub page-admin"><!-- !!! 필독 : 행정에서는 class="page-admin" 추가 !!!!!!! -->
+		
+		<!-- 헤더 (JSP 파일 include) 시작 -->
+		<header id="header">
+		</header>
+		<!-- 헤더 (JSP 파일 include) 끝 -->
+
+		<!-- 페이지 컨테이너 시작 -->
+		<section id="container" class="page-container">
+
+			<div class="page-content-wrapper">
+
+				<!-- 서브메뉴 (JSP 파일 include) 시작 -->
+				<div id="sidebar" class="page-sidebar-wrapper">
+				</div>
+				<!-- 서브메뉴 (JSP 파일 include) 끝 -->
+
+				<!-- 컨텐츠 시작 -->
+				<div id="contents" class="page-content"><!-- !!! 필독 : [웹 접근성] 본문 바로가기 id="contents", 주메뉴 바로가기  id="navbar" -->
+
+					<div class="page-content-inner">
+
+						<!-- 카테고리 시작 -->
+						<div class="category-wrapper">
+							<ul class="page-category">
+								<li class="category-item"><a href="#">보호구역 지정</a></li>
+								<li class="category-item"><a href="#">보호구역 진행단계 별 자료 등록</a></li>
+							</ul>
+						</div>
+						<!-- 카테고리 끝 -->
+
+						<!-- 페이지 타이틀 시작 -->
+						<h1 class="page-title-1depth"><span>보호구역 진행단계 별 자료 등록</span></h1>
+						<!-- 페이지 타이틀 끝 -->
+
+						<!-- 내용 시작 -->
+						<div class="content-wrapper">
+
+							<!-- 컨텐츠 행 시작 -->
+							<div class="contents-row">
+
+								<a href="#popup_01_lg" data-toggle="modal" class="btn btn-default"><span>보호구역 진행단계 별 자료 등록 팝업 띄우기</span></a>
+
+							</div>
+							<!-- 컨텐츠 행 끝 -->
+
+						</div>
+						<!-- 내용 끝 -->
+						
+					</div>
+
+				</div>
+				<!-- 컨텐츠 끝 -->
+
+			</div>
+
+		</section>
+		<!-- 페이지 컨테이너 끝 -->
+
+		<!-- footer (JSP 파일 include) 시작 -->
+		<footer id="footer" class="page-footer">
+		</footer>
+		<!-- footer (JSP 파일 include) 끝 -->
+
+		<!-- 모달팝업 시작 -->
+		<div class="modal fade bs-modal-lg" id="popup_01_lg" tabindex="-1" role="popup_01_lg">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"></button>
+						<h4 class="modal-title">보호구역 진행단계 별 자료 등록</h4>
+					</div>
+					<div class="modal-body scrollOptionY" style="height: 680px;">
+						<!-- 내용 시작 -->
+						<div class="contents-row">
+
+							<!-- 1단계 시작 -->
+							<div class="portlet light bordered">
+								<div class="portlet-title">
+									<span class="step-title-number">1단계</span><span class="step-title-text">지정신청</span>
+								</div>
+								<div class="portlet-body">
+									
+									<!-- 테이블 시작 -->
+									<div class="table-scrollable">
+										<table class="table table-bordered">
+											<caption>지정신청 테이블 요약</caption>
+											<colgroup>
+												<col style="width:140px;" />
+												<col style="width:auto;" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<td class="td-head" scope="row">신청서</td>
+													<td>
+														<a href="javascript:void(0);" class="link-attach" title="어린이 보호구역 지정 신청서.pdf">어린이 보호구역 지정 신청서.pdf</a>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<!-- 테이블 끝 -->
+								</div>
+							</div>
+							<!-- 1단계 끝 -->
+
+							<!-- 2단계 시작 -->
+							<div class="portlet light bordered">
+								<div class="portlet-title">
+									<span class="step-title-number">2단계</span><span class="step-title-text">현장조사</span>
+								</div>
+								<div class="portlet-body">
+									
+									<!-- 테이블 시작 -->
+									<div class="table-scrollable">
+										<table class="table table-bordered">
+											<caption>지정신청 테이블 요약</caption>
+											<colgroup>
+												<col style="width:140px;" />
+												<col style="width:auto;" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<td class="td-head" scope="row">보고서</td>
+													<td>
+														<a href="javascript:void(0);" class="link-attach" title="현장조사 결과 보고서.hwp">현장조사 결과 보고서.hwp</a>
+													</td>
+												</tr>
+												<tr>
+													<td class="td-head" scope="row">조사 일자 <span class="textR">*</span></td>
+													<td>
+														<!--input id명칭과 for가 동일해야함 (웹접근성)-->
+														<label class="input-label-none" for="due_ymd">조사 일자 입력</label>
+														<div id="date-picker-1" class="input-group date date-picker" data-date="2022-08-31" data-date-format="yyyy-mm-dd" data-date-viewmode="years">
+															<input type="text" id="due_ymd" name="due_ymd" value="2022-08-31" title="조사 일자 입력" class="form-control">
+															<span class="input-group-btn">
+																<button class="btn btn-default" type="button">
+																	<i class="fa fa-calendar"></i>
+																</button>
+															</span>
+														</div>
+														<script>
+															// 참고 사이트 - https://bootstrap-datepicker.readthedocs.io/en/latest/options.html#orientation
+															$('#date-picker-1').datepicker({
+																orientation: 'right bottom'
+															});
+														</script>
+													</td>
+												</tr>
+												<tr>
+													<td class="td-head" scope="row">현장조사 결과 보고서 등록 <span class="textR">*</span></td>
+													<td>
+														<!--input id명칭과 for가 동일해야함 (웹접근성)-->
+														<label class="input-label-none" for="labelEx">현장조사 결과 보고서 등록자료 첨부</label>
+														<div class="fileinput fileinput-new input-group" data-provides="fileinput" tabindex="0" style="width: 100%;">
+															<div class="input-group">
+																<div class="form-control input-fixed" data-trigger="fileinput">
+																	<i class="fa fa-file fileinput-exists"></i>&nbsp;
+																	<span class="fileinput-filename"> </span>
+																</div>
+																<span class="input-group-addon btn btn-default btn-file">
+																	<span class="fileinput-new"> 파일선택 </span>
+																	<span class="fileinput-exists"> 파일교체 </span>
+																	<input type="file" id="labelEx" name="labelEx">
+																</span>
+																<a href="javascript:;" class="input-group-addon btn btn-default btn-red fileinput-exists" data-dismiss="fileinput"> 파일삭제 </a>
+															</div>
+														</div>
+														<p class="input-explanation">※ 0mb 이하로 첨부</p>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<!-- 테이블 끝 -->
+									<div class="table-bottom-control">
+										<button class="btn btn btn-primary" type="button">등록</button>
+									</div>
+								</div>
+							</div>
+							<!-- 2단계 끝 -->
+
+							<!-- 3단계 시작 -->
+							<div class="portlet light bordered">
+								<div class="portlet-title">
+									<span class="step-title-number">3단계</span><span class="step-title-text">승인처리</span>
+								</div>
+								<div class="portlet-body">
+									
+									<!-- 테이블 시작 -->
+									<div class="table-scrollable">
+										<table class="table table-bordered">
+											<caption>승인처리 테이블 요약</caption>
+											<colgroup>
+												<col style="width:140px;" />
+												<col style="width:auto;" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<td class="td-head" scope="row">처리 일자 <span class="textR">*</span></td>
+													<td>
+														<!--input id명칭과 for가 동일해야함 (웹접근성)-->
+														<label class="input-label-none" for="due_ymd">처리 일자 입력</label>
+														<div id="date-picker-2" class="input-group date date-picker" data-date="2022-08-31" data-date-format="yyyy-mm-dd" data-date-viewmode="years">
+															<input type="text" id="due_ymd" name="due_ymd" value="2022-08-31" title="처리 일자 입력" class="form-control">
+															<span class="input-group-btn">
+																<button class="btn btn-default" type="button">
+																	<i class="fa fa-calendar"></i>
+																</button>
+															</span>
+														</div>
+														<script>
+															// 참고 사이트 - https://bootstrap-datepicker.readthedocs.io/en/latest/options.html#orientation
+															$('#date-picker-2').datepicker({
+																orientation: 'right bottom'
+															});
+														</script>
+													</td>
+												</tr>
+												<tr>
+													<td class="td-head" scope="row">미승인 사유</td>
+													<td>
+														<div class="input-group">
+															<!--input id명칭과 for가 동일해야함 (웹접근성)-->
+															<label class="input-label-none" for="labelEx">label명</label>
+															<input type="text" id="labelEx" class="form-control form-group-btn">
+															<span class="input-group-btn">
+																<button class="btn btn-default" type="button">사유등록</button>
+															</span>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<!-- 테이블 끝 -->
+									<div class="table-bottom-control">
+										<button class="btn btn-default btn-red" type="button">미승인</button>
+										<button class="btn btn btn-primary" type="button">승인</button>
+									</div>
+								</div>
+							</div>
+							<!-- 3단계 끝 -->
+
+							<!-- 4단계 시작 -->
+							<div class="portlet light bordered">
+								<div class="portlet-title">
+									<span class="step-title-number">4단계</span><span class="step-title-text">규제심의</span>
+								</div>
+								<div class="portlet-body">
+									
+									<!-- 테이블 시작 -->
+									<div class="table-scrollable">
+										<table class="table table-bordered">
+											<caption>지정신청 테이블 요약</caption>
+											<colgroup>
+												<col style="width:140px;" />
+												<col style="width:auto;" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<td class="td-head" scope="row">증빙서 문서</td>
+													<td>
+														<div class="form-list">
+															<div class="form-inline">
+																<a href="javascript:void(0);" class="link-attach" title="규제심의  증빙1. hwp">규제심의  증빙1. hwp</a>
+															</div>
+															<div class="form-inline">
+																<a href="javascript:void(0);" class="link-attach" title="규제심의  증빙2. hwp">규제심의  증빙2. hwp</a>
+															</div>
+														</div>
+													</td>
+												</tr>
+												<tr>
+													<td class="td-head" scope="row">규제심의 증빙문서 유무</td>
+													<td>
+														<div class="mt-radio-inline">
+															<label class="radio-label-group">Radio Label Group <!-- Radio들을 그룹으로 묶을 때 Label을 그룹으로 감싼다 -->
+																<label class="mt-radio mt-radio-outline">
+																	<input type="radio" name="radioInline1" value="1" checked=""> 유
+																	<span></span>
+																</label>
+																<label class="mt-radio mt-radio-outline">
+																	<input type="radio" name="radioInline1" value="2">무
+																	<span></span>
+																</label>
+															</label>
+														</div>
+													</td>
+												</tr>
+												<tr>
+													<td class="td-head" scope="row">심의 일자 <span class="textR">*</span></td>
+													<td>
+														<!--input id명칭과 for가 동일해야함 (웹접근성)-->
+														<label class="input-label-none" for="due_ymd">심의 일자 입력</label>
+														<div id="date-picker-1" class="input-group date date-picker" data-date="2022-08-31" data-date-format="yyyy-mm-dd" data-date-viewmode="years">
+															<input type="text" id="due_ymd" name="due_ymd" value="2022-08-31" title="심의 일자 입력" class="form-control">
+															<span class="input-group-btn">
+																<button class="btn btn-default" type="button">
+																	<i class="fa fa-calendar"></i>
+																</button>
+															</span>
+														</div>
+														<script>
+															// 참고 사이트 - https://bootstrap-datepicker.readthedocs.io/en/latest/options.html#orientation
+															$('#date-picker-1').datepicker({
+																orientation: 'right bottom'
+															});
+														</script>
+													</td>
+												</tr>
+												<tr>
+													<td class="td-head" scope="row">규제심의 증빙문서 등록 <span class="textR">*</span></td>
+													<td>
+														<!--input id명칭과 for가 동일해야함 (웹접근성)-->
+														<label class="input-label-none" for="labelEx">규제심의 증빙문서 등록 첨부</label>
+														<div class="fileinput fileinput-new input-group" data-provides="fileinput" tabindex="0" style="width: 100%;">
+															<div class="input-group">
+																<div class="form-control input-fixed" data-trigger="fileinput">
+																	<i class="fa fa-file fileinput-exists"></i>&nbsp;
+																	<span class="fileinput-filename"> </span>
+																</div>
+																<span class="input-group-addon btn btn-default btn-file">
+																	<span class="fileinput-new"> 파일선택 </span>
+																	<span class="fileinput-exists"> 파일교체 </span>
+																	<input type="file" id="labelEx" name="labelEx">
+																</span>
+																<a href="javascript:;" class="input-group-addon btn btn-default btn-red fileinput-exists" data-dismiss="fileinput"> 파일삭제 </a>
+															</div>
+														</div>
+														<p class="input-explanation">※ 0mb 이하로 첨부</p>
+													</td>
+												</tr>
+												<tr>
+													<td class="td-head" scope="row">증빙문서 미등록 사유등록 <span class="textR">*</span></td>
+													<td>
+														<div class="input-group">
+															<!--input id명칭과 for가 동일해야함 (웹접근성)-->
+															<label class="input-label-none" for="labelEx">label명</label>
+															<input type="text" id="labelEx" class="form-control form-group-btn">
+															<span class="input-group-btn">
+																<button class="btn btn-default" type="button">사유등록</button>
+															</span>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<!-- 테이블 끝 -->
+									<div class="table-bottom-control">
+										<button class="btn btn btn-primary" type="button">등록</button>
+									</div>
+								</div>
+							</div>
+							<!-- 4단계 끝 -->
+
+							<!-- 5단계 시작 -->
+							<div class="portlet light bordered">
+								<div class="portlet-title">
+									<span class="step-title-number">5단계</span><span class="step-title-text">설계</span>
+								</div>
+								<div class="portlet-body">
+									
+									<!-- 테이블 시작 -->
+									<div class="table-scrollable">
+										<table class="table table-bordered">
+											<caption>설계 테이블 요약</caption>
+											<colgroup>
+												<col style="width:140px;" />
+												<col style="width:auto;" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<td class="td-head" scope="row">설계 증빙 문서</td>
+													<td>
+														<a href="javascript:void(0);" class="link-attach" title="설계 증빙.hwp">설계 증빙.hwp</a>
+													</td>
+												</tr>
+												<tr>
+													<td class="td-head" scope="row">설계 일자 <span class="textR">*</span></td>
+													<td>
+														<!--input id명칭과 for가 동일해야함 (웹접근성)-->
+														<label class="input-label-none" for="due_ymd">설계 일자 입력</label>
+														<div id="date-picker-3" class="input-group date date-picker" data-date="2022-08-31" data-date-format="yyyy-mm-dd" data-date-viewmode="years">
+															<input type="text" id="due_ymd" name="due_ymd" value="2022-08-31" title="설계 일자 입력" class="form-control">
+															<span class="input-group-btn">
+																<button class="btn btn-default" type="button">
+																	<i class="fa fa-calendar"></i>
+																</button>
+															</span>
+														</div>
+														<script>
+															// 참고 사이트 - https://bootstrap-datepicker.readthedocs.io/en/latest/options.html#orientation
+															$('#date-picker-3').datepicker({
+																orientation: 'right bottom'
+															});
+														</script>
+													</td>
+												</tr>
+												<tr>
+													<td class="td-head" scope="row">증빙문서 등록 <span class="textR">*</span></td>
+													<td>
+														<!--input id명칭과 for가 동일해야함 (웹접근성)-->
+														<label class="input-label-none" for="labelEx">증빙문서 등록자료 첨부</label>
+														<div class="fileinput fileinput-new input-group" data-provides="fileinput" tabindex="0" style="width: 100%;">
+															<div class="input-group">
+																<div class="form-control input-fixed" data-trigger="fileinput">
+																	<i class="fa fa-file fileinput-exists"></i>&nbsp;
+																	<span class="fileinput-filename"> </span>
+																</div>
+																<span class="input-group-addon btn btn-default btn-file">
+																	<span class="fileinput-new"> 파일선택 </span>
+																	<span class="fileinput-exists"> 파일교체 </span>
+																	<input type="file" id="labelEx" name="labelEx">
+																</span>
+																<a href="javascript:;" class="input-group-addon btn btn-default btn-red fileinput-exists" data-dismiss="fileinput"> 파일삭제 </a>
+															</div>
+														</div>
+														<p class="input-explanation">※ 0mb 이하로 첨부</p>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<!-- 테이블 끝 -->
+									<div class="table-bottom-control">
+										<button class="btn btn btn-primary" type="button">등록</button>
+									</div>
+								</div>
+							</div>
+							<!-- 5단계 끝 -->
+
+							<!-- 6단계 시작 -->
+							<div class="portlet light bordered">
+								<div class="portlet-title">
+									<span class="step-title-number">6단계</span><span class="step-title-text">공사</span>
+								</div>
+								<div class="portlet-body">
+									
+									<!-- 테이블 시작 -->
+									<div class="table-scrollable">
+										<table class="table table-bordered">
+											<caption>공사 테이블 요약</caption>
+											<colgroup>
+												<col style="width:140px;" />
+												<col style="width:auto;" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<td class="td-head" scope="row">준공 증빙 문서</td>
+													<td>
+														<a href="javascript:void(0);" class="link-attach" title="준공 증빙.hwp">준공 증빙.hwp</a>
+													</td>
+												</tr>
+												<tr>
+													<td class="td-head" scope="row">준공 일자 <span class="textR">*</span></td>
+													<td>
+														<!--input id명칭과 for가 동일해야함 (웹접근성)-->
+														<label class="input-label-none" for="due_ymd">준공 일자 입력</label>
+														<div id="date-picker-3" class="input-group date date-picker" data-date="2022-08-31" data-date-format="yyyy-mm-dd" data-date-viewmode="years">
+															<input type="text" id="due_ymd" name="due_ymd" value="2022-08-31" title="준공 일자 입력" class="form-control">
+															<span class="input-group-btn">
+																<button class="btn btn-default" type="button">
+																	<i class="fa fa-calendar"></i>
+																</button>
+															</span>
+														</div>
+														<script>
+															// 참고 사이트 - https://bootstrap-datepicker.readthedocs.io/en/latest/options.html#orientation
+															$('#date-picker-3').datepicker({
+																orientation: 'right bottom'
+															});
+														</script>
+													</td>
+												</tr>
+												<tr>
+													<td class="td-head" scope="row">공사완료 증빙문서 등록 <span class="textR">*</span></td>
+													<td>
+														<!--input id명칭과 for가 동일해야함 (웹접근성)-->
+														<label class="input-label-none" for="labelEx">공사완료 증빙문서 등록자료 첨부</label>
+														<div class="fileinput fileinput-new input-group" data-provides="fileinput" tabindex="0" style="width: 100%;">
+															<div class="input-group">
+																<div class="form-control input-fixed" data-trigger="fileinput">
+																	<i class="fa fa-file fileinput-exists"></i>&nbsp;
+																	<span class="fileinput-filename"> </span>
+																</div>
+																<span class="input-group-addon btn btn-default btn-file">
+																	<span class="fileinput-new"> 파일선택 </span>
+																	<span class="fileinput-exists"> 파일교체 </span>
+																	<input type="file" id="labelEx" name="labelEx">
+																</span>
+																<a href="javascript:;" class="input-group-addon btn btn-default btn-red fileinput-exists" data-dismiss="fileinput"> 파일삭제 </a>
+															</div>
+														</div>
+														<p class="input-explanation">※ 0mb 이하로 첨부</p>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<!-- 테이블 끝 -->
+									<div class="table-bottom-control">
+										<button class="btn btn btn-primary" type="button">공사완료</button>
+									</div>
+								</div>
+							</div>
+							<!-- 5단계 끝 -->
+
+						</div>
+						<!-- 내용 끝 -->
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 모달팝업 끝 -->
+
+	</body>
+
+	<!-- 필독 !!!!!! JSP 상하단 include 예시 완료 후 삭제 !!!!!!! 시작 -->
+	<script>
+		//상단메뉴
+		header(0);
+		function header(index) {
+			$include_pageHeader_admin.prependTo("header");
+			$include_pageHeader_admin.find(".navbar-nav > li").removeClass("active"); // 상단 메뉴의 활성화를 모두 삭제
+			$include_pageHeader_admin.find(".navbar-nav > li").eq(1).addClass("active"); // 현재 페이지의 상단 메뉴의 활성화
+		}
+
+		//왼쪽메뉴
+		sidebar(0);
+		function sidebar(index) {
+			$include_sidebar.prependTo("#sidebar");
+			$include_sidebar.find(".page-sidebar-menu > li").removeClass("active"); // 상단 메뉴의 활성화를 모두 삭제
+			$include_sidebar.find(".page-sidebar-menu > li").eq(2).addClass("active"); // 현재 페이지의 상단 메뉴의 활성화
+			$include_sidebar.find(".page-sidebar-menu > li").eq(2).addClass("active").find(".sub-menu > li").removeClass("active");
+			$include_sidebar.find(".page-sidebar-menu > li").eq(2).addClass("active").find(".sub-menu > li").eq(0).addClass("active");
+			$include_sidebar.find(".page-sidebar-menu > li").eq(2).addClass("active").find(".sub-menu > li").eq(0).find(".sub-menu > li").removeClass("active");
+			$include_sidebar.find(".page-sidebar-menu > li").eq(2).addClass("active").find(".sub-menu > li").eq(0).find(".sub-menu > li").eq(0).addClass("active");
+		}
+
+		//풋터
+		footer();
+		function footer() {
+		 	$include_footer.prependTo("footer");
+		}
+	</script>
+	<!-- 필독 !!!!!! JSP 상하단 include 예시 완료 후 삭제 !!!!!!! 끝 -->
+
+</html>

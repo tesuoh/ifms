@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ifms.cmn.session.mapper.SessionMapper">
+
+    <resultMap id="loginMap" type="ifms.core.security.vo.SessionVO">
+        <result property="userId" column="USER_ID"/>
+        <result property="ifmsId" column="IFMS_ID"/>
+        <result property="userPswd" column="USER_PSWD"/>
+        <result property="aprvYn" column="APRV_YN"/>
+    </resultMap>
+
+    <!-- 사용자정보 조회 -->
+    <select id="findBy" resultMap="loginMap" parameterType="java.util.Map">
+        SELECT USER_ID,
+               USER_ID AS IFMS_ID,
+               USER_PSWD,
+               APRV_YN,
+               lgn_fail_nmtm AS LGN_FAIL_LCK_YN
+          FROM SZMS.PT_USER_INFO_M UI,
+               SZMS.PT_AUTHRT_MNG_M AM
+         WHERE UI.authrt_id = AM.authrt_id
+           AND UI.USER_ID = #{username}
+           AND UI.USE_YN = 'Y'
+           AND UI.APRV_YN = 'Y'
+    </select>
+
+    <!-- 사용자 역할 조회 -->
+    <select id="findPermissionsByUsername" parameterType="String" resultType="String">
+        SELECT
+            p.authrt_nm
+          FROM
+              szms.pt_user_info_m u
+              INNER JOIN szms.pt_user_authrt_mpng_m up ON u.user_id = up.user_id
+              INNER JOIN szms.pt_authrt_mng_m p ON up.authrt_id = p.authrt_id
+         WHERE
+             u.user_id = #{username}
+          AND p.use_yn = 'Y'
+    </select>
+
+    <!-- 사용자 권한 조회 -->
+    <select id="findRolesByUsername" parameterType="String" resultType="String">
+        SELECT
+            r.authrt_nm
+        FROM
+            szms.pt_user_info_m u
+                INNER JOIN szms.pt_user_authrt_mpng_m ur ON u.user_id = ur.user_id
+                INNER JOIN szms.pt_authrt_mng_m r ON ur.authrt_id = r.authrt_id
+        WHERE
+            u.user_id = #{username}
+          AND r.use_yn = 'Y'
+    </select>
+
+    <select id="findUrlsByUserId" parameterType="String" resultType="ifms.core.security.vo.AccessibleUrl">
+        select u1.url_addr as url,
+               CASE WHEN u1.mdfcn_authrt_yn = 'Y' THEN true ELSE false END AS modificationAuthority
+        from szms.pt_url_mng_m U1,
+        (select um.rprs_url_mng_no,
+        um.url_mng_no
+        from szms.pt_prgrm_url_mpng_r um,
+        (select ap.authrt_id,
+        ap.rprs_url_mng_no,
+        ap.mdfcn_authrt_yn
+        from szms.pt_authrt_prgrm_mpng_r ap,
+        (select u.user_id,
+        a.authrt_id,
+        a.site_clsf_cd
+        from szms.pt_user_info_m u,
+        szms.pt_authrt_mng_m a
+        where u.authrt_id = a.authrt_id
+        and u.user_id = #{username}) T1
+        where ap.authrt_id = T1.authrt_id) T2
+        where um.rprs_url_mng_no = T2.rprs_url_mng_no
+        order by um.rprs_url_mng_no, um.url_mng_no) T3
+        where U1.url_mng_no = T3.url_mng_no
+    </select>
+
+    <!-- 현재사용자의 세션정보 - userId에 대한 사용자정보 -->
+    <select id="selectMainUserMap" resultType="egovMap" parameterType="map">
+        /* SessionMapper.selectMainUserMap */
+        SELECT UI.USER_ID,
+               UI.POLSTN_CD,
+               UI.OGDP_INST_CD,
+               UI.USER_NM,
+               UI.USER_PSWD,
+               UI.AUTHRT_ID,
+               AM.AUTHRT_NM,
+               AM.SITE_CLSF_CD,
+               UI.USER_ID AS IFMS_ID
+        FROM SZMS.PT_USER_INFO_M UI,
+             SZMS.PT_AUTHRT_MNG_M AM
+        WHERE UI.AUTHRT_ID = AM.AUTHRT_ID
+          AND UI.USER_ID = #{userId}
+          AND UI.USE_YN = 'Y'
+          AND UI.APRV_YN = 'Y'
+          AND AM.USE_YN = 'Y'
+    </select>
+
+    <!-- 현재사용자의 세션정보 - userId에 대한 리스트 정보 -->
+    <select id="selectUserMap" resultType="egovMap" parameterType="map">
+        /* SessionMapper.selectUserMap */
+        SELECT UI.USER_ID,
+               UI.POLSTN_CD,
+               UI.OGDP_INST_CD,
+               UI.USER_NM,
+               UI.USER_PSWD,
+               UI.AUTHRT_ID,
+               UI.USE_YN,
+               UI.REG_YMD,
+               UI.MEMO_CN,
+               UI.CRTF_EXPRY_YMD,
+               UI.CERTF_DN_NM,
+               UI.LAST_CNTN_IP_ADDR,
+               UI.LAST_CNTN_DT,
+               UI.LGN_FAIL_NMTM,
+               UI.APRV_YN,
+               UI.PRM_IP_ADDR,
+               UI.PRM_IP_USE_YN,
+               UI.USE_PRD_SE_CD,
+               UI.USE_PRD_BGNG_YMD,
+               UI.USE_PRD_END_YMD,
+               UI.USE_HR_SE_CD,
+               UI.USE_HR_BGNG_HM,
+               UI.USE_HR_END_HM,
+               UI.MON_USE_YN,
+               UI.TUE_USE_YN,
+               UI.WED_USE_YN,
+               UI.THU_USE_YN,
+               UI.FRI_USE_YN,
+               UI.SAT_USE_YN,
+               UI.SUN_USE_YN,
+               AM.AUTHRT_NM,
+               AM.SITE_CLSF_CD,
+               UI.USER_ID AS IFMS_ID,
+               UI.STDG_CTPV_CD,
+               UI.STDG_SGG_CD
+        FROM SZMS.PT_USER_INFO_M UI,
+             SZMS.PT_AUTHRT_MNG_M AM
+        WHERE UI.AUTHRT_ID = AM.AUTHRT_ID
+          AND UI.USER_ID = #{ifmsId}
+          AND UI.USE_YN = 'Y'
+          AND UI.APRV_YN = 'Y'
+          AND AM.USE_YN = 'Y'
+    </select>
+
+    <!-- 세션사용자의 역할목록 - userMap의 권한이 부여된 역할목록 -->
+    <select id="selectRoleList" resultType="egovMap" parameterType="map">
+        /* SessionMapper.selectRoleList */
+        SELECT AM.AUTHRT_ID,
+               AM.AUTHRT_NM,
+               AM.SITE_CLSF_CD
+        FROM SZMS.PT_USER_INFO_M UI,
+             SZMS.PT_AUTHRT_MNG_M AM
+        WHERE UI.AUTHRT_ID = AM.AUTHRT_ID
+          AND UI.USER_ID = #{ifmsId}
+          AND UI.USE_YN = 'Y'
+          AND UI.APRV_YN = 'Y'
+          AND AM.USE_YN = 'Y'
+    </select>
+
+    <!-- 세션사용자의 메뉴목록 - userMap의 권한이 부여된 메뉴목록 -->
+    <select id="selectMenuList" parameterType="Map" resultType="egovMap">
+        /* SessionMapper.selectMenuList */
+        WITH RECURSIVE authrt_prgrm AS (
+            -- 권한에 따른 프로그램 매핑
+            SELECT
+                pamm.authrt_Id,
+                papmr.rprs_url_mng_no,
+                pumm.url_addr
+            FROM szms.pt_authrt_mng_m pamm
+                     LEFT JOIN szms.pt_authrt_prgrm_mpng_r papmr
+                               ON pamm.authrt_Id = papmr.authrt_Id
+                                   AND pamm.authrt_Id = #{authrtId}
+                                   AND pamm.use_yn = 'Y'
+                     INNER JOIN szms.pt_url_mng_m pumm
+                                ON papmr.rprs_url_mng_no = pumm.url_mng_no
+        ),
+                       menu_hierarchy AS (
+                           -- 최상위 메뉴 선택
+                           SELECT
+                               A.menu_id,
+                               A.up_menu_id,
+                               A.menu_nm,
+                               B.url_addr,
+                               A.rprs_url_mng_no,
+                               A.indct_seq, -- 순서를 위한 필드 추가
+                               1 AS depth,
+                               json_build_object(
+                                       'menu_id', A.menu_id,
+                                       'menu_nm', A.menu_nm,
+                                       'rprs_url_mng_no', A.rprs_url_mng_no,
+                                       'url_addr', B.url_addr,
+                                       'up_menu_id', A.up_menu_id,
+                                       'submenu', '[]'::json
+                               ) AS submenu
+                           FROM szms.pt_menu_mng_m A
+                                    LEFT JOIN szms.pt_url_mng_m B ON A.rprs_url_mng_no = B.url_mng_no
+                                    LEFT JOIN authrt_prgrm AP ON A.rprs_url_mng_no = AP.rprs_url_mng_no -- 권한에 따른 필터링
+                           WHERE A.site_clsf_cd = #{siteClsfCd}
+                             AND A.use_yn = 'Y'
+                             AND (A.up_menu_id = '' OR A.up_menu_id IS NULL)
+                             AND (AP.authrt_Id IS NULL OR AP.authrt_Id = #{authrtId}) -- 권한이 있는지 확인
+                           UNION ALL
+                           -- 하위 메뉴를 재귀적으로 찾기
+                           SELECT
+                               A.menu_id,
+                               A.up_menu_id,
+                               A.menu_nm,
+                               B.url_addr,
+                               A.rprs_url_mng_no,
+                               A.indct_seq, -- 순서를 위한 필드 추가
+                               MH.depth + 1 AS depth,
+                               json_build_object(
+                                       'menu_id', A.menu_id,
+                                       'menu_nm', A.menu_nm,
+                                       'rprs_url_mng_no', A.rprs_url_mng_no,
+                                       'url_addr', B.url_addr,
+                                       'up_menu_id', A.up_menu_id,
+                                       'submenu', '[]'::json
+                               ) AS submenu
+                           FROM szms.pt_menu_mng_m A
+                                    LEFT JOIN szms.pt_url_mng_m B ON A.rprs_url_mng_no = B.url_mng_no
+                                    LEFT JOIN authrt_prgrm AP ON A.rprs_url_mng_no = AP.rprs_url_mng_no -- 권한에 따른 필터링
+                                    JOIN menu_hierarchy MH ON A.up_menu_id = MH.menu_id
+                           WHERE A.use_yn = 'Y'
+                             AND (AP.authrt_Id IS NULL OR AP.authrt_Id = #{authrtId}) -- 권한이 있는지 확인
+                       )
+        SELECT json_agg(
+                       json_build_object(
+                               'menu_id', MH.menu_id,
+                               'menu_nm', MH.menu_nm,
+                               'rprs_url_mng_no', MH.rprs_url_mng_no,
+                               'url_addr', MH.url_addr,
+                               'up_menu_id', up_menu_id,
+                               'submenu', (SELECT json_agg(sub_h.submenu ORDER BY sub_h.indct_seq) -- 하위 메뉴를 indct_seq로 정렬
+                                           FROM menu_hierarchy sub_h
+                                           WHERE sub_h.up_menu_id = MH.menu_id)
+                       ) ORDER BY MH.indct_seq -- 상위 메뉴를 indct_seq로 정렬
+               ) AS menu_json
+        FROM menu_hierarchy MH
+        WHERE MH.up_menu_id = '' or MH.up_menu_id is null
+    </select>
+
+    <!-- 세션사용자의 메뉴목록 - userMap의 권한이 부여된 메뉴목록 -->
+    <select id="selectMenuJson" parameterType="Map" resultType="String">
+        /* SessionMapper.selectMenuJson */
+        WITH RECURSIVE
+            authrt_prgrm AS (
+                SELECT
+                    pamm.authrt_Id,
+                    papmr.rprs_url_addr
+                FROM szms.pt_authrt_mng_m pamm
+                         LEFT JOIN szms.pt_authrt_prgrm_mpng_r papmr
+                                   ON pamm.authrt_Id = papmr.authrt_Id
+                                       AND pamm.authrt_Id = #{authrtId}
+                                       AND pamm.use_yn = 'Y'
+            ),
+            menu_hierarchy AS (
+                -- 최상위 메뉴
+                SELECT
+                    A.menu_id,
+                    A.up_menu_id,
+                    A.menu_nm,
+                    AP.rprs_url_addr,
+                    A.indct_seq,
+                    1 AS depth,
+                    jsonb_build_object(
+                            'menu_id', A.menu_id,
+                            'menu_nm', A.menu_nm,
+                            'rprs_url_addr', AP.rprs_url_addr,
+                            'up_menu_id', A.up_menu_id,
+                            'submenu', '[]'::jsonb
+                    ) AS submenu
+                FROM szms.pt_menu_mng_m A
+                         LEFT JOIN authrt_prgrm AP ON A.rprs_url_addr = AP.rprs_url_addr
+                WHERE A.site_clsf_cd = #{siteClsfCd}
+                  AND A.use_yn = 'Y'
+                  AND (A.up_menu_id = '' OR A.up_menu_id IS NULL)
+                  AND (AP.authrt_Id IS NULL OR AP.authrt_Id = #{authrtId})
+
+                UNION ALL
+
+                -- 하위 메뉴 재귀
+                SELECT
+                    A.menu_id,
+                    A.up_menu_id,
+                    A.menu_nm,
+                    AP.rprs_url_addr,
+                    A.indct_seq,
+                    MH.depth + 1 AS depth,
+                    jsonb_build_object(
+                            'menu_id', A.menu_id,
+                            'menu_nm', A.menu_nm,
+                            'rprs_url_addr', AP.rprs_url_addr,
+                            'up_menu_id', A.up_menu_id,
+                            'submenu', '[]'::jsonb
+                    ) AS submenu
+                FROM szms.pt_menu_mng_m A
+                         LEFT JOIN authrt_prgrm AP ON A.rprs_url_addr = AP.rprs_url_addr
+                         JOIN menu_hierarchy MH ON A.up_menu_id = MH.menu_id
+                WHERE A.use_yn = 'Y'
+                  AND (A.rprs_url_addr is null or AP.rprs_url_addr is not null)--메뉴에는 URL 이 있고, Authrty_prgrm에서는 URL 이 없으면 제외
+                  AND (AP.authrt_Id IS NULL OR AP.authrt_Id = #{authrtId})
+            )
+        SELECT jsonb_agg(
+                       jsonb_build_object(
+                               'menu_id', MH.menu_id,
+                               'menu_nm', MH.menu_nm,
+                               'rprs_url_addr', MH.rprs_url_addr,
+                               'up_menu_id', MH.up_menu_id,
+                               'submenu', (
+                                   -- 여기서 하위 메뉴를 DISTINCT로 중복 제거하고 ORDER BY로 정렬한 뒤 jsonb_agg
+                                   SELECT jsonb_agg(sub_h.submenu ORDER BY sub_h.indct_seq)
+                                   FROM (
+                                            SELECT DISTINCT menu_id, submenu, indct_seq
+                                            FROM menu_hierarchy
+                                            WHERE up_menu_id = MH.menu_id
+                                            ORDER BY indct_seq
+                                        ) sub_h
+                               )
+                       ) ORDER BY MH.indct_seq
+               ) AS menu_json
+        FROM (
+                 -- 최상위 메뉴에서도 DISTINCT를 적용하여 중복 제거
+                 SELECT DISTINCT menu_id, up_menu_id, menu_nm, rprs_url_addr, indct_seq, depth, submenu
+                 FROM menu_hierarchy
+                 ORDER BY indct_seq
+             ) MH
+        WHERE MH.up_menu_id = '' or MH.up_menu_id is null
+    </select>
+
+    <!-- 권한ID에 대한 접근 가능한 URL 및 수정권한 조회 -->
+    <!-- 수정권한이 없는 경우 수정용 프로그램 URL는 제외됨 -->
+    <select id="selectAuthrtUrlList" parameterType="String" resultType="egovMap">
+        /*SessionMapper.selectAuthrtUrlList	*/
+        select
+            T1.authrt_id			/* 권한아이디	*/
+             , T1.authrt_nm			/* 권한이름		*/
+             , T2.mdfcn_authrt_yn	/* 수정권한여부	*/
+             , T5.url_addr			/* url 주소	*/
+        from szms.pt_authrt_mng_m T1
+                 inner join szms.pt_authrt_prgrm_mpng_r T2
+                            on T1.authrt_id = T2.authrt_id
+                 inner join szms.pt_rprs_prgrm_mng_m T3
+                            on T2.rprs_url_addr = T3.rprs_url_addr
+                 inner join szms.pt_prgrm_url_mpng_r T4
+                            on T3.rprs_url_addr = T4.rprs_url_addr
+                 inner join szms.pt_url_mng_m T5
+                            on T4.url_addr = T5.url_addr
+        where T1.authrt_id = #{authrtId}
+          and T1.use_yn = 'Y'
+          and (T2.mdfcn_authrt_yn = 'Y' or T5.mdfcn_prgrm_yn = 'N')	/* 수정 권한 보유여부에 대한 필터링	*/
+    </select>
+
+
+    <!-- 로그인 실패시 해당 사용자의 로그인 실패횟수 1회 증가 -->
+    <update id="updateLgnFailureCountInc" parameterType="map">
+        /* SessionMapper.updateLgnFailureCountInc */
+        UPDATE SZMS.PT_USER_INFO_M
+           SET LGN_FAIL_NMTM = LGN_FAIL_NMTM + 1
+         WHERE USER_ID = #{username}
+          /*AND APRV_STTS_CD = '${@ifms.common.constants.Const@constMap().APRV_STTS_CD_AST040}'*/
+    </update>
+
+    <!-- 로그인 실패 회수 조회 -->
+    <select id="selectLgnFailureCount" resultType="egovMap" parameterType="String">
+        /* SessionMapper.selectLgnFailureCount */
+        SELECT UI.LGN_FAIL_NMTM
+             , UI.APRV_YN
+             , AM.AUTHRT_ID
+        FROM SZMS.PT_USER_INFO_M UI
+           , SZMS.PT_AUTHRT_MNG_M AM
+        WHERE UI.AUTHRT_ID = AM.AUTHRT_ID
+          AND UI.USER_ID = #{username}
+          AND UI.APRV_YN = 'Y'
+          AND AM.USE_YN = 'Y'
+    </select>
+
+
+    <!-- 로그인 5회 이상 발생 시 계정 잠금으로 update -->
+    <update id="updateLgnFailLckYn">
+        /* SessionMapper.updateLgnFailLckYn */
+        UPDATE SZMS.PT_USER_INFO_M
+           SET LGN_FAIL_NMTM = LGN_FAIL_NMTM + 1,
+               aprv_yn = 'N'
+        WHERE USER_ID = #{username}
+          AND aprv_yn = 'Y'
+    </update>
+
+    <update id="updateResultLastLgnYmd" parameterType="ifms.core.security.vo.ClientVO">
+        UPDATE SZMS.PT_USER_INFO_M
+        SET last_cntn_dt = NOW(),
+            last_cntn_ip_addr = #{ip}
+        WHERE USER_ID = #{username}
+    </update>
+
+    <update id="updateInitLgnFailLckYn" parameterType="ifms.core.security.vo.ClientVO">
+        UPDATE SZMS.PT_USER_INFO_M
+           SET LGN_FAIL_NMTM = 0,
+               aprv_yn = 'Y'
+        WHERE USER_ID = #{username}
+    </update>
+
+
+
+
+    <!-- 사용자 접속정보 저장 -->
+    <insert id="insertClientDtl" parameterType="ifms.core.security.vo.ClientVO">
+        /* SessionMapper.insertClientDtl */
+        INSERT INTO szms.pt_lgn_h
+        (user_id, cntn_dt, ip_addr, cntn_brwsr_nm, oper_sys_nm, lgn_yn)
+        SELECT
+                (SELECT user_id FROM SZMS.PT_USER_INFO_M A WHERE user_id = #{username}),
+                NOW(),
+                #{ip},
+                #{browser},
+                #{os},
+                #{lgnYn}
+    </insert>
+
+
+	<!-- url 접속이력 저장 -->
+	<insert id="insertUrlCntnHstry" parameterType="map">
+		INSERT INTO SZMS.PT_URL_CNTN_H (
+			HSTRY_SN 
+			, CNTN_URL_ADDR 
+			, SITE_CLSF_CD 
+			, USER_ID 
+			, SRVR_NM 
+			, CNTN_DT 
+		)
+		VALUES(
+			NEXTVAL('SZMS.SQ_PT_URL_CNTN_H')
+			, #{cntnUrlAddr}
+			, 'SYS030'
+			, #{userId}
+			, #{srvrNm}
+			, CURRENT_TIMESTAMP
+		)
+	</insert>
+
+</mapper>

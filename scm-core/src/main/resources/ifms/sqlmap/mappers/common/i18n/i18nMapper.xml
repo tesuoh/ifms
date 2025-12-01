@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ifms.core.i18n.mapper.i18nMapper">
+
+	<!-- 다국어 메세지 조회 -->
+	<select id="getMessage" parameterType="map" resultType="java.lang.String">
+        SELECT message
+        FROM message_tb
+        WHERE  CONCAT_WS('.', code1, code2, code3) = #{code}
+          AND locale = #{locale}
+    </select>
+    
+	<!-- 다국어 메세지 조회 -->
+	<select id="getTooltip" parameterType="map" resultType="java.lang.String">
+        SELECT description
+        FROM message_tb
+        WHERE  CONCAT_WS('.', code1, code2, code3) = #{code}
+          AND locale = #{locale}
+    </select>
+    
+    <!-- 다국어 메세지 목록 조회 -->
+	<select id="selectI18nMsgList"  parameterType="map" resultType="egovMap">
+		SELECT id as ROW_NUM
+			, concat_ws('.', code1, code2, code3 ) as code
+			, code1
+			, code2
+			, code3
+			, locale
+			, message
+		FROM message_tb
+		WHERE 1 = 1
+		<if test="code1 != ''">
+		AND code1 = #{code1}
+		</if>
+		<if test="code2 != ''">
+		AND code2 = #{code2}
+		</if>
+		<if test="code3 != ''">
+		AND code3 = #{code3}
+		</if>
+		<if test="locale != ''">
+		AND locale = #{locale}
+		</if>
+		<if test="message != ''">
+		AND message LIKE CONCAT('%', #{message}, '%')
+		</if>
+  		ORDER BY id DESC
+  		OFFSET #{startNo} ROWS FETCH NEXT #{listCount} ROWS ONLY
+	</select>
+	
+	<!-- 다국어 메세지 총건수 -->
+	<select id="selectI18nMsgTotalCnt" parameterType="map" resultType="int">
+		SELECT COUNT(*)
+		FROM message_tb
+		WHERE 1 = 1
+		<if test="code1 != ''">
+			AND code1 = #{code1}
+		</if>
+		<if test="code2 != ''">
+			AND code2 = #{code2}
+		</if>
+		<if test="code3 != ''">
+			AND code3 = #{code3}
+		</if>
+		<if test="locale != ''">
+			AND locale = #{locale}
+		</if>
+		<if test="message != ''">
+			AND message LIKE CONCAT('%', #{message}, '%')
+		</if>
+	</select>
+	
+	<!-- 다국어 메세지 타입유형 조회 -->
+	<select id="selectI18nTypCd" resultType="egovMap">
+		SELECT DISTINCT CD_ID, CD_NM 
+		FROM SZMS.PT_COM_CD_C 
+		WHERE CD_GROUP_ID = 'I18N_TYP_CD' AND USE_YN = 'Y'
+	</select>
+	
+	<!-- 다국어 메세지 사업유형 조회 -->
+	<select id="selectI18nBisCd" resultType="egovMap">
+		SELECT DISTINCT CD_ID, CD_NM 
+		FROM SZMS.PT_COM_CD_C 
+		WHERE CD_GROUP_ID = 'I18N_BIS_CD' AND USE_YN = 'Y'
+	</select>
+	
+	<!-- 다국어 메세지 언어구분 조회 -->
+	<select id="selectI18nLocCd" resultType="egovMap">
+		SELECT DISTINCT CD_ID, CD_NM 
+		FROM SZMS.PT_COM_CD_C 
+		WHERE CD_GROUP_ID = 'I18N_LOC_CD' AND USE_YN = 'Y' ORDER BY SORT_SEQ
+	</select>
+	
+	<!-- 다국어 메세지 등록 -->
+	<insert id="insertI18nMsg" parameterType="map">
+		INSERT INTO message_tb(
+			code1
+			, code2
+			, code3
+			, locale
+			, message
+			, description
+		) 
+		VALUES(
+			#{code1}
+			, #{code2}
+			, <choose>
+				<when test='code3 == ""'>
+					NULL
+				</when>
+				<otherwise>
+					#{code3}
+				</otherwise>
+			</choose>
+			, #{locale}
+			, #{locale}
+			, #{description}
+		)
+	</insert>
+	
+	<!-- 다국어 메세지 삭제 -->
+	<delete id="deleteI18nMsg" parameterType="map">
+		DELETE FROM message_tb
+		WHERE id = #{i18nSn}
+	</delete>
+	
+	<!-- 다국어 메세지 상세조회 -->
+	<select id="selectI18nMsgDetail" parameterType="map" resultType="egovMap">
+		SELECT id
+			, code1
+			, code2
+			, code3
+			, locale
+			, message
+			, description
+		FROM message_tb
+		WHERE id = #{i18nSn}
+	</select>
+	
+	<!-- FAQ 수정 -->
+	<update id="updateI18nMsg" parameterType="map">
+		UPDATE message_tb
+		SET code1 = #{code1}
+			, code2 = #{code2}
+			, code3 = #{code3}
+			, locale = #{locale}
+			, message = #{message}
+			, description = #{description}
+		WHERE id = #{i18nSn}
+	</update>
+	
+	
+	
+	
+    
+</mapper>

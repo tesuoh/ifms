@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Report</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=800, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="stylesheet" type="text/css" href="./css/clipreport5.css">
+<link rel="stylesheet" type="text/css" href="./css/UserConfig5.css">
+<link rel="stylesheet" type="text/css" href="./css/font.css">
+
+<script type='text/javascript' src='./js/jquery-3.7.1.js'></script>
+<script type='text/javascript' src='./js/clipreport5.js'></script>
+<script type='text/javascript' src='./js/UserConfig5.js'></script>
+
+<script type='text/javascript' src='./js/oof/OOFDocument.js'></script>
+<script type='text/javascript'>
+function html2xml(divPath) {
+	//OOF 생성
+	var oof = new OOFDocument();
+	oof.addFile("crf.root", "%root%/crf/CLIP.crf");
+	
+	var report = createOOFReport("./report_server.jsp", oof.toString(), document.getElementById(divPath));
+	
+	report.setStyle("close_button", "display:none;");
+    //리포트 뷰어 실행
+    report.view();
+}
+</script>
+</head>
+<body>
+<button onclick="html2xml('targetDiv1')">리포트</button>
+<div id='targetDiv1' style='position:absolute;top:50px;left:5px;right:5px;bottom:5px;'>
+	<span style="visibility: hidden; font-family:나눔고딕">.</span>
+	<span style="visibility: hidden; font-family:NanumGothic">.</span>
+</div>
+</body>
+</html>

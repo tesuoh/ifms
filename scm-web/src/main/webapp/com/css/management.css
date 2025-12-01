@@ -1,0 +1,79 @@
+@charset "utf-8";
+
+/* ----------------------------------
+
+Name: management.css
+Categorie : 관리자
+Author : 이상혁
+Version : v.1.0
+Created : 2024-09-09
+Last update : 2024-09-09
+
+-------------------------------------
+
+Table of contents
+
+    01. 레이아웃
+    02. 테이블 스타일
+    03. 스타일
+
+*/
+
+/* ===================================
+    01. 레이아웃 시작
+====================================== */
+body, html {
+    height: auto;
+}
+body,
+.navbar,
+.parallax,
+.page-footer,
+.page-content-wrapper,
+.nav-header-container,
+.menu-all-popup-wrapper,
+.mfp-container {
+    min-width: 1280px;
+}
+.page-content-inner {
+    padding: 20px;
+}
+.header-global-wrapper,
+.navbar-global-wrapper,
+.header-global-wrapper,
+.page-footer-inner {
+    padding: 0px 20px;
+}
+
+/* 반응형웹 메뉴 기능 제거 시작 */
+.navbar-collapse.collapse {
+    display: block !important;
+}
+.navbar-nav > li {
+    float: left;
+}
+.navbar-nav .open .dropdown-menu {
+    position: absolute;
+    background-color: #ffffff;
+    border: 1px solid #000;
+    color: #000;
+}
+/* 반응형웹 메뉴 기능 제거 시작 */
+
+@media (max-width: 768px) {
+	.modal .form-inline.row {
+		display: block;
+	}
+	.modal .form-inline.row {
+		margin-bottom: 0px;
+	}
+	.modal .form-inline.row > .input-group {
+		margin-bottom: 4px;
+	}
+	.modal .form-inline.row:last-child > .input-group:last-child {
+		margin-bottom: 0px;
+	}
+    .modal .pagination-info {
+        display: none;
+    }
+}

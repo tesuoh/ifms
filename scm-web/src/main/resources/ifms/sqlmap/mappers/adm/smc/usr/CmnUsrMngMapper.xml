@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ifms.adm.smc.usr.mapper.CmnUsrMngMapper">
+	
+	<!-- 사용자 관리 총건수 -->
+	<select id="usrMngTotalCount" parameterType="map" resultType="int">
+		SELECT COUNT(*) 
+		FROM SZMS.PT_USER_INFO_M u
+		WHERE 1 = 1
+			<if test="userId != ''">
+				AND USER_ID LIKE '%' || #{userId} || '%' 
+			</if>
+			<if test="userNm != ''">
+				AND USER_NM LIKE '%' || #{userNm} || '%' 
+			</if>
+			<if test="useYn != ''">
+				AND USE_YN = #{useYn}
+			</if>
+			<if test="lgnFailNmtm != ''">
+				AND LGN_FAIL_NMTM = CAST(#{lgnFailNmtm} AS NUMERIC)
+			</if>
+			<if test="instNm != ''" >
+				and (
+				      case when ogdp_inst_cd = '99999' then (
+											select COALESCE(p.lgvofc_nm, '') || ' ' || COALESCE(p.cmptnc_polstn_nm, '')
+											from szms.pz_stdg_polstn_m p where p.polstn_cd = u.polstn_cd)
+						else (select cd_nm 
+								from szms.pt_com_cd_c 
+								where 1 = 1
+									and cd_group_id = 'inst_clsf_cd' 
+									and cd_id = ogdp_inst_cd)
+						end
+				  ) LIKE '%' || #{instNm} || '%' 
+			</if>
+	</select>
+	
+	<!-- 사용자 관리 목록 조회 -->
+	<select id="selectUsrMngList" parameterType="map" resultType="egovMap">
+		SELECT (SELECT COUNT(*) FROM SZMS.PT_USER_INFO_M) - ROW_NUMBER() OVER (ORDER BY USE_YN DESC, FRST_REG_DT DESC) + 1 AS ROW_NUM
+			, USER_ID 
+			, USER_NM 
+			, POLSTN_CD 
+			, ogdp_inst_cd
+			, case when ogdp_inst_cd = '99999' then (
+									select COALESCE(p.lgvofc_nm, '') || ' ' || COALESCE(p.cmptnc_polstn_nm, '')
+									from szms.pz_stdg_polstn_m p where p.polstn_cd = u.polstn_cd)
+				else (select cd_nm 
+						from szms.pt_com_cd_c 
+						where 1 = 1
+							and cd_group_id = 'inst_clsf_cd' 
+							and cd_id = ogdp_inst_cd)
+				end as inst_nm
+			, STDG_CTPV_CD 
+			, STDG_SGG_CD 
+			, USE_YN 
+			, LGN_FAIL_NMTM
+			, CASE WHEN USE_PRD_SE_CD = 'Y' THEN '제한없음'
+				ELSE SUBSTR(USE_PRD_END_YMD, 0, 5) || '-' || SUBSTR(USE_PRD_END_YMD, 5, 2) || '-' || SUBSTR(USE_PRD_END_YMD, 7, 2)
+				END AS USE_PRD_YN
+			, TO_CHAR(FRST_REG_DT, 'YYYY-MM-DD') AS FRST_REG_DT
+			, TO_CHAR(LAST_MDFCN_DT, 'YYYY-MM-DD') AS LAST_MDFCN_DT
+		FROM SZMS.PT_USER_INFO_M u
+		WHERE 1 = 1
+			<if test="userId != ''">
+				AND USER_ID LIKE '%' || #{userId} || '%' 
+			</if>
+			<if test="userNm != ''">
+				AND USER_NM LIKE '%' || #{userNm} || '%' 
+			</if>
+			<if test="useYn != ''">
+				AND USE_YN = #{useYn}
+			</if>
+			<if test="lgnFailNmtm != ''">
+				AND LGN_FAIL_NMTM = CAST(#{lgnFailNmtm} AS NUMERIC)
+			</if>
+			<if test="instNm != ''">
+				and (
+				      case when ogdp_inst_cd = '99999' then (
+											select COALESCE(p.lgvofc_nm, '') || ' ' || COALESCE(p.cmptnc_polstn_nm, '')
+											from szms.pz_stdg_polstn_m p where p.polstn_cd = u.polstn_cd)
+						else (select cd_nm 
+								from szms.pt_com_cd_c 
+								where 1 = 1
+									and cd_group_id = 'inst_clsf_cd' 
+									and cd_id = ogdp_inst_cd)
+						end
+				  ) LIKE '%' || #{instNm} || '%' 
+			</if>
+		ORDER BY ROW_NUM DESC
+		OFFSET #{startNo} ROWS FETCH NEXT #{listCount} ROWS ONLY
+	</select>
+	
+	<!-- 상세 조회 -->
+	<select id="selectUsrMngDetail" parameterType="map" resultType="egovMap">
+		SELECT USER_ID 
+			, USER_NM 
+			, POLSTN_CD 
+			, authrt_id 
+			, (select distinct a.authrt_nm from szms.pt_authrt_mng_m a where a.authrt_id = u.authrt_id) as authrt_nm
+			, (select cd_id
+				from szms.pt_com_cd_c 
+				where 1 = 1
+					and cd_group_id = 'inst_clsf_cd' 
+					and cd_id = ogdp_inst_cd) as ogdp_inst_cd
+			, case when ogdp_inst_cd = '99999' then (
+									select COALESCE(p.lgvofc_nm, '') || ' ' || COALESCE(p.cmptnc_polstn_nm, '')
+									from szms.pz_stdg_polstn_m p where p.polstn_cd = u.polstn_cd)
+				else (select cd_nm 
+						from szms.pt_com_cd_c 
+						where 1 = 1
+							and cd_group_id = 'inst_clsf_cd' 
+							and cd_id = ogdp_inst_cd)
+				end as inst_nm
+			, STDG_CTPV_CD 
+			, STDG_SGG_CD 
+			, USE_YN 
+			, LGN_FAIL_NMTM
+			, CASE WHEN USE_PRD_SE_CD = 'Y' THEN '제한없음'
+				ELSE SUBSTR(use_prd_bgng_ymd, 0, 5) || '-' || SUBSTR(use_prd_bgng_ymd, 5, 2) || '-' || SUBSTR(use_prd_bgng_ymd, 7, 2)
+				  || ' ~ ' || SUBSTR(USE_PRD_END_YMD, 0, 5) || '-' || SUBSTR(USE_PRD_END_YMD, 5, 2) || '-' || SUBSTR(USE_PRD_END_YMD, 7, 2)
+				END AS USE_PRD_YN
+			, case when use_hr_se_cd = 'Y' THEN '제한없음'
+						else SUBSTR(use_hr_bgng_hm, 1, 2) || ':' || SUBSTR(use_hr_bgng_hm, 3, 2) || ' ~ ' || 
+							SUBSTR(use_hr_end_hm, 1, 2) || ':' || SUBSTR(use_hr_end_hm, 3, 2) 
+						end as use_hr_yn
+			, use_prd_se_cd 
+			, case when USE_PRD_SE_CD = 'Y' then null 
+				else TO_DATE(USE_PRD_bgng_YMD, 'YYYYMMDD')
+				end as use_prd_bgng
+			, case when USE_PRD_SE_CD = 'Y' then null 
+				else TO_DATE(USE_PRD_END_YMD, 'YYYYMMDD')
+				end as USE_PRD_END
+			, USE_PRD_bgng_YMD
+			, USE_PRD_END_YMD
+			, use_hr_se_cd 
+			, SUBSTR(use_hr_bgng_hm, 1, 2) as use_hr_bgng_hm_h
+			, SUBSTR(use_hr_bgng_hm, 3, 2) as use_hr_bgng_hm_m
+			, SUBSTR(use_hr_end_hm, 1, 2) as use_hr_end_hm_h
+			, SUBSTR(use_hr_end_hm, 3, 2) as use_hr_end_hm_m
+			, use_hr_bgng_hm
+			, use_hr_end_hm 
+			, mon_use_yn 
+			, tue_use_yn 
+			, wed_use_yn 
+			, thu_use_yn 
+			, fri_use_yn 
+			, sat_use_yn 
+			, sun_use_yn 
+			, TO_CHAR(FRST_REG_DT, 'YYYY-MM-DD') AS FRST_REG_DT
+			, TO_CHAR(LAST_MDFCN_DT, 'YYYY-MM-DD') AS LAST_MDFCN_DT
+			, FRST_RGTR_ID
+			, LAST_MDFR_ID
+			, TO_CHAR(last_cntn_dt, 'YYYY-MM-DD HH24:MI:SS') as last_cntn_dt
+			, user_pswd
+			, aprv_yn
+			, dept_nm 
+			, ofc_telno 
+			, jbgd_nm 
+		FROM SZMS.PT_USER_INFO_M u
+		WHERE 1 = 1
+			AND USER_ID = #{detailUserId}
+	</select>
+	
+	<!-- 기관 검색 -->
+	<select id="selectInstList" parameterType="map" resultType="egovMap">
+		SELECT ROW_NUMBER() OVER (ORDER BY inst_id) AS ROW_NUM, *
+		FROM (
+		    SELECT cd_id
+		           , polstn_cd
+		           , polstn_nm
+		           , inst_id
+		           , inst_nm
+		           , case when cd_id = '01000' then '경찰청'
+		           		  when cd_id = '02000' then '행정안전부'
+		           		  when cd_id = '99999' and LENGTH(CAST(polstn_cd AS TEXT)) = 2  then '지방경찰청'
+		           		  when cd_id = '99999' and LENGTH(CAST(polstn_cd AS TEXT)) != 2  then '경찰서'           		  
+		           		  else '지자체'
+		             end as inst_se
+			from (
+				select cd_id
+					, null as polstn_cd
+					, null as polstn_nm
+					, cd_id as inst_id
+					, cd_nm as inst_nm
+				FROM SZMS.PT_COM_CD_C 
+				WHERE CD_GROUP_ID = 'inst_clsf_cd' 
+					and cd_id != '99999'
+					and use_yn = 'Y'
+					<if test="instNm != ''">
+					and CD_NM LIKE '%' || #{instNm} || '%'
+					</if>
+					
+				union all 
+				
+				select '99999' as cd_id
+					, polstn_cd
+					, COALESCE(lgvofc_nm, '') || ' ' || COALESCE(cmptnc_polstn_nm, '') as polstn_nm
+					, polstn_cd as inst_id
+					, COALESCE(lgvofc_nm, '') || ' ' || COALESCE(cmptnc_polstn_nm, '') as inst_nm
+				from szms.pz_stdg_polstn_m
+				where 1 = 1
+					<if test="instNm != ''">
+					and (lgvofc_nm LIKE '%' || #{instNm} || '%'
+							or cmptnc_polstn_nm LIKE '%' || #{instNm} || '%')
+					</if>
+			) AS union_result
+		) AS paged_result
+		<if test="instSe != ''">
+		WHERE  inst_se = #{instSe}
+		</if>
+		order by row_num
+		OFFSET #{startNo} ROWS FETCH NEXT #{listCount} ROWS ONLY
+	</select>
+	
+	<!-- 기관 목록 총건수 -->
+	<select id="instTotalCount" parameterType="map" resultType="int">
+		SELECT count(*)
+		FROM (
+		    SELECT cd_id
+		           , polstn_cd
+		           , polstn_nm
+		           , inst_id
+		           , inst_nm
+		           , case when cd_id = '01000' then '경찰청'
+		           		  when cd_id = '02000' then '행정안전부'
+		           		  when cd_id = '99999' and LENGTH(CAST(polstn_cd AS TEXT)) = 2  then '지방경찰청'
+		           		  when cd_id = '99999' and LENGTH(CAST(polstn_cd AS TEXT)) != 2  then '경찰서'           		  
+		           		  else '지자체'
+		             end as inst_se
+			from (
+				select cd_id
+					, null as polstn_cd
+					, null as polstn_nm
+					, cd_id as inst_id
+					, cd_nm as inst_nm
+				FROM SZMS.PT_COM_CD_C 
+				WHERE CD_GROUP_ID = 'inst_clsf_cd' 
+					and cd_id != '99999'
+					<if test="instNm != ''">
+					and CD_NM LIKE '%' || #{instNm} || '%'
+					</if>
+					
+				union all 
+				
+				select '99999' as cd_id
+					, polstn_cd
+					, COALESCE(lgvofc_nm, '') || ' ' || COALESCE(cmptnc_polstn_nm, '') as polstn_nm
+					, polstn_cd as inst_id
+					, COALESCE(lgvofc_nm, '') || ' ' || COALESCE(cmptnc_polstn_nm, '') as inst_nm
+				from szms.pz_stdg_polstn_m
+				where 1 = 1
+					<if test="instNm != ''">
+					and (lgvofc_nm LIKE '%' || #{instNm} || '%'
+							or cmptnc_polstn_nm LIKE '%' || #{instNm} || '%')
+					</if>
+			) AS union_result
+		) AS paged_result
+		<if test="instSe != ''">
+		WHERE  inst_se = #{instSe}
+		</if>
+	</select>
+	
+	<!-- 아이디 중복 검사 -->
+	<select id="validDuplicatedId" parameterType="map" resultType="boolean">
+		SELECT CASE WHEN COUNT(*) = 0 THEN TRUE
+			ELSE FALSE
+			END
+		FROM SZMS.PT_USER_INFO_M
+		WHERE USER_ID = #{userId}
+	</select>
+	
+	<!-- 권한 그룹 조회 -->
+	<select id="selectAuthrtInfo" resultType="egovMap">
+		select a.authrt_id
+			, a.authrt_nm 
+		from szms.pt_authrt_mng_m a
+		inner join szms.pt_com_cd_c c
+		on a.authrt_id = c.cd_nm
+	</select>
+	
+	<!-- 사용자 정보 등록 -->
+	<insert id="insertUsrInfo" parameterType="map">
+		insert into szms.pt_user_info_m(
+			user_id 
+			, user_nm 
+			, ogdp_inst_cd 
+			, POLSTN_CD
+			, dept_nm
+			, ofc_telno
+			, jbgd_nm
+			, authrt_id 
+			, use_prd_se_cd 
+			, use_prd_bgng_ymd 
+			, use_prd_end_ymd 
+			, use_hr_se_cd 
+			, use_hr_bgng_hm 
+			, use_hr_end_hm 
+			, mon_use_yn 
+			, tue_use_yn 
+			, wed_use_yn 
+			, thu_use_yn 
+			, fri_use_yn 
+			, sat_use_yn 
+			, sun_use_yn 
+			, user_pswd 
+			, memo_cn 
+			, frst_reg_dt
+			, frst_rgtr_id
+			, use_yn
+			, stdg_ctpv_cd
+			, stdg_sgg_cd
+			, lgn_fail_nmtm
+			, aprv_yn
+		)
+		values(
+			#{userId}
+			, #{userNm}
+			, #{ogdpInstCd}
+			, #{polstnCd}
+			, #{deptNm}
+			, #{ofcTelno}
+			, #{jbgdNm}
+			, #{authrtId}
+			, #{usePrdSeCd}
+			, #{usePrdBgngYmd}
+			, #{usePrdEndYmd}
+			, #{useHrSeCd}
+			, #{useHrBgngHm_h} || #{useHrBgngHm_m}
+			, #{useHrEndHm_h} || #{useHrEndHm_m}
+			, #{monUseYn}
+			, #{tueUseYn}
+			, #{wedUseYn}
+			, #{thuUseYn}
+			, #{friUseYn}
+			, #{satUseYn}
+			, #{sunUseYn}
+			, #{userPswd}
+			, #{memoCn}
+			, current_timestamp
+			, #{frstRgtrId}
+			, 'Y'
+			, #{stdgCtpvCd}
+			, #{stdgSggCd}
+			, 0
+			, 'Y'
+		)
+	</insert>
+	
+	<!-- 사용자 변경이력 등록 -->
+	<insert id="insertUserChgHistory" parameterType="map">
+		insert into szms.pt_user_chg_h(
+			hstry_sn
+			, user_id 
+			, user_nm 
+			, ogdp_inst_cd 
+			, polstn_cd
+			, dept_nm
+			, ofc_telno 
+			, jbgd_nm
+			, stdg_ctpv_cd
+			, stdg_sgg_cd
+			, authrt_id 
+			, use_prd_se_cd 
+			, use_prd_bgng_ymd 
+			, use_prd_end_ymd 
+			, use_hr_se_cd 
+			, use_hr_bgng_hm 
+			, use_hr_end_hm 
+			, mon_use_yn 
+			, tue_use_yn 
+			, wed_use_yn 
+			, thu_use_yn 
+			, fri_use_yn 
+			, sat_use_yn 
+			, sun_use_yn 
+			, user_pswd 
+			, memo_cn 
+			, frst_reg_dt
+			, frst_rgtr_id
+			, use_yn
+			, lgn_fail_nmtm
+			, aprv_yn
+		)
+		values(
+			(select COALESCE(MAX(hstry_sn), 0) + 1  from szms.pt_user_chg_h)
+			, #{userId}
+			, #{userNm}
+			, #{ogdpInstCd}
+			, #{polstnCd}
+			, #{deptNm}
+			, #{ofcTelno}
+			, #{jbgdNm}
+			, #{stdgCtpvCd}
+			, #{stdgSggCd}
+			, #{authrtId}
+			, #{usePrdSeCd}
+			, #{usePrdBgngYmd}
+			, #{usePrdEndYmd}
+			, #{useHrSeCd}
+			, #{useHrBgngHm}
+			, #{useHrEndHm}
+			, #{monUseYn}
+			, #{tueUseYn}
+			, #{wedUseYn}
+			, #{thuUseYn}
+			, #{friUseYn}
+			, #{satUseYn}
+			, #{sunUseYn}
+			, #{userPswd}
+			, #{memoCn}
+			, current_timestamp
+			, #{frstRgtrId}
+			, #{useYn}
+			, #{lgnFailNmtm}
+			, #{aprvYn}
+		)
+	</insert>
+	
+	<!-- 비밀번호 제외 사용자 정보 변경 -->
+	<update id="updateOthers" parameterType="map">
+		update szms.pt_user_info_m 
+		set user_nm  = #{userNm}
+			, ogdp_inst_cd = #{ogdpInstCd}
+			, POLSTN_CD = #{polstnCd}
+			, stdg_ctpv_cd = #{stdgCtpvCd}
+			, stdg_sgg_cd = #{stdgSggCd}
+			, dept_nm  = #{deptNm}
+			, ofc_telno  = #{ofcTelno}
+			, jbgd_nm  = #{jbgdNm}
+			, authrt_id  = #{authrtId}
+			, use_prd_se_cd  = #{usePrdSeCd}
+			, use_prd_bgng_ymd  = #{usePrdBgngYmd}
+			, use_prd_end_ymd  = #{usePrdEndYmd}
+			, use_hr_se_cd  = #{useHrSeCd}
+			, use_hr_bgng_hm  = #{useHrBgngHm_h} || #{useHrBgngHm_m}
+			, use_hr_end_hm  = #{useHrEndHm_h} || #{useHrEndHm_m}
+			, mon_use_yn  = #{monUseYn}
+			, tue_use_yn  = #{tueUseYn}
+			, wed_use_yn  = #{wedUseYn}
+			, thu_use_yn  = #{thuUseYn}
+			, fri_use_yn  = #{friUseYn}
+			, sat_use_yn  = #{satUseYn}
+			, sun_use_yn  = #{sunUseYn}
+			, memo_cn  = #{memoCn}
+			, last_mdfcn_dt = current_timestamp
+			, last_mdfr_id = #{lastMdfrId}
+		where user_id = #{userId}
+	</update>
+	
+	<!-- 비밀번호 변경 -->
+	<update id="updatePswd" parameterType="map">
+		update szms.pt_user_info_m 
+		set user_pswd  = #{userPswd}
+			, last_mdfcn_dt = current_timestamp
+			, last_mdfr_id = #{lastMdfrId}
+		where user_id = #{userId}
+	</update>
+		
+	<!-- 비밀번호 오류 초기화 -->
+	<update id="resetUserPswd" parameterType="map">
+		update szms.pt_user_info_m 
+		set lgn_fail_nmtm  = 0
+			, last_mdfcn_dt = current_timestamp
+			, last_mdfr_id = #{lastMdfrId}
+		where user_id = #{userId}		
+	</update>
+		
+	<!-- 사용정지 / 정지해제 -->
+	<update id="suspendedUser" parameterType="map">
+		update szms.pt_user_info_m 
+		set use_yn = #{useYn}
+			, last_mdfcn_dt = current_timestamp
+			, last_mdfr_id = #{lastMdfrId}
+		where user_id = #{userId}		
+	</update>
+</mapper>

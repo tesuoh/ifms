@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ifms.common.file.mapper.FileMapper">
+
+    <resultMap id="fileMap" type="ifms.common.file.vo.FileVO">
+        <result property="fileGroupSn" column="FILE_GROUP_SN" />
+        <result property="ptznTaskSeCd" column="PTZN_TASK_SE_CD" />
+        <result property="lgnYn" column="LGN_YN" />
+        <result property="stdgCtpvCd" column="STDG_CTPV_CD" />
+        <result property="stdgSggCd" column="STDG_SGG_CD" />
+        <result property="instCertYn" column="INST_CERT_YN" />
+        <result property="fileDtlSn" column="FILE_DTL_SN" />
+        <result property="orgnlFileNm" column="ORGNL_FILE_NM" />
+        <result property="filePath" column="ATCH_FILE_URL_ADDR" />
+        <result property="fileNm" column="SRVR_FILE_NM" />
+        <result property="fileSz" column="ATCH_FILE_SZ" />
+        <result property="fileExtnNm" column="ORGNL_FILE_EXTN_NM" />
+        <result property="dwnldCnt" column="DWNLD_CNT" />
+        <result property="delYn" column="DEL_YN" />
+        <result property="rgtrId" column="FRST_RGTR_ID" />
+        <result property="regDt" column="FRST_REG_DT" />
+        <result property="mdfrId" column="LAST_MDFR_ID" />
+        <result property="mdfcnDt" column="LAST_MDFCN_DT" />
+    </resultMap>
+
+    <!-- upload single/upload multi 파일그룹정보 생성 -->
+    <insert id="insertFileGroup" parameterType="ifms.common.file.vo.FileGroupVO">
+        <selectKey keyProperty="fileGroupSn" resultType="int" order="BEFORE">
+            /* FileMapper.insertFileGroup.selectKey */
+            SELECT COALESCE(MAX(FILE_GROUP_SN), 0) + 1 FROM SZMS.PT_COM_FILE_GROUP
+        </selectKey>
+        /* FileMapper.insertFileGroup */
+        INSERT
+        INTO SZMS.PT_COM_FILE_GROUP
+        ( FILE_GROUP_SN
+        , PTZN_TASK_SE_CD
+        , STDG_CTPV_CD
+        , STDG_SGG_CD
+        , LGN_YN
+        , INST_CERT_YN
+        , MLTI_FILE_YN
+        , DEL_YN
+        , FRST_RGTR_ID
+        , FRST_REG_DT
+        )
+        VALUES
+        ( #{fileGroupSn}
+        , #{ptznTaskSeCd}
+        , #{stdgCtpvCd}
+        , #{stdgSggCd}
+        , #{lgnYn}
+        , #{instCertYn}
+        , #{fileTypeSeCd}
+        , 'N'
+        , #{rgtrId}
+        , NOW()
+        )
+    </insert>
+
+    <!-- upload single/upload multi 파일상세정보 생성 -->
+    <insert id="insertFileDetail" parameterType="ifms.common.file.vo.FileVO">
+        <selectKey keyProperty="fileDtlSn" resultType="int" order="BEFORE">
+            /* FileMapper.insertFileDetail.selectKey */
+            SELECT COALESCE(MAX(FILE_DTL_SN), 0) + 1 FROM SZMS.PT_COM_AHFL_M WHERE FILE_GROUP_SN = #{fileGroupSn}
+        </selectKey>
+        /* FileMapper.insertFileDetail */
+        INSERT
+        INTO SZMS.PT_COM_AHFL_M
+        ( FILE_GROUP_SN
+        , FILE_DTL_SN
+        , ORGNL_FILE_NM
+        , ATCH_FILE_URL_ADDR
+        , SRVR_FILE_NM
+        , ATCH_FILE_SZ
+        , ORGNL_FILE_EXTN_NM
+        , DWNLD_CNT
+        , DEL_YN
+        , FRST_RGTR_ID
+        , FRST_REG_DT
+        )
+        VALUES
+        ( #{fileGroupSn}
+        , #{fileDtlSn}
+        , #{orgnlFileNm}
+        , #{filePath}
+        , #{fileNm}
+        , CAST(#{fileSz} AS NUMERIC)
+        , #{fileExtnNm}
+        , 0
+        , 'Y'
+        , #{rgtrId}
+        , NOW()
+        )
+    </insert>
+
+
+    <!-- upload single/upload multi 파일정보 삭제하기 - UPDATE처리 -->
+    <update id="deleteFile" parameterType="ifms.common.file.vo.FileVO">
+        /* FileMapper.deleteFile */
+        UPDATE SZMS.PT_COM_AHFL_M
+        SET DEL_YN = 'Y'
+        , last_mdfr_id = #{mdfrId}
+        , last_mdfcn_dt = NOW()
+        WHERE FILE_GROUP_SN = #{fileGroupSn}
+        <if test="fileDtlSn != 0"><!-- SINGLE 업로드 -->
+            AND FILE_DTL_SN = #{fileDtlSn}
+        </if>
+        <if test="fileDtlSn == 0 and fileDtlSnArray != null and fileDtlSnArray.size > 0"><!-- MULTI 업로드 -->
+            AND FILE_DTL_SN NOT IN
+            <foreach item="item" index="index" collection="fileDtlSnArray" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+    </update>
+    
+    <!-- upload single 파일정보 삭제하기 - DELETE처리 -->
+    <delete id="deleteFileInfo" parameterType="ifms.common.file.vo.FileVO">
+        /* FileMapper.deleteFileInfo */
+        delete from szms.pt_com_ahfl_m 
+        where 1=1 
+        and file_group_sn = #{fileGroupSn}
+        and file_dtl_sn = #{fileDtlSn};
+    </delete>
+    
+    <!-- upload single 파일그룹정보 삭제하기 - DELETE처리 -->
+	<delete id="deleteFileInfoGroup" parameterType="ifms.common.file.vo.FileVO">
+		/* FileMapper.deleteFileInfoGroup */
+        delete from szms.pt_com_file_group
+        where 1=1
+        and file_group_sn = #{fileGroupSn};
+	</delete>
+	
+    <!-- upload single 파일정보저장 - 최종저장처리 -->
+    <update id="saveSingleFile" parameterType="ifms.common.file.vo.FileVO">
+        /* FileMapper.saveSingleFile */
+        UPDATE SZMS.PT_COM_AHFL_M
+        SET DEL_YN = 'N'
+            <if test="filePath != null and !filePath.equals('')">
+            , ATCH_FILE_URL_ADDR = #{filePath}
+            </if>
+            <if test="fileNm != null and !fileNm.equals('')">
+            , srvr_file_nm = #{fileNm}
+            </if>
+            , LAST_MDFR_ID = #{mdfrId}
+            , LAST_MDFCN_DT = NOW()
+        WHERE FILE_GROUP_SN = #{fileGroupSn}
+          AND FILE_DTL_SN = #{fileDtlSn}
+    </update>
+
+    <!-- upload multi 파일정보저장 - 최종저장처리 -->
+    <update id="saveMultiFile" parameterType="ifms.common.file.vo.FileVO">
+        /* FileMapper.saveMultiFile */
+        UPDATE SZMS.PT_COM_AHFL_M
+        SET DEL_YN = 'N'
+        , ATCH_FILE_URL_ADDR = #{filePath}
+        , MDFR_ID = #{mdfrId}
+        , MDFCN_DT = SYSDATE
+        WHERE FILE_GROUP_SN = #{fileGroupSn}
+        AND FILE_DTL_SN IN
+        <foreach item="item" index="index" collection="fileDtlSnArray" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </update>
+
+
+    <!-- upload single 파일정보 불러오기 -->
+    <!-- 조건 : AND DTL.SRVR_FILE_NM = #{fileNm} - 정상첨부파일 조회 시 보안을 위해 해쉬값(서버파일명) 추가  -->
+    <select id="selectFileDtl" resultMap="fileMap" parameterType="ifms.common.file.vo.FileVO">
+        /* FileMapper.selectFileDtl */
+        SELECT DTL.FILE_GROUP_SN
+        , GRP.PTZN_TASK_SE_CD
+        , GRP.LGN_YN
+        , GRP.STDG_CTPV_CD
+        , GRP.STDG_SGG_CD
+        , GRP.INST_CERT_YN
+        , DTL.FILE_DTL_SN
+        , DTL.ORGNL_FILE_NM
+        , DTL.ATCH_FILE_URL_ADDR
+        , DTL.SRVR_FILE_NM
+        , DTL.ATCH_FILE_SZ
+        , DTL.ORGNL_FILE_EXTN_NM
+        , DTL.DWNLD_CNT
+        , DTL.DEL_YN
+        , DTL.FRST_RGTR_ID
+        , DTL.FRST_REG_DT
+        , DTL.LAST_MDFR_ID
+        , DTL.LAST_MDFCN_DT
+        FROM SZMS.PT_COM_FILE_GROUP GRP
+        , SZMS.PT_COM_AHFL_M DTL
+        WHERE GRP.FILE_GROUP_SN = #{fileGroupSn}
+        AND GRP.DEL_YN = 'N'
+        AND GRP.FILE_GROUP_SN = DTL.FILE_GROUP_SN
+        <if test="delYn != null and !delYn.equals('')">
+            AND DTL.DEL_YN = #{delYn}
+        </if>
+        <if test="fileDtlSn != 0">
+            AND DTL.FILE_DTL_SN = #{fileDtlSn}
+        </if>
+        <if test="fileNm != null and !fileNm.equals('')">
+        	AND DTL.SRVR_FILE_NM = #{fileNm}
+        </if>
+        order by DTL.file_dtl_sn desc
+        limit 1
+    </select>
+
+    <!-- upload multi 파일목록 불러오기 -->
+    <select id="selectFileList" resultMap="fileMap" parameterType="ifms.common.file.vo.FileVO">
+        /* FileMapper.selectFileList */
+        SELECT DTL.FILE_GROUP_SN
+        , GRP.PTZN_TASK_SE_CD
+        , GRP.LGN_YN
+        , GRP.STDG_CTPV_CD
+        , GRP.STDG_SGG_CD
+        , GRP.INST_CERT_YN
+        , DTL.FILE_DTL_SN
+        , DTL.ORGNL_FILE_NM
+        , DTL.ATCH_FILE_URL_ADDR
+        , DTL.SRVR_FILE_NM
+        , DTL.ATCH_FILE_SZ
+        , DTL.ORGNL_FILE_EXTN_NM
+        , DTL.DWNLD_CNT
+        , DTL.DEL_YN
+        , DTL.frst_reg_dt
+        , DTL.frst_rgtr_id
+        , DTL.last_mdfcn_dt
+        , DTL.last_mdfr_id
+        FROM SZMS.pt_com_file_group GRP
+        , SZMS.PT_COM_AHFL_M DTL
+        WHERE GRP.FILE_GROUP_SN = CAST(#{fileGroupSn} AS NUMERIC)
+        AND GRP.MLTI_FILE_YN = COALESCE(#{fileTypeSeCd}, 'Y')
+        AND GRP.DEL_YN = 'N'
+        AND GRP.FILE_GROUP_SN = DTL.FILE_GROUP_SN
+        <if test="delYn != null and !delYn.equals('')">
+            AND DTL.DEL_YN = #{delYn}
+        </if>
+    </select>
+
+    <!-- 다운로드수 UPDATE 처리 -->
+    <update id="updateDwldCount" parameterType="ifms.common.file.vo.FileVO">
+        /* FileMapper.updateDwldCount */
+        UPDATE SZMS.PT_COM_AHFL_M
+        SET DWNLD_CNT = DWNLD_CNT+1		<!-- 다운로드시에는 다운로드 수만 증가시칸다 -->
+        WHERE FILE_GROUP_SN = #{fileGroupSn}
+        AND FILE_DTL_SN = #{fileDtlSn}
+    </update>
+
+
+	<update id="updateFile">
+		update szms.pt_com_ahfl_m 
+		set ORGNL_FILE_NM = #{orgnlFileNm}
+			, ATCH_FILE_URL_ADDR = #{filePath}
+			, SRVR_FILE_NM = #{fileNm}
+			, ATCH_FILE_SZ = CAST(#{fileSz} AS NUMERIC)
+			, ORGNL_FILE_EXTN_NM = #{fileExtnNm}
+		where file_group_sn = #{fileGroupSn}
+	</update>
+
+
+</mapper>

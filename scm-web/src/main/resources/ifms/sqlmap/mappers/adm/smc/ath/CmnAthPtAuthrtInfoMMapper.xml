@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ifms.adm.smc.ath.mapper.CmnAthPtAuthrtInfoMMapper">
+
+    <select id="selectCmnAthPtAuthrtInfoListCnt" resultType="int" parameterType="map">
+        /* CmnAthPtAuthrtInfoMMapper.selectCmnAthPtAuthrtInfoListCnt */
+        WITH AuthProgram AS (
+            SELECT pamm.authrt_Id, pamm.authrt_nm, pamm.site_clsf_cd, papmr.rprs_url_addr, pamm.use_yn, pamm.frst_reg_dt, pamm.last_mdfcn_dt
+            FROM szms.pt_authrt_mng_m pamm
+                     INNER JOIN szms.pt_authrt_prgrm_mpng_r papmr ON pamm.authrt_Id = papmr.authrt_Id
+        ),
+        UrlMappings AS (
+            SELECT rprs_url_addr, site_clsf_cd
+              FROM szms.pt_rprs_prgrm_mng_m
+         ),
+        AuthProgramUrl AS (
+        SELECT A.authrt_Id, A.authrt_nm, A.site_clsf_cd, A.rprs_url_addr, A.use_yn, A.frst_reg_dt, A.last_mdfcn_dt
+        FROM AuthProgram A
+        INNER JOIN UrlMappings U ON A.rprs_url_addr = U.rprs_url_addr
+        ),
+        GroupedAuth AS (
+        SELECT authrt_Id, authrt_nm, site_clsf_cd, use_yn, frst_reg_dt, last_mdfcn_dt, COUNT(rprs_url_addr) AS cnt
+        FROM AuthProgramUrl
+        GROUP BY authrt_Id, authrt_nm, site_clsf_cd, use_yn, frst_reg_dt, last_mdfcn_dt
+        )
+        SELECT COUNT(*)
+        FROM GroupedAuth
+        WHERE 1=1
+        <if test="searchAuthNm != null and searchAuthNm != ''">
+            AND authrt_nm LIKE CONCAT('%', #{searchAuthNm}, '%')
+        </if>
+        <if test="useYn != null and useYn != ''">
+            AND use_yn = #{useYn}
+        </if>
+    </select>
+
+    <select id="selectCmnAthPtAuthrtInfoList" resultType="egovMap" parameterType="map">
+        /* CmnAthPtAuthrtInfoMMapper.selectCmnAthPtAuthrtInfoList */
+        select authrt_id,
+                authrt_nm,
+                site_clsf_cd,
+                use_yn,
+                frst_reg_dt,
+                last_mdfcn_dt,
+                COUNT(url_addr) AS CNT
+        from (
+                select T1.authrt_id,
+                        T1.authrt_nm,
+                        T1.site_clsf_cd,
+                        T2.rprs_url_addr,
+                        T2.url_addr,
+                        T1.use_yn,
+                        T1.frst_reg_dt,
+                        T1.last_mdfcn_dt
+                from (SELECT pamm.authrt_id,
+                            pamm.authrt_nm,
+                            pamm.site_clsf_cd,
+                            papmr.rprs_url_addr,
+                            pamm.frst_reg_dt,
+                            pamm.last_mdfcn_dt,
+                            pamm.use_yn
+                       FROM szms.pt_authrt_mng_m pamm
+                       JOIN szms.pt_authrt_prgrm_mpng_r papmr
+                         ON pamm.authrt_id = papmr.authrt_id
+                      WHERE pamm.use_yn = 'Y'
+                        and papmr.rprs_url_addr is not null
+                    ) T1,
+            (select rprs_url_addr,
+                    url_addr
+               from szms.pt_prgrm_url_mpng_r) T2
+              where T1.rprs_url_addr = T2.rprs_url_addr
+                AND T1.rprs_url_addr != '/'
+              order by authrt_id, rprs_url_addr
+         ) AA
+        where 1=1
+        <if test="searchAuthNm != null and searchAuthNm != ''">
+            AND AA.authrt_nm LIKE CONCAT('%', #{searchAuthNm}, '%')
+        </if>
+        <if test="useYn != null and useYn != ''">
+        AND AA.use_yn = #{useYn}
+        </if>
+        GROUP BY AA.authrt_Id, AA.authrt_nm, AA.site_clsf_cd, AA.use_yn, AA.frst_reg_dt, AA.last_mdfcn_dt
+        ORDER BY AA.authrt_id
+        OFFSET #{startNo} ROWS FETCH NEXT #{endNo} ROWS ONLY
+    </select>
+
+    <select id="selectAuthrtInfoDetail" resultType="egovMap" parameterType="map">
+        /* CmnAthPtAuthrtInfoMMapper.selectAuthrtInfoDetail */
+        SELECT authrt_Id,
+               site_clsf_cd,
+               authrt_nm,
+               authrt_expln,
+               use_yn,
+               TO_CHAR(last_mdfcn_dt, 'YYYY-MM-DD HH24:MI:SS') AS last_mdfcn_dt,
+               last_mdfr_id,
+               TO_CHAR(frst_reg_dt, 'YYYY-MM-DD HH24:MI:SS') AS frst_reg_dt,
+               frst_rgtr_id
+          FROM szms.pt_authrt_mng_m
+         WHERE authrt_Id = #{authrtId}
+    </select>
+
+    <!-- 프로그램 목록 조회 -->
+    <select id="selectPrgAuthrtList" resultType="egovMap" parameterType="map">
+        /* CmnAthPtAuthrtInfoMMapper.selectPrgAuthrtList */
+        select rprs.rprs_url_addr,
+               rprs.site_clsf_cd,
+               rprs.prgrm_nm,
+               T2.authrt_id,
+               T2.mdfcn_authrt_yn,
+               T2.use_yn,
+               TO_CHAR(T2.frst_reg_dt, 'YYYY-MM-DD') as frst_reg_dt,
+               T2.last_mdfcn_dt
+          from (select A.rprs_url_addr,
+                       A.site_clsf_cd,
+                       B.prgrm_nm
+                  from szms.pt_rprs_prgrm_mng_m A,
+                       szms.pt_url_mng_m B
+                 where A.rprs_url_addr = B.url_addr ) rprs
+        LEFT JOIN (SELECT pamm.authrt_id,
+                          pamm.authrt_nm,
+                          pamm.site_clsf_cd,
+                          papmr.rprs_url_addr,
+                          papmr.mdfcn_authrt_yn,
+                          pamm.frst_reg_dt,
+                          pamm.last_mdfcn_dt,
+                          pamm.use_yn
+                     FROM szms.pt_authrt_mng_m pamm
+                     JOIN szms.pt_authrt_prgrm_mpng_r papmr ON pamm.authrt_id = papmr.authrt_id
+                    WHERE papmr.rprs_url_addr IS NOT NULL
+                      AND papmr.rprs_url_addr != '/'
+                    <if test="authrtId != null and authrtId != ''">
+                      AND pamm.authrt_id = #{authrtId}
+                    </if>
+                    ) T2
+            ON T2.rprs_url_addr = rprs.rprs_url_addr
+    </select>
+
+    <!-- 권한 상세 수정 -->
+    <update id="updateAuthrtInfoDetail" parameterType="map">
+        /* CmnAthPtAuthrtInfoMMapper.updateAuthrtInfoDetail */
+        UPDATE szms.pt_authrt_mng_m
+        SET authrt_nm = #{authrtNm},
+            authrt_expln = #{authrtExpln},
+            use_yn = #{useYn},
+            last_mdfr_id = #{lastMdfrId},
+            last_mdfcn_dt = now()
+        WHERE authrt_Id = #{authrtId}
+
+    </update>
+
+
+    <select id="checkPrgAuthrtInfo" resultType="int" parameterType="map">
+        SELECT COUNT(*)
+          FROM szms.pt_authrt_prgrm_mpng_r
+         WHERE rprs_url_addr = #{rprsUrlAddr}
+           AND authrt_id = #{authrtId}
+    </select>
+
+
+    <!-- 프로그램 권한 수정 -->
+    <update id="updatePrgAuthrtInfoDetail" parameterType="map">
+        /* CmnAthPtAuthrtInfoMMapper.updatePrgAuthrtInfoDetail */
+        UPDATE szms.pt_authrt_prgrm_mpng_r
+           SET mdfcn_authrt_yn = #{modifyAuthrtYn},
+               last_mdfr_id = #{lastMdfrId},
+               last_mdfcn_dt = now()
+         WHERE rprs_url_addr = #{rprsUrlAddr}
+           AND authrt_id = #{authrtId}
+    </update>
+
+    <insert id="insertPrgAuthrtInfoNewDetail" parameterType="map">
+        /* CmnAthPtAuthrtInfoMMapper.insertPrgAuthrtInfoNewDetail */
+        INSERT INTO szms.pt_authrt_prgrm_mpng_r (authrt_id, rprs_url_addr, mdfcn_authrt_yn, frst_rgtr_id, frst_reg_dt)
+        VALUES (#{authrtId}, #{rprsUrlAddr}, #{modifyAuthrtYn}, #{frstRgtrId}, now())
+    </insert>
+
+
+    <!-- 프로그램 권한 수정 -->
+    <delete id="deletePrgAuthrtInfoDetail" parameterType="map">
+        /* CmnAthPtAuthrtInfoMMapper.deletePrgAuthrtInfoDetail */
+        DELETE FROM szms.pt_authrt_prgrm_mpng_r
+        WHERE rprs_url_addr = #{rprsUrlAddr}
+          AND authrt_id = #{authrtId}
+    </delete>
+
+    <!-- 최대 authrt_mng_no 조회 -->
+    <select id="getMaxAuthrtMngNo" resultType="String" parameterType="String">
+        SELECT MAX(authrt_Id)
+        FROM szms.pt_authrt_mng_m
+        WHERE authrt_Id LIKE CONCAT(#{prefix}, '\_%') ESCAPE '\'
+    </select>
+
+    <!-- 권한 정보 삽입 -->
+    <insert id="insertAuthrtInfoDetail" parameterType="map">
+        /* CmnAthPtAuthrtInfoMMapper.insertCmnAthPtAuthrtInfoDetail */
+        INSERT INTO szms.pt_authrt_mng_m (
+            authrt_Id,
+            site_clsf_cd,
+            authrt_nm,
+            authrt_expln,
+            use_yn,
+            frst_rgtr_id,
+            frst_reg_dt
+        ) VALUES
+              (#{authrtId},
+               #{siteClsfCd},
+               #{authrtNm},
+               #{authrtExpln},
+               #{useYn},
+               #{frstRgtrId},
+               now()
+              )
+    </insert>
+
+    <!-- 프로그램 권한 정보 삽입 -->
+    <insert id="insertPrgAuthrtInfoDetail" parameterType="map">
+        /* CmnAthPtAuthrtInfoMMapper.insertPrgAuthrtInfoDetail */
+        insert into szms.pt_authrt_prgrm_mpng_r (
+            authrt_Id,
+            rprs_url_addr,
+            mdfcn_authrt_yn,
+            frst_rgtr_id,
+            frst_reg_dt
+        ) values ( #{authrtId},
+                   #{rprsUrlAddr},
+                   #{modifyAuthrtYn},
+                   #{frstRgtrId},
+                   now()
+        )
+    </insert>
+
+</mapper>

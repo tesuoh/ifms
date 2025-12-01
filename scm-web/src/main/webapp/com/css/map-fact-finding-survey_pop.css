@@ -1,0 +1,204 @@
+/* ----------------------------------
+
+Name: map-fact-finding-survey_pop.css
+Categorie : 지도서비스 - 실태조사 진행관리
+Author : 이상혁
+Version : v.1.0
+Created : 2024-10-07
+Last update : 2024-10-07
+
+-------------------------------------
+
+Table of contents
+
+    01. 레이아웃
+    02. 테이블 스타일
+    03. 스타일
+
+*/
+
+/* ===================================
+    레이아웃 시작
+====================================== */
+.page-sidebar-wrapper {
+    width: 0px;
+}
+.page-content {
+    padding: 0px 0px 0px 0px;
+}
+.map-wrapper {
+    padding-left: 0px;
+}
+.sidebar-toggler {
+    left:0 px;
+}
+.project-address-wrapper {
+    padding: 0px 15px 15px 15px;
+}
+.project-address-inner {
+    background-color: #f1f2f3;
+	border: 1px solid #003675;
+	border-radius: 5px;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.project-address-wrapper .project-title {
+    background-color: #003675;
+    padding: 10px 2px;
+    color: #fff;
+    text-align: center;
+}
+.project-address-wrapper .project-name {
+    text-align: center;
+    padding-top: 10px;
+}
+.project-address-wrapper .project-name span {
+    background-color: #00c48a;
+    color: #fff;
+    padding: 4px 40px;
+    border-radius: 20px;
+}
+.project-address-wrapper .project-value {
+    padding: 10px 18px;
+    line-height: 18px;
+    text-align: center;
+}
+.project-address-wrapper .project-btn {
+    padding: 10px;
+}
+.project-address-wrapper .btn {
+    width: 100%;
+    padding-left: 40px;
+    border-radius: 5px;
+}
+.project-address-wrapper .btn.btn-icon-single::before {
+    left: 20%;
+}
+.project-address-wrapper .btn::before {
+    left: 0;
+}
+.project-address-wrapper .project-address {
+    padding: 10px;
+}
+.project-address-wrapper .project-address .project-address-text {
+    font-size: 16px;
+    font-weight: bold;
+}
+.project-address-wrapper .project-address .project-address-date {
+    font-size: 12px;
+}
+.project-address-wrapper .project-address .input-group {
+    width: 100%;
+    margin-bottom: 4px;
+}
+.project-address-wrapper .project-address .input-group:last-child {
+    margin-bottom: 0px;
+}
+.project-address-wrapper .project-address .mt-checkbox-list {
+    padding: 0px;
+}
+.project-address-wrapper .project-address .portlet {
+    margin-bottom:4px;
+}
+
+.project-contents-box {
+    background-color: #f1f2f3;
+	border: 1px solid #003675;
+	border-radius: 5px;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.project-contents-box .project-contents {
+    padding: 10px;
+}
+
+
+.map-tree-row {
+    margin: 0px;
+}
+.map-tree-row .map-tree-col {
+    padding: 0px 4px;
+}
+.map-tree-row .map-tree-col:first-child {
+    padding-left: 0px;
+}
+.map-tree-row .map-tree-col:last-child {
+    padding-right: 0px;
+}
+.map-tree-row .portlet {
+    overflow: auto;
+}
+
+
+.page-sidebar .system-left-tab-group > li {
+    width: 50%;
+}
+.project-contents-box .panel-group .panel {
+    overflow: hidden;
+}
+.accordion .panel.panel-default {
+    border-color: #bdc4cf;
+}
+.accordion .panel .panel-heading {
+    background-color: #dde1e7;
+}
+.accordion .panel .panel-title .accordion-toggle,
+.accordion .panel .panel-title .accordion-toggle.accordion-toggle-styled {
+    color: #000;
+}
+
+.accordion .panel .panel-title .accordion-toggle:hover {
+    color: #3378c1;
+}
+.accordion .panel .panel-title .accordion-toggle.active {
+    color: #fff;
+    background-color: #003675;
+}
+
+.accordion .panel .panel-body .btn {
+    width: 100%;
+    margin-bottom: 4px;
+}
+.accordion .panel .panel-body .btn:last-child {
+    margin-bottom: 0px;
+}
+.accordion .panel .panel-body .btn.active {
+    color: #fff;
+    background-color: #003675;
+    border-color: #003675;
+}
+
+
+.page-sidebar .system-left-tab-group > li > a.tab-layer::before {
+    background: url(../img/common/icon/ico_left_tab_api.png) no-repeat 50% 50%;
+}
+.page-sidebar .system-left-tab-group > li > a.tab-facilities::before {
+    background: url(../img/common/icon/ico_left_tab_list.png) no-repeat 50% 50%;
+}
+
+.map-top-control-wrapper .page-top-btn-group {
+    gap: 20px;
+}
+.map-top-control-wrapper .select-group {
+    position: relative;
+}
+.map-top-control-wrapper .select-group::after {
+    content: "";
+    display: block;
+    width: 1px;
+    height: 20px;
+    border-right: 1px solid #adb4c1;
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    margin-top: -10px;
+}
+
+.map-top-default-control-group {
+    
+}
+.map-top-default-btn-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    gap: 4px;
+}

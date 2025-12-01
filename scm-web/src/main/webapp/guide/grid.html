@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="ko" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="ko" class="ie9 no-js"> <![endif]-->
+<html lang="ko">
+	<head>
+		<title>Markup Guide</title>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name = "viewport" content = "user-scalable=no, width=device-width">
+		<meta name="author" content="Markup Guide">
+		<!-- description -->
+		<meta name="description" content="HTML, CSS, JS, 컴포넌트, 모듈등의 가이드">
+		<!-- keywords -->
+		<meta name="keywords" content="">
+		<!-- favicon -->
+		<link rel="shortcut icon" href="../com/img/common/icon/favicon.ico">
+
+		<!-- ==============================================================
+			플러그인
+		============================================================== -->
+		<!-- 공통 -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/font-awesome/css/font-awesome.css" />
+		<link rel="stylesheet" type="text/css" href="../com/plugins/simple-line-icons/simple-line-icons.css" />
+		<script type="text/javascript" src="../com/plugins/jquery.min.js"></script>
+		<script type="text/javascript" src="../com/plugins/js.cookie.min.js"></script>
+		<script type="text/javascript" src="../com/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+		
+		<!-- bootstrap -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/bootstrap/css/bootstrap.css" />
+		<script type="text/javascript" src="../com/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+		<!-- bootstrap-datepicker -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css" />
+		<link rel="stylesheet" type="text/css" href="../com/plugins/bootstrap-timepicker/css/bootstrap-timepicker.css" />
+		<link rel="stylesheet" type="text/css" href="../com/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" />
+		<script type="text/javascript" src="../com/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+		<script type="text/javascript" src="../com/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.kr.min.js"></script>
+		<script type="text/javascript" src="../com/plugins/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+		<script type="text/javascript" src="../com/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+		<script type="text/javascript" src="../com/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.kr.js"></script>
+		<script type="text/javascript" src="../com/js/bootstrap-datepicker.kr.js"></script>
+		<script type="text/javascript" src="../com/js/components-date-time-pickers.js"></script>
+
+		<!-- bootstrap-fileinput -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/bootstrap-fileinput/bootstrap-fileinput.css" />
+		<script type="text/javascript" src="../com/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
+
+		<!-- bootstrap-tabdrop -->
+		<script type="text/javascript" src="../com/plugins/bootstrap-tabdrop/js/bootstrap-tabdrop.js"></script>
+
+		<!-- jstree -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/jstree/dist/themes/default/style.css" />
+		<script type="text/javascript" src="../com/plugins/jstree/dist/jstree.js"></script>
+		<script type="text/javascript" src="../com/js/ui-tree.js"></script>
+
+		<!-- bootstrap-switch -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/bootstrap-switch/css/bootstrap-switch.min.css" />
+		<script type="text/javascript" src="../com/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+
+		<!-- splitter -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/jquery-touch-splitter/css/touchsplitter.css" />
+		<script type="text/javascript" src="../com/plugins/jquery-touch-splitter/js/jquery.touchsplitter.js"></script>
+
+		<!-- Select Splitter -->
+		<script type="text/javascript" src="../com/plugins/bootstrap-selectsplitter/bootstrap-selectsplitter.min.js"></script>
+
+		<!-- Multiple Select -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/bootstrap-select/css/bootstrap-select.css">
+		<script type="text/javascript" src="../com/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+		<!-- Multiple Select Group -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/jquery-multi-select/css/multi-select.css" />
+        <script type="text/javascript" src="../com/plugins/jquery-multi-select/js/jquery.multi-select.js"></script>
+
+		<!-- div 크기 변경 감지 https://marcj.github.io/css-element-queries/ -->
+		<script type="text/javascript" src="../com/plugins/css-element-queries/ResizeSensor.js"></script>
+		<script type="text/javascript" src="../com/plugins/css-element-queries/ElementQueries.js"></script>
+		
+		<!-- 레이어 모달 팝업 -->
+		<link type="text/css" rel="stylesheet" href="../com/plugins/magnific-popup/magnific-popup.css">
+		<script type="text/javascript" src="../com/plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+		<!-- ==============================================================
+			amcharts script 영역
+		============================================================== -->
+		<script type="text/javascript" src="../com/plugins/amcharts4/core.js"></script>
+		<script type="text/javascript" src="../com/plugins/amcharts4/charts.js"></script>
+		<script type="text/javascript" src="../com/plugins/amcharts4/maps.js"></script>
+		<script type="text/javascript" src="../com/plugins/amcharts4/themes/animated.js"></script>
+		<script>
+			am4core.addLicense("ch-custom-attribution"); // 라이센스 인증 (amcharts 로고 없어짐)
+		</script>
+
+        <!-- ==============================================================
+			공통 커스텀
+		============================================================== -->	
+		<!-- 스타일 css -->
+		<link rel="stylesheet" type="text/css" href="../com/css/components.css" />
+		<link type="text/css" rel="stylesheet" href="../com/css/style.css">
+
+		<!-- 전체 조합 css -->
+		<link type="text/css" rel="stylesheet" href="../com/css/common.css">
+		<link type="text/css" rel="stylesheet" href="../com/css/common-ie.css">
+
+		<!-- 공통 script -->
+		<script type="text/javascript" src="../com/js/app.js"></script>
+		<script type="text/javascript" src="../com/js/common.js"></script>
+
+		<!-- ==============================================================
+			가이드
+		============================================================== -->
+		<link type="text/css" rel="stylesheet" href="com/css/guide.css">
+		<script type="text/javascript" src="com/js/include.js"></script>
+	</head>
+	<body class="page-guide">
+
+		<!-- 글로벌 시작 -->
+		<header class="page-header navbar navbar-fixed-top">
+			<div class="page-header-inner">
+				<div class="page-logo">
+					<a href="index.html">
+						<span class="logo-default">Markup Guide</span>
+					</a>
+				</div>
+			</div>
+		</header>
+		<!-- 글로벌 끝 -->
+
+		<!-- 페이지 컨테이너 시작 -->
+		<section class="page-container">
+
+			<div class="page-content-wrapper">
+
+				<!-- 왼쪽메뉴 시작 -->
+				<div class="page-sidebar-wrapper"></div>
+				<!-- 왼쪽메뉴 끝 -->
+
+				<!-- 컨텐츠 시작 -->
+				<div class="page-content">
+
+					<div class="page-content-inner">
+
+						<h1 class="page-title-1depth"><span>프로젝트 환경</span></h1>
+
+						<!-- 내용 시작 -->
+						<div class="content-wrapper">
+
+							<!-- HTML (기본) 시작 -->
+							<div class="portlet">
+								<div class="portlet-body">
+									<div class="portlet-body-hr">
+										<h3 class="portlet-body-title">HTML (기본)</h3>
+										<hr class="portlet-body-title-hr">
+
+										<ul class="guideUL font-dark">
+											<li><code>grid-table</code>class를 삽입하여 일반테이블과 구분합니다.</li>
+											<li>앨리먼트에 <code>class="hidden-sm"</code>를 삽입하면 작은 태블릿 사이즈에서부터 안보임,  <code>class="hidden-xs"</code>를 삽입하면 모바일 사이즈에서 안보임</li>
+										</ul>
+
+										<!-- 컨텐츠 행 시작 -->
+										<div class="contents-row">
+
+											<!-- 검색영역 시작 -->
+											<div class="page-top-search">
+												<div class="form-inline row">
+													<div class="input-group col-md-4 col-xs-4 col-sm-4">
+														<span class="input-group-label">
+															<label class="input-label-display" for="due_ymd">접수일자</label>
+														</span>
+														<div class="input-group date date-picker" data-date="2022-08-31" data-date-format="yyyy-mm-dd" data-date-viewmode="years">
+															<input type="text" id="due_ymd" name="due_ymd" value="2022-08-31" title="접수일자" class="form-control">
+															<span class="input-group-btn">
+																<button class="btn btn-default" type="button">
+																	<i class="fa fa-calendar"></i>
+																</button>
+															</span>
+														</div>
+													</div>
+													<div class="input-group col-md-3 col-xs-3 col-sm-3">
+														<span class="input-group-label">
+															<label class="input-label-display" for="labelEx">처리단계</label>
+														</span>
+														<select id="labelEx" class="bs-select form-control">
+															<option>전체</option>
+															<option>선택1</option>
+															<option>선택2</option>
+														</select>
+													</div>
+													<div class="input-group col-md-2 col-xs-2 col-sm-2">
+														<span class="input-group-label">
+															<label class="input-label-display" for="labelEx">구분</label>
+														</span>
+														<select id="labelEx" class="bs-select form-control">
+															<option>전체</option>
+															<option>선택1</option>
+															<option>선택2</option>
+														</select>
+													</div>
+													<div class="input-group col-md-3 col-xs-3 col-sm-3">
+														<span class="input-group-label">
+															<label class="input-label-none" for="labelEx">구분상세</label>
+														</span>
+														<input type="text" id="labelEx" class="form-control" placeholder="입력">
+														<span class="input-group-btn input-group-last">
+															<button type="button" class="btn btn-primary">검색</button>
+														</span>
+													</div>
+												</div>
+											</div>
+											<!-- 검색영역 끝 -->
+
+											<!-- 그리드 시작 -->
+											<div class="data-grid-top-toolbar">
+												<div class="data-grid-search-count">
+													검색 결과 <span class="search-count">24</span>건
+												</div>
+												<ul class="data-grid-sort-count">
+													<li>
+														<strong class="data-grid-sort-label">정렬기준</strong>
+														<div class="data-grid-sort-btn">
+															<button type="button" class="active">관련도순</button>
+															<button type="button">최신순</button>
+															<button type="button">인기순</button>
+														</div>
+													</li>
+												</ul>
+											</div>
+											<div class="table-scrollable grid-table">
+												<table class="table table-bordered table-striped table-hover">
+													<caption>테이블 요약</caption>
+													<colgroup>
+														<col style="width:60px;">
+														<col style="width:auto;">
+														<col style="width:100px;">
+														<col style="width:100px;">
+														<col style="width:auto;">
+														<col style="width:150px;">
+														<col style="width:140px;" class="hidden-xs hidden-sm"><!-- class="hidden-sm"를 삽입하면 작은 태블릿 사이즈에서 안보임,  class="hidden-xs"를 삽입하면 모바일 사이즈에서 안보임 -->
+														<col style="width:80px;">
+													</colgroup>
+													<thead>
+														<tr>
+															<th scope="col">
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="group-checkable" data-set="#sample_1 .checkboxes">
+																	<span></span>
+																</label>
+															</th>
+															<th scope="col"> 업체명 </th>
+															<th scope="col"> 등록분야 </th>
+															<th scope="col"> 대표자 </th>
+															<th scope="col"> 소재지 </th>
+															<th scope="col"> 전화번호 </th>
+															<th scope="col" class="hidden-sm hidden-xs"> 등록일 </th><!-- class="hidden-sm"를 삽입하면 작은 태블릿 사이즈에서 안보임,  class="hidden-xs"를 삽입하면 모바일 사이즈에서 안보임 -->
+															<th scope="col"> 등록상태 </th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+															<td class="t-left">주식회사누리종합건축사사무소</td>
+															<td>건축</td>
+															<td>홍길동</td>
+															<td class="t-left">전라북도 장수군 장수읍 중동길 18, 2층</td>
+															<td>063-351-4960</td>
+															<td class="hidden-sm hidden-xs">2022.09.20</td><!-- class="hidden-sm"를 삽입하면 작은 태블릿 사이즈에서 안보임,  class="hidden-xs"를 삽입하면 모바일 사이즈에서 안보임 -->
+															<td>정상</td>
+														</tr>
+														<tr>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+															<td class="t-left">주식회사누리종합건축사사무소</td>
+															<td>건축</td>
+															<td>홍길동</td>
+															<td class="t-left">전라북도 장수군 장수읍 중동길 18, 2층</td>
+															<td>063-351-4960</td>
+															<td class="hidden-sm hidden-xs">2022.09.20</td><!-- class="hidden-sm"를 삽입하면 작은 태블릿 사이즈에서 안보임,  class="hidden-xs"를 삽입하면 모바일 사이즈에서 안보임 -->
+															<td>정상</td>
+														</tr>
+														<tr>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+															<td class="t-left">주식회사누리종합건축사사무소</td>
+															<td>건축</td>
+															<td>홍길동</td>
+															<td class="t-left">전라북도 장수군 장수읍 중동길 18, 2층</td>
+															<td>063-351-4960</td>
+															<td class="hidden-sm hidden-xs">2022.09.20</td><!-- class="hidden-sm"를 삽입하면 작은 태블릿 사이즈에서 안보임,  class="hidden-xs"를 삽입하면 모바일 사이즈에서 안보임 -->
+															<td>정상</td>
+														</tr>
+														<tr>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+															<td class="t-left">주식회사누리종합건축사사무소</td>
+															<td>건축</td>
+															<td>홍길동</td>
+															<td class="t-left">전라북도 장수군 장수읍 중동길 18, 2층</td>
+															<td>063-351-4960</td>
+															<td class="hidden-sm hidden-xs">2022.09.20</td><!-- class="hidden-sm"를 삽입하면 작은 태블릿 사이즈에서 안보임,  class="hidden-xs"를 삽입하면 모바일 사이즈에서 안보임 -->
+															<td>정상</td>
+														</tr>
+														<tr>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+															<td class="t-left">주식회사누리종합건축사사무소</td>
+															<td>건축</td>
+															<td>홍길동</td>
+															<td class="t-left">전라북도 장수군 장수읍 중동길 18, 2층</td>
+															<td>063-351-4960</td>
+															<td class="hidden-sm hidden-xs">2022.09.20</td><!-- class="hidden-sm"를 삽입하면 작은 태블릿 사이즈에서 안보임,  class="hidden-xs"를 삽입하면 모바일 사이즈에서 안보임 -->
+															<td>정상</td>
+														</tr>
+														<tr>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+															<td class="t-left">주식회사누리종합건축사사무소</td>
+															<td>건축</td>
+															<td>홍길동</td>
+															<td class="t-left">전라북도 장수군 장수읍 중동길 18, 2층</td>
+															<td>063-351-4960</td>
+															<td class="hidden-sm hidden-xs">2022.09.20</td><!-- class="hidden-sm"를 삽입하면 작은 태블릿 사이즈에서 안보임,  class="hidden-xs"를 삽입하면 모바일 사이즈에서 안보임 -->
+															<td>정상</td>
+														</tr>
+														<tr>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+															<td class="t-left">주식회사누리종합건축사사무소</td>
+															<td>건축</td>
+															<td>홍길동</td>
+															<td class="t-left">전라북도 장수군 장수읍 중동길 18, 2층</td>
+															<td>063-351-4960</td>
+															<td class="hidden-sm hidden-xs">2022.09.20</td><!-- class="hidden-sm"를 삽입하면 작은 태블릿 사이즈에서 안보임,  class="hidden-xs"를 삽입하면 모바일 사이즈에서 안보임 -->
+															<td>정상</td>
+														</tr>
+														<tr>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+															<td class="t-left">주식회사누리종합건축사사무소</td>
+															<td>건축</td>
+															<td>홍길동</td>
+															<td class="t-left">전라북도 장수군 장수읍 중동길 18, 2층</td>
+															<td>063-351-4960</td>
+															<td class="hidden-sm hidden-xs">2022.09.20</td><!-- class="hidden-sm"를 삽입하면 작은 태블릿 사이즈에서 안보임,  class="hidden-xs"를 삽입하면 모바일 사이즈에서 안보임 -->
+															<td>정상</td>
+														</tr>
+														<tr>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+															<td class="t-left">주식회사누리종합건축사사무소</td>
+															<td>건축</td>
+															<td>홍길동</td>
+															<td class="t-left">전라북도 장수군 장수읍 중동길 18, 2층</td>
+															<td>063-351-4960</td>
+															<td class="hidden-sm hidden-xs">2022.09.20</td><!-- class="hidden-sm"를 삽입하면 작은 태블릿 사이즈에서 안보임,  class="hidden-xs"를 삽입하면 모바일 사이즈에서 안보임 -->
+															<td>정상</td>
+														</tr>
+														<tr>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+															<td class="t-left">주식회사누리종합건축사사무소</td>
+															<td>건축</td>
+															<td>홍길동</td>
+															<td class="t-left">전라북도 장수군 장수읍 중동길 18, 2층</td>
+															<td>063-351-4960</td>
+															<td class="hidden-sm hidden-xs">2022.09.20</td><!-- class="hidden-sm"를 삽입하면 작은 태블릿 사이즈에서 안보임,  class="hidden-xs"를 삽입하면 모바일 사이즈에서 안보임 -->
+															<td>정상</td>
+														</tr>
+														<tr>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+															<td class="t-left">주식회사누리종합건축사사무소</td>
+															<td>건축</td>
+															<td>홍길동</td>
+															<td class="t-left">전라북도 장수군 장수읍 중동길 18, 2층</td>
+															<td>063-351-4960</td>
+															<td class="hidden-sm hidden-xs">2022.09.20</td><!-- class="hidden-sm"를 삽입하면 작은 태블릿 사이즈에서 안보임,  class="hidden-xs"를 삽입하면 모바일 사이즈에서 안보임 -->
+															<td>정상</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<!-- 그리드 끝 -->
+
+											<!-- 페이징 시작 -->
+											<div class="pagination-wrapper">
+												<div class="pagination-info">
+													<span class="info-page-total">총 120개</span>
+													<label class="input-label-none" for="infoPageNum">몇줄씩보기</label>
+													<select id="infoPageNum" class="bs-select form-control">
+														<option>5</option>
+														<option>10</option>
+														<option>15</option>
+														<option>20</option>
+														<option>ALL</option>
+													</select>
+													<span class="info-select-text">줄씩보기</span>
+												</div>
+												<div class="pagination-panel">
+													<a href="javascript:void(0);" class="icon icon-arrow-start" title="처음으로">처음으로</a>
+													<a href="javascript:void(0);" class="icon icon-arrow-left" title="이전">이전</a>
+
+													<label class="input-label-none" for="paginationInput">현재페이지</label>
+													<input type="text" id="paginationInput" class="form-control pagination-panel-input" maxlenght="5" value="1">
+
+													<span class="pagination-panel-total">/ 3</span>
+
+													<a href="javascript:void(0);" class="icon icon-arrow-right" title="다음">다음</a>
+													<a href="javascript:void(0);" class="icon icon-arrow-end" title="끝으로">끝으로</a>
+												</div>
+											</div>
+											<!-- 페이징 끝 -->
+
+											<div class="table-bottom-control">
+												<button type="button" class="btn btn-default">일반버튼</button>
+												<button type="button" class="btn btn-primary">강조버튼</button>
+											</div>
+
+										</div>
+										<!-- 컨텐츠 행 끝 -->
+
+									</div>
+								</div>
+							</div>
+							<!-- HTML (기본) 끝 -->
+
+							<!-- HTML (등록된 데이터가 없을 시) 시작 -->
+							<div class="portlet">
+								<div class="portlet-body">
+									<div class="portlet-body-hr">
+										<h3 class="portlet-body-title">HTML (등록된 데이터가 없을 시)</h3>
+										<hr class="portlet-body-title-hr">
+
+										<ul class="guideUL font-dark">
+											<li><code>tbody</code>의 <code>td</code>에 col 갯수만큼 숫자를 넣어줍니다.</li>
+										</ul>
+
+										<!-- 컨텐츠 행 시작 -->
+										<div class="contents-row">
+
+											<!-- 검색영역 시작 -->
+											<div class="page-top-search">
+												<div class="form-inline row">
+													<div class="input-group col-md-4 col-xs-4 col-sm-4">
+														<span class="input-group-label">
+															<label class="input-label-display" for="due_ymd">접수일자</label>
+														</span>
+														<div class="input-group date date-picker" data-date="2022-08-31" data-date-format="yyyy-mm-dd" data-date-viewmode="years">
+															<input type="text" id="due_ymd" name="due_ymd" value="2022-08-31" title="접수일자" class="form-control">
+															<span class="input-group-btn">
+																<button class="btn btn-default" type="button">
+																	<i class="fa fa-calendar"></i>
+																</button>
+															</span>
+														</div>
+													</div>
+													<div class="input-group col-md-3 col-xs-3 col-sm-3">
+														<span class="input-group-label">
+															<label class="input-label-display" for="labelEx">처리단계</label>
+														</span>
+														<select id="labelEx" class="bs-select form-control">
+															<option>전체</option>
+															<option>선택1</option>
+															<option>선택2</option>
+														</select>
+													</div>
+													<div class="input-group col-md-2 col-xs-2 col-sm-2">
+														<span class="input-group-label">
+															<label class="input-label-display" for="labelEx">구분</label>
+														</span>
+														<select id="labelEx" class="bs-select form-control">
+															<option>전체</option>
+															<option>선택1</option>
+															<option>선택2</option>
+														</select>
+													</div>
+													<div class="input-group col-md-3 col-xs-3 col-sm-3">
+														<span class="input-group-label">
+															<label class="input-label-none" for="labelEx">구분상세</label>
+														</span>
+														<input type="text" id="labelEx" class="form-control" placeholder="입력">
+														<span class="input-group-btn input-group-last">
+															<button type="button" class="btn btn-primary">검색</button>
+														</span>
+													</div>
+												</div>
+											</div>
+											<!-- 검색영역 끝 -->
+
+											<!-- 그리드 시작 -->
+											<div class="data-grid-top-toolbar">
+												<div class="data-grid-search-count">
+													검색 결과 <span class="search-count">24</span>건
+												</div>
+												<ul class="data-grid-sort-count">
+													<li>
+														<strong class="data-grid-sort-label">정렬기준</strong>
+														<div class="data-grid-sort-btn">
+															<button type="button" class="active">관련도순</button>
+															<button type="button">최신순</button>
+															<button type="button">인기순</button>
+														</div>
+													</li>
+												</ul>
+											</div>
+											<div class="table-scrollable grid-table">
+												<table class="table table-bordered table-striped table-hover">
+													<caption>테이블 요약</caption>
+													<colgroup>
+														<col style="width:60px;">
+														<col style="width:auto;">
+														<col style="width:100px;">
+														<col style="width:100px;">
+														<col style="width:auto;">
+														<col style="width:150px;">
+														<col style="width:140px;">
+														<col style="width:80px;">
+													</colgroup>
+													<thead>
+														<tr>
+															<th scope="col">
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="group-checkable" data-set="#sample_1 .checkboxes">
+																	<span></span>
+																</label>
+															</th>
+															<th scope="col"> 업체명 </th>
+															<th scope="col"> 등록분야 </th>
+															<th scope="col"> 대표자 </th>
+															<th scope="col"> 소재지 </th>
+															<th scope="col"> 전화번호 </th>
+															<th scope="col"> 등록일 </th>
+															<th scope="col"> 등록상태 </th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td colspan="8"><!-- col 갯수만큼 숫자를 넣어줍니다. -->
+																<div class="no-data-wrapper">
+																	<div class="no-data-inner">
+																		<div class="no-data-icon"></div>
+																		<p class="no-data-text">데이터가 없습니다.</p>
+																	</div>
+																</div>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<!-- 그리드 끝 -->
+
+											<!-- 페이징 시작 -->
+											<div class="pagination-wrapper">
+												<div class="pagination-info">
+													<span class="info-page-total">총 120개</span>
+													<label class="input-label-none" for="infoPageNum">몇줄씩보기</label>
+													<select id="infoPageNum" class="bs-select form-control">
+														<option>5</option>
+														<option>10</option>
+														<option>15</option>
+														<option>20</option>
+														<option>ALL</option>
+													</select>
+													<span class="info-select-text">줄씩보기</span>
+												</div>
+												<div class="pagination-panel">
+													<a href="javascript:void(0);" class="icon icon-arrow-start" title="처음으로">처음으로</a>
+													<a href="javascript:void(0);" class="icon icon-arrow-left" title="이전">이전</a>
+
+													<label class="input-label-none" for="paginationInput">현재페이지</label>
+													<input type="text" id="paginationInput" class="form-control pagination-panel-input" maxlenght="5" value="1">
+
+													<span class="pagination-panel-total">/ 3</span>
+
+													<a href="javascript:void(0);" class="icon icon-arrow-right" title="다음">다음</a>
+													<a href="javascript:void(0);" class="icon icon-arrow-end" title="끝으로">끝으로</a>
+												</div>
+											</div>
+											<!-- 페이징 끝 -->
+
+											<div class="table-bottom-control">
+												<button type="button" class="btn btn-default">일반버튼</button>
+												<button type="button" class="btn btn-primary">강조버튼</button>
+											</div>
+
+										</div>
+										<!-- 컨텐츠 행 끝 -->
+
+									</div>
+								</div>
+							</div>
+							<!-- HTML (등록된 데이터가 없을 시) 끝 -->
+
+							<!-- HTML (스크롤 - 세로) 시작 -->
+							<div class="portlet">
+								<div class="portlet-body">
+									<div class="portlet-body-hr">
+										<h3 class="portlet-body-title">HTML (스크롤 - 세로)</h3>
+										<hr class="portlet-body-title-hr">
+
+										<ul class="guideUL font-dark">
+											<li><code>grid-table</code>class를 삽입하여 일반테이블과 구분합니다.</li>
+											<li>table &gt; td안의 폰트를 밑으로 떨어지게 하려면 <code>word-break-all</code>class를 삽입합니다.</li>
+											<li>세로 스크롤 오브젝트는 <code>scrollOptionY</code>class를 삽입하며, 인라인에 <code>style="height:[size];"</code>사이즈를 지정합니다.</li>
+										</ul>
+
+										<!-- 컨텐츠 행 시작 -->
+										<div class="contents-row">
+
+											<!-- 검색영역 시작 -->
+											<div class="page-top-search">
+												<div class="form-inline row">
+													<div class="input-group col-md-4 col-xs-4 col-sm-4">
+														<span class="input-group-label">
+															<label class="input-label-display" for="due_ymd">접수일자</label>
+														</span>
+														<div class="input-group date date-picker" data-date="2022-08-31" data-date-format="yyyy-mm-dd" data-date-viewmode="years">
+															<input type="text" id="due_ymd" name="due_ymd" value="2022-08-31" title="접수일자" class="form-control">
+															<span class="input-group-btn">
+																<button class="btn btn-default" type="button">
+																	<i class="fa fa-calendar"></i>
+																</button>
+															</span>
+														</div>
+													</div>
+													<div class="input-group col-md-3 col-xs-3 col-sm-3">
+														<span class="input-group-label">
+															<label class="input-label-display" for="labelEx">처리단계</label>
+														</span>
+														<select id="labelEx" class="bs-select form-control">
+															<option>전체</option>
+															<option>선택1</option>
+															<option>선택2</option>
+														</select>
+													</div>
+													<div class="input-group col-md-2 col-xs-2 col-sm-2">
+														<span class="input-group-label">
+															<label class="input-label-display" for="labelEx">구분</label>
+														</span>
+														<select id="labelEx" class="bs-select form-control">
+															<option>전체</option>
+															<option>선택1</option>
+															<option>선택2</option>
+														</select>
+													</div>
+													<div class="input-group col-md-3 col-xs-3 col-sm-3">
+														<span class="input-group-label">
+															<label class="input-label-none" for="labelEx">구분상세</label>
+														</span>
+														<input type="text" id="labelEx" class="form-control" placeholder="입력">
+														<span class="input-group-btn input-group-last">
+															<button type="button" class="btn btn-primary">검색</button>
+														</span>
+													</div>
+												</div>
+											</div>
+											<!-- 검색영역 끝 -->
+
+											<!-- 그리드 시작 -->
+											<div class="data-grid-top-toolbar">
+												<div class="data-grid-search-count">
+													검색 결과 <span class="search-count">24</span>건
+												</div>
+												<ul class="data-grid-sort-count">
+													<li>
+														<strong class="data-grid-sort-label">정렬기준</strong>
+														<div class="data-grid-sort-btn">
+															<button type="button" class="active">관련도순</button>
+															<button type="button">최신순</button>
+															<button type="button">인기순</button>
+														</div>
+													</li>
+												</ul>
+											</div>
+											<div class="table-scrollable grid-table scrollOptionY" style="height: 223px;">
+												<table class="table table-bordered table-striped table-hover word-break-all">
+													<caption>테이블 요약</caption>
+													<colgroup>
+														<col style="width:60px;">
+														<col style="width:auto;">
+														<col style="width:100px;">
+														<col style="width:100px;">
+														<col style="width:auto;">
+														<col style="width:150px;">
+														<col style="width:150px;">
+														<col style="width:80px;">
+													</colgroup>
+													<thead>
+														<tr>
+															<th scope="col">
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="group-checkable" data-set="#sample_1 .checkboxes">
+																	<span></span>
+																</label>
+															</th>
+															<th scope="col"> 업체명 </th>
+															<th scope="col"> 등록분야 </th>
+															<th scope="col"> 대표자 </th>
+															<th scope="col"> 소재지 </th>
+															<th scope="col"> 전화번호 </th>
+															<th scope="col"> 등록일자 </th>
+															<th scope="col"> 등록상태 </th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+															<td class="t-left">주식회사누리종합건축사사무소</td>
+															<td>건축</td>
+															<td>홍길동</td>
+															<td class="t-left">전라북도 장수군 장수읍 중동길 18, 2층전라북도 장수군 장수읍 중동길 18, 2층전라북도 장수군 장수읍 중동길 18, 2층전라북도 장수군 장수읍 중동길 18, 2층전라북도 장수군 장수읍 중동길 18, 2층</td>
+															<td>063-351-4960</td>
+															<td>2017-04-10</td>
+															<td>정상</td>
+														</tr>
+														<tr>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+															<td class="t-left">주식회사누리종합건축사사무소</td>
+															<td>건축</td>
+															<td>홍길동</td>
+															<td class="t-left">전라북도 장수군 장수읍 중동길 18, 2층</td>
+															<td>063-351-4960</td>
+															<td>2017-04-10</td>
+															<td>정상</td>
+														</tr>
+														<tr>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+															<td class="t-left">주식회사누리종합건축사사무소</td>
+															<td>건축</td>
+															<td>홍길동</td>
+															<td class="t-left">전라북도 장수군 장수읍 중동길 18, 2층</td>
+															<td>063-351-4960</td>
+															<td>2017-04-10</td>
+															<td>정상</td>
+														</tr>
+														<tr>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+															<td class="t-left">주식회사누리종합건축사사무소</td>
+															<td>건축</td>
+															<td>홍길동</td>
+															<td class="t-left">전라북도 장수군 장수읍 중동길 18, 2층</td>
+															<td>063-351-4960</td>
+															<td>2017-04-10</td>
+															<td>정상</td>
+														</tr>
+														<tr>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+															<td class="t-left">주식회사누리종합건축사사무소</td>
+															<td>건축</td>
+															<td>홍길동</td>
+															<td class="t-left">전라북도 장수군 장수읍 중동길 18, 2층</td>
+															<td>063-351-4960</td>
+															<td>2017-04-10</td>
+															<td>정상</td>
+														</tr>
+														<tr>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+															<td class="t-left">주식회사누리종합건축사사무소</td>
+															<td>건축</td>
+															<td>홍길동</td>
+															<td class="t-left">전라북도 장수군 장수읍 중동길 18, 2층</td>
+															<td>063-351-4960</td>
+															<td>2017-04-10</td>
+															<td>정상</td>
+														</tr>
+														<tr>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+															<td class="t-left">주식회사누리종합건축사사무소</td>
+															<td>건축</td>
+															<td>홍길동</td>
+															<td class="t-left">전라북도 장수군 장수읍 중동길 18, 2층</td>
+															<td>063-351-4960</td>
+															<td>2017-04-10</td>
+															<td>정상</td>
+														</tr>
+														<tr>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+															<td class="t-left">주식회사누리종합건축사사무소</td>
+															<td>건축</td>
+															<td>홍길동</td>
+															<td class="t-left">전라북도 장수군 장수읍 중동길 18, 2층</td>
+															<td>063-351-4960</td>
+															<td>2017-04-10</td>
+															<td>정상</td>
+														</tr>
+														<tr>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+															<td class="t-left">주식회사누리종합건축사사무소</td>
+															<td>건축</td>
+															<td>홍길동</td>
+															<td class="t-left">전라북도 장수군 장수읍 중동길 18, 2층</td>
+															<td>063-351-4960</td>
+															<td>2017-04-10</td>
+															<td>정상</td>
+														</tr>
+														<tr>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+															<td class="t-left">주식회사누리종합건축사사무소</td>
+															<td>건축</td>
+															<td>홍길동</td>
+															<td class="t-left">전라북도 장수군 장수읍 중동길 18, 2층</td>
+															<td>063-351-4960</td>
+															<td>2017-04-10</td>
+															<td>정상</td>
+														</tr>
+														<tr>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+															<td class="t-left">주식회사누리종합건축사사무소</td>
+															<td>건축</td>
+															<td>홍길동</td>
+															<td class="t-left">전라북도 장수군 장수읍 중동길 18, 2층</td>
+															<td>063-351-4960</td>
+															<td>2017-04-10</td>
+															<td>정상</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<!-- 그리드 끝 -->
+
+											<div class="table-bottom-control">
+												<button type="button" class="btn btn-default">일반버튼</button>
+												<button type="button" class="btn btn-primary">강조버튼</button>
+											</div>
+
+										</div>
+										<!-- 컨텐츠 행 끝 -->
+
+									</div>
+								</div>
+							</div>
+							<!-- HTML (스크롤 - 세로) 끝 -->
+
+							<!-- HTML (스크롤 - 가로) 시작 -->
+							<div class="portlet">
+								<div class="portlet-body">
+									<div class="portlet-body-hr">
+										<h3 class="portlet-body-title">HTML (스크롤 - 가로)</h3>
+										<hr class="portlet-body-title-hr">
+
+										<ul class="guideUL font-dark">
+											<li><code>grid-table</code>class를 삽입하여 일반테이블과 구분합니다.</li>
+											<li>table &gt; td안의 폰트를 밑으로 떨어지게 하려면 <code>word-break-all</code>class를 삽입합니다.</li>
+											<li>가로 스크롤 오브젝트는 <code>grid-table</code>class의 <code>scrollOptionX</code>class를 삽입하며, <code>table</code>class의 인라인에 <code>style="min-width:[size];"</code>사이즈를 지정하는데 <code>table</code>class의 인라인 가로사이즈는 <code>grid-table</code>class 가로사이즈보다 커야합니다.</li>
+										</ul>
+
+										<!-- 컨텐츠 행 시작 -->
+										<div class="contents-row">
+
+											<!-- 검색영역 시작 -->
+											<div class="page-top-search">
+												<div class="form-inline row">
+													<div class="input-group col-md-4 col-xs-4 col-sm-4">
+														<span class="input-group-label">
+															<label class="input-label-display" for="due_ymd">접수일자</label>
+														</span>
+														<div class="input-group date date-picker" data-date="2022-08-31" data-date-format="yyyy-mm-dd" data-date-viewmode="years">
+															<input type="text" id="due_ymd" name="due_ymd" value="2022-08-31" title="접수일자" class="form-control">
+															<span class="input-group-btn">
+																<button class="btn btn-default" type="button">
+																	<i class="fa fa-calendar"></i>
+																</button>
+															</span>
+														</div>
+													</div>
+													<div class="input-group col-md-3 col-xs-3 col-sm-3">
+														<span class="input-group-label">
+															<label class="input-label-display" for="labelEx">처리단계</label>
+														</span>
+														<select id="labelEx" class="bs-select form-control">
+															<option>전체</option>
+															<option>선택1</option>
+															<option>선택2</option>
+														</select>
+													</div>
+													<div class="input-group col-md-2 col-xs-2 col-sm-2">
+														<span class="input-group-label">
+															<label class="input-label-display" for="labelEx">구분</label>
+														</span>
+														<select id="labelEx" class="bs-select form-control">
+															<option>전체</option>
+															<option>선택1</option>
+															<option>선택2</option>
+														</select>
+													</div>
+													<div class="input-group col-md-3 col-xs-3 col-sm-3">
+														<span class="input-group-label">
+															<label class="input-label-none" for="labelEx">구분상세</label>
+														</span>
+														<input type="text" id="labelEx" class="form-control" placeholder="입력">
+														<span class="input-group-btn input-group-last">
+															<button type="button" class="btn btn-primary">검색</button>
+														</span>
+													</div>
+												</div>
+											</div>
+											<!-- 검색영역 끝 -->
+
+											<!-- 그리드 시작 -->
+											<div class="data-grid-top-toolbar">
+												<div class="data-grid-search-count">
+													검색 결과 <span class="search-count">24</span>건
+												</div>
+												<ul class="data-grid-sort-count">
+													<li>
+														<strong class="data-grid-sort-label">정렬기준</strong>
+														<div class="data-grid-sort-btn">
+															<button type="button" class="active">관련도순</button>
+															<button type="button">최신순</button>
+															<button type="button">인기순</button>
+														</div>
+													</li>
+												</ul>
+											</div>
+											<div class="table-scrollable grid-table scrollOptionX">
+												<table class="table table-bordered table-striped table-hover word-break-all" style="min-width: 1600px;">
+													<caption>테이블 요약</caption>
+													<colgroup>
+														<col style="width:60px;">
+														<col style="width:auto;">
+														<col style="width:100px;">
+														<col style="width:100px;">
+														<col style="width:auto;">
+														<col style="width:150px;">
+														<col style="width:150px;">
+														<col style="width:80px;">
+													</colgroup>
+													<thead>
+														<tr>
+															<th scope="col">
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="group-checkable" data-set="#sample_1 .checkboxes">
+																	<span></span>
+																</label>
+															</th>
+															<th scope="col"> 업체명 </th>
+															<th scope="col"> 등록분야 </th>
+															<th scope="col"> 대표자 </th>
+															<th scope="col"> 소재지 </th>
+															<th scope="col"> 전화번호 </th>
+															<th scope="col"> 등록일자 </th>
+															<th scope="col"> 등록상태 </th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+															<td class="t-left">주식회사누리종합건축사사무소</td>
+															<td>건축</td>
+															<td>홍길동</td>
+															<td class="t-left">전라북도 장수군 장수읍 중동길 18, 2층전라북도 장수군 장수읍 중동길 18, 2층전라북도 장수군 장수읍 중동길 18, 2층전라북도 장수군 장수읍 중동길 18, 2층전라북도 장수군 장수읍 중동길 18, 2층</td>
+															<td>063-351-4960</td>
+															<td>2017-04-10</td>
+															<td>정상</td>
+														</tr>
+														<tr>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+															<td class="t-left">주식회사누리종합건축사사무소</td>
+															<td>건축</td>
+															<td>홍길동</td>
+															<td class="t-left">전라북도 장수군 장수읍 중동길 18, 2층전라북도 장수군 장수읍 중동길 18, 2층전라북도 장수군 장수읍 중동길 18, 2층전라북도 장수군 장수읍 중동길 18, 2층전라북도 장수군 장수읍 중동길 18, 2층</td>
+															<td>063-351-4960</td>
+															<td>2017-04-10</td>
+															<td>정상</td>
+														</tr>
+														<tr>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+															<td class="t-left">주식회사누리종합건축사사무소</td>
+															<td>건축</td>
+															<td>홍길동</td>
+															<td class="t-left">전라북도 장수군 장수읍 중동길 18, 2층전라북도 장수군 장수읍 중동길 18, 2층전라북도 장수군 장수읍 중동길 18, 2층전라북도 장수군 장수읍 중동길 18, 2층전라북도 장수군 장수읍 중동길 18, 2층</td>
+															<td>063-351-4960</td>
+															<td>2017-04-10</td>
+															<td>정상</td>
+														</tr>
+														<tr>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+															<td class="t-left">주식회사누리종합건축사사무소</td>
+															<td>건축</td>
+															<td>홍길동</td>
+															<td class="t-left">전라북도 장수군 장수읍 중동길 18, 2층전라북도 장수군 장수읍 중동길 18, 2층전라북도 장수군 장수읍 중동길 18, 2층전라북도 장수군 장수읍 중동길 18, 2층전라북도 장수군 장수읍 중동길 18, 2층</td>
+															<td>063-351-4960</td>
+															<td>2017-04-10</td>
+															<td>정상</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<!-- 그리드 끝 -->
+
+											<div class="table-bottom-control">
+												<button type="button" class="btn btn-default">일반버튼</button>
+												<button type="button" class="btn btn-primary">강조버튼</button>
+											</div>
+
+										</div>
+										<!-- 컨텐츠 행 끝 -->
+
+									</div>
+								</div>
+							</div>
+							<!-- HTML (스크롤 - 가로) 끝 -->
+
+						</div>
+						<!-- 내용 끝 -->
+
+					</div>
+
+				</div>
+				<!-- 컨텐츠 끝 -->
+
+			</div>
+
+		</section>
+		<!-- 페이지 컨테이너 끝 -->
+
+		<!-- footer 시작 -->
+		<footer class="page-footer"></footer>
+		<!-- footer 끝 -->
+
+	</body>
+	<script>
+		//왼쪽메뉴
+		menu(0);
+		footer();
+		function menu(index) {
+			$include_pageSlider[index].prependTo(".page-sidebar-wrapper").find(".page-sidebar-menu >.nav-item").removeClass("active").find("a .arrow.open").removeClass("open");
+			$include_pageSlider[index].find(".page-sidebar-menu >.nav-item").eq(2).addClass("active").find(">a .arrow").addClass("open");
+			$include_pageSlider[index].find(".page-sidebar-menu >.nav-item").eq(2).find(".sub-menu li").eq(4).addClass("active");
+		}
+		function footer() {
+			$include_footer.prependTo(".page-footer");
+		}
+	</script>
+</html>

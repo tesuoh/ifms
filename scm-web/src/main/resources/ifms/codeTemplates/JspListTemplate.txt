@@ -1,0 +1,32 @@
+<%@ page contentType="text/html; charset=UTF-8" %>
+<html>
+<head><title>${comment} 목록</title></head>
+<body>
+<h1>${comment} 목록</h1>
+<!-- Ajax 호출로 /${lowerEntity}/list.json을 불러와 리스트를 표시 -->
+<table border="1" id="listTable">
+  <thead>
+    <tr>
+      <th>ID</th><th>컬럼1</th><th>컬럼2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- JS로 JSON 받아서 채워넣을 수 있음 -->
+  </tbody>
+</table>
+
+<script>
+// 예: 페이지 로드 시 리스트조회
+fetch('/${lowerEntity}/list.json')
+  .then(res => res.json())
+  .then(data => {
+    const tbody = document.getElementById('listTable').querySelector('tbody');
+    data.list.forEach(item => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${item.ID}</td><td>${item.COLUMN1}</td><td>${item.COLUMN2}</td>`;
+      tbody.appendChild(tr);
+    });
+  });
+</script>
+</body>
+</html>

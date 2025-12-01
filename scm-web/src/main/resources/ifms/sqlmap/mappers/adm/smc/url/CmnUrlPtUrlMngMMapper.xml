@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ifms.adm.smc.url.mapper.CmnUrlPtUrlMngMMapper">
+
+    <select id="selectCmnUrlPtUrlMngListCnt" resultType="int" parameterType="map">
+        /*CmnUrlPtUrlMngMMapper.selectCmnUrlPtUrlMngListCnt*/
+        SELECT COUNT(*)
+          FROM SZMS.PT_URL_MNG_M
+        WHERE 1=1
+        <if test="searchPrgNm != null and searchPrgNm != ''">
+            AND prgrm_nm LIKE '%' || #{searchPrgNm} || '%'
+        </if>
+        <if test="searchUrl != null and searchUrl != ''">
+            AND url_addr LIKE '%' || #{searchUrl} || '%'
+        </if>
+        <if test="clsf != null and clsf != ''">
+            AND prgrm_clsf_cd = #{clsf}
+        </if>
+    </select>
+
+    <select id="selectCmnUrlPtUrlMngList" resultType="map" parameterType="map">
+        /*CmnUrlPtUrlMngMMapper.selectCmnUrlPtUrlMngList*/
+        SELECT ROW_NUMBER() OVER (ORDER BY url_addr) AS row_num,
+               url_addr,
+               prgrm_nm,
+               rprs_prgrm_yn,
+               prgrm_rslt_type_nm,
+               mdfcn_prgrm_yn,
+               prgrm_clsf_cd
+        FROM SZMS.PT_URL_MNG_M
+       WHERE 1=1
+        <if test="searchPrgNm != null and searchPrgNm != ''">
+            AND prgrm_nm LIKE '%' || #{searchPrgNm} || '%'
+        </if>
+        <if test="searchUrl != null and searchUrl != ''">
+            AND url_addr LIKE '%' || #{searchUrl} || '%'
+        </if>
+        <if test="clsf != null and clsf != ''">
+            AND prgrm_clsf_cd = #{clsf}
+        </if>
+        ORDER BY row_num
+        OFFSET #{startNo} ROWS FETCH NEXT #{listCount} ROWS ONLY
+    </select>
+
+    <select id="selectUrlMngDetail" resultType="egovMap" parameterType="map">
+        /*CmnUrlPtUrlMngMMapper.selectUrlMngDetail*/
+        SELECT url_addr,
+               prgrm_nm,
+               rprs_prgrm_yn,
+               prgrm_rslt_type_nm,
+               mdfcn_prgrm_yn,
+               prgrm_clsf_cd,
+               dvlpr_nm,
+               prgrm_expln,
+               frst_rgtr_id,
+               frst_reg_dt,
+               last_mdfr_id,
+               last_mdfcn_dt
+        FROM SZMS.PT_URL_MNG_M
+       WHERE 1=1
+        <if test="urlAddr != null and urlAddr != ''">
+            AND url_addr = #{urlAddr}
+        </if>
+    </select>
+
+
+    <update id="updateCmnUrlPtUrlMngDetail" parameterType="map">
+        /*CmnUrlPtUrlMngMMapper.updateCmnUrlPtUrlMngDetail*/
+        UPDATE SZMS.PT_URL_MNG_M
+        SET
+            prgrm_nm = #{prgNm},
+            url_addr = #{urlAddr},
+            prgrm_rslt_type_nm = #{prgrmRsltTypeNm},
+            prgrm_clsf_cd = #{prgrmClsfCd},
+            dvlpr_nm = #{dvlprNm},
+            prgrm_expln = #{prgrmExpln},
+            mdfcn_prgrm_yn = #{mdfcnAuthrtYn},
+            last_mdfr_id = #{lastMdfrId},
+            last_mdfcn_dt = NOW()
+        WHERE url_addr = #{originalUrlAddr}
+    </update>
+
+
+    <select id="checkUrlExists" resultType="int">
+        SELECT COUNT(*)
+        FROM SZMS.PT_URL_MNG_M
+        WHERE url_addr = #{urlAddr}
+    </select>
+
+    <insert id="insertUrlMngDetail" parameterType="map">
+        /*CmnUrlPtUrlMngMMapper.insertUrlMngDetail*/
+        INSERT INTO SZMS.PT_URL_MNG_M (
+            /*url_mng_no,*/
+            url_addr,
+            prgrm_nm,
+            rprs_prgrm_yn,
+            prgrm_rslt_type_nm,
+            mdfcn_prgrm_yn,
+            prgrm_clsf_cd,
+            dvlpr_nm,
+            prgrm_expln,
+            frst_rgtr_id,
+            frst_reg_dt
+        ) VALUES (
+                     /*(SELECT CONCAT('UMN', TO_CHAR(COALESCE(MAX(CAST(SUBSTRING(url_mng_no, 4) AS INTEGER)), 0) + 1, 'FM000000000'))
+                      FROM SZMS.PT_URL_MNG_M),*/
+                     #{urlAddr},
+                     #{prgNm},
+                     #{rprsPrgrmYn},
+                     #{prgrmRsltTypeNm},
+                     #{mdfcnAuthrtYn},
+                     #{prgrmClsfCd},
+                     #{dvlprNm},
+                     #{prgrmExpln},
+                     #{frstRgtrId},
+                     CURRENT_TIMESTAMP
+                 )
+    </insert>
+
+    <delete id="deleteCmnUrlPtUrlMngDetail" parameterType="map">
+        DELETE FROM SZMS.PT_URL_MNG_M
+        WHERE url_addr = #{originalUrlAddr}
+    </delete>
+
+</mapper>

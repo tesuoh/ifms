@@ -1,0 +1,16 @@
+<taglib>
+	<tlib-version>1.3</tlib-version>
+	<jsp-version>1.2</jsp-version>
+	<short-name>double-submit</short-name>
+	<uri>http://www.egovframe.go.kr/tags/double-submit/jsp</uri>
+
+	<tag>
+		<name>preventer</name>
+		<tag-class>egovframework.taglib.DoubleSubmitTag</tag-class>
+		<attribute>
+			<name>tokenKey</name>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+	</tag>
+	
+</taglib>

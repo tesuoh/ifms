@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ifms.adm.bbs.isb.mapper.AdmIsbMapper">
+	
+	<!-- 정보공유게시판 게시글 목록 조회 -->
+	<select id="selectAdmIsbList" parameterType="map" resultType="egovMap">
+		SELECT ROW_NUMBER() OVER (ORDER BY B.PST_SN) AS ROW_NUM
+			, B.PST_SN
+			, B.PST_TTL
+			, B.PST_CN 
+			, B.WRTR_NM
+			, B.FILE_GROUP_SN 
+			, B.INQ_CNT 
+			, B.DEL_YN 
+			, B.stdg_ctpv_cd
+			, b.stdg_sgg_cd 
+			, (CASE WHEN U.OGDP_INST_CD != '99999' THEN (SELECT CD_NM FROM SZMS.PT_COM_CD_C C WHERE C.CD_GROUP_ID = 'inst_clsf_cd' AND U.OGDP_INST_CD = C.CD_ID)
+				ELSE (SELECT CONCAT(P.LGVOFC_NM, ' ', P.CMPTNC_POLSTN_NM) FROM SZMS.PZ_STDG_POLSTN_M P WHERE P.POLSTN_CD = U.POLSTN_CD)
+				END ) AS INST_NM
+			, TO_CHAR(B.FRST_REG_DT, 'YYYY-MM-DD') AS FRST_REG_DT
+			, B.FRST_RGTR_ID 
+		FROM SZMS.PT_INFO_SHRN_BBS_M B
+		LEFT JOIN SZMS.PT_USER_INFO_M U ON B.FRST_RGTR_ID = U.USER_ID 
+		WHERE 1 = 1
+			AND B.DEL_YN = 'N'
+			<if test="srchCondition == 'pstTtl'">
+				AND B.PST_TTL LIKE '%' || #{srchKeyword} || '%'
+			</if>
+			<if test="srchCondition == 'pstCn'">
+				AND B.PST_CN LIKE '%' || #{srchKeyword} || '%'
+			</if>
+			<if test="srchCondition == ''">
+				AND ((B.PST_TTL LIKE '%' || #{srchKeyword} || '%')
+					OR (B.PST_CN LIKE '%' || #{srchKeyword} || '%'))
+			</if>
+		ORDER BY B.PST_SN DESC
+		OFFSET #{startNo} ROWS FETCH NEXT #{listCount} ROWS ONLY
+	</select>
+	
+	<!-- 정보공유 게시글 총건수 -->
+	<select id="selectIsbTotalCount" parameterType="map" resultType="int">
+		SELECT COUNT(*)
+		FROM SZMS.PT_INFO_SHRN_BBS_M
+		WHERE 1 = 1
+			AND DEL_YN = 'N'
+			<if test="srchCondition == 'pstTtl'">
+				AND PST_TTL LIKE '%' || #{srchKeyword} || '%'
+			</if>
+			<if test="srchCondition == 'pstCn'">
+				AND PST_CN LIKE '%' || #{srchKeyword} || '%'
+			</if>
+			<if test="srchCondition == ''">
+				AND ((PST_TTL LIKE '%' || #{srchKeyword} || '%')
+					OR (PST_CN LIKE '%' || #{srchKeyword} || '%'))
+			</if>
+	</select>
+	
+	<!-- 게시글 상세 -->
+	<select id="selectIsbPstDetail" parameterType="map" resultType="egovMap">
+		SELECT PST_SN
+			, PST_TTL
+			, PST_CN 
+			, WRTR_NM
+			, CASE WHEN FILE_GROUP_SN IS NOT NULL THEN FILE_GROUP_SN
+				ELSE 0
+				END AS FILE_GROUP_SN 
+			, INQ_CNT 
+			, DEL_YN 
+			, TO_CHAR(B.FRST_REG_DT, 'YYYY-MM-DD') AS FRST_REG_DT
+			, B.FRST_RGTR_ID 
+			, CASE WHEN B.LAST_MDFCN_DT IS NULL THEN TO_CHAR(B.FRST_REG_DT, 'YYYY-MM-DD HH24:MI:SS')
+				ELSE TO_CHAR(B.LAST_MDFCN_DT , 'YYYY-MM-DD HH24:MI:SS')
+				END AS WRTR_DT
+			, CASE WHEN B.FRST_RGTR_ID = #{userId} THEN 'Y'
+				ELSE 'N'
+				END AS OWN_PST_YN
+			, (CASE WHEN U.OGDP_INST_CD != '99999' THEN (SELECT CD_NM FROM SZMS.PT_COM_CD_C C WHERE C.CD_GROUP_ID = 'inst_clsf_cd' AND U.OGDP_INST_CD = C.CD_ID)
+				ELSE (SELECT CONCAT(P.LGVOFC_NM, ' ', P.CMPTNC_POLSTN_NM) FROM SZMS.PZ_STDG_POLSTN_M P WHERE P.POLSTN_CD = U.POLSTN_CD)
+				END ) AS INST_NM
+		FROM SZMS.PT_INFO_SHRN_BBS_M B
+		LEFT JOIN SZMS.PT_USER_INFO_M U ON B.FRST_RGTR_ID = U.USER_ID 
+		WHERE 1 = 1
+			AND DEL_YN = 'N'
+			AND PST_SN = CAST(#{pstSn} AS NUMERIC)
+	</select>
+
+	<!-- 동영상 정보 가져오기 -->
+	<select id="selectVideoFile" parameterType="map" resultType="egovMap">
+		/* AdmIsbMapper.selectVideoFile */
+		select s.pst_sn
+			 , s.pst_ttl
+			 , s.file_group_sn
+			 , f.srvr_file_nm
+			 , f.orgnl_file_extn_nm
+			 , f.file_dtl_sn
+		from SZMS.PT_INFO_SHRN_BBS_M S
+				 LEFT JOIN SZMS.pt_com_ahfl_m f ON F.FILE_GROUP_SN = S.FILE_GROUP_SN
+		where orgnl_file_extn_nm = 'mp4'
+		  AND S.DEL_YN = 'N'
+		  AND S.PST_SN = CAST(#{pstSn} AS NUMERIC)
+	</select>
+
+	
+	<!-- 조회수 증가 -->
+	<update id="updateInqCnt" parameterType="map">
+		UPDATE SZMS.PT_INFO_SHRN_BBS_M
+		SET INQ_CNT = INQ_CNT + 1
+		WHERE PST_SN = CAST(#{pstSn} AS NUMERIC)
+	</update>
+	
+	<!-- 댓글 목록 -->
+	<select id="selectIsbCmntList" parameterType="map" resultType="egovMap">
+		SELECT ROW_NUMBER() OVER (ORDER BY C.FRST_REG_DT) AS ROW_NUM
+			, C.CMNT_SN
+			, C.PST_SN
+			, C.CMNT_CN
+			, C.WRTR_NM
+			, (CASE WHEN U.OGDP_INST_CD != '99999' THEN (SELECT CD_NM FROM SZMS.PT_COM_CD_C C WHERE C.CD_GROUP_ID = 'inst_clsf_cd' AND U.OGDP_INST_CD = C.CD_ID)
+				ELSE (SELECT CONCAT(P.LGVOFC_NM, ' ', P.CMPTNC_POLSTN_NM) FROM SZMS.PZ_STDG_POLSTN_M P WHERE P.POLSTN_CD = U.POLSTN_CD)
+				END ) AS INST_NM
+			, C.DEL_YN
+			, CASE WHEN C.FILE_GROUP_SN IS NOT NULL THEN C.FILE_GROUP_SN
+				ELSE 0
+				END AS FILE_GROUP_SN
+			, F.file_dtl_sn
+			, F.ORGNL_FILE_NM || '.' || F.ORGNL_FILE_EXTN_NM AS FILE_NM
+			, F.ATCH_FILE_SZ 
+			, F.SRVR_FILE_NM
+			, CASE WHEN C.LAST_MDFCN_DT IS NULL THEN TO_CHAR(C.FRST_REG_DT, 'YYYY-MM-DD HH24:MI:SS')
+				ELSE TO_CHAR(C.LAST_MDFCN_DT , 'YYYY-MM-DD HH24:MI:SS')
+				END AS WRTR_DT
+			, CASE WHEN C.FRST_RGTR_ID = #{userId} THEN 'Y'
+				ELSE 'N'
+				END AS OWN_CMNT_YN
+		FROM SZMS.PT_INFO_SHRN_BBS_CMNT_M C
+		LEFT JOIN SZMS.PT_INFO_SHRN_BBS_M B ON B.PST_SN = C.PST_SN 
+		LEFT JOIN SZMS.pt_com_ahfl_m f ON F.FILE_GROUP_SN = C.FILE_GROUP_SN 
+		LEFT JOIN SZMS.PT_USER_INFO_M U ON C.FRST_RGTR_ID = U.USER_ID 
+		WHERE 1 = 1
+			AND B.PST_SN = CAST(#{pstSn} AS NUMERIC)
+			AND C.DEL_YN = 'N'
+		ORDER BY C.FRST_REG_DT
+		OFFSET #{startNo} ROWS FETCH NEXT #{listCount} ROWS ONLY
+	</select>
+	
+	<!-- 댓글 총건수 -->
+	<select id="selectCmntTotalCount" parameterType="map" resultType="int">
+		SELECT COUNT(*)
+		FROM SZMS.PT_INFO_SHRN_BBS_CMNT_M
+		WHERE 1 = 1
+			AND DEL_YN = 'N'
+			AND PST_SN = CAST(#{pstSn} AS NUMERIC)
+	</select>
+	
+	<!-- 댓글 삭제 처리 -->
+	<update id="deleteCmnt" parameterType="map">
+		UPDATE SZMS.PT_INFO_SHRN_BBS_CMNT_M 
+		SET DEL_YN = 'Y'
+			, LAST_MDFCN_DT = CURRENT_TIMESTAMP
+			, LAST_MDFR_ID = #{userId}
+		WHERE CMNT_SN = CAST(#{cmntSn} AS NUMERIC)
+	</update>
+	
+	<!-- 게시글 삭제 처리 -->
+	<update id="deletePst" parameterType="map">
+		UPDATE SZMS.PT_INFO_SHRN_BBS_M 
+		SET DEL_YN = 'Y'
+			, LAST_MDFCN_DT = CURRENT_TIMESTAMP
+			, LAST_MDFR_ID = #{userId}
+		WHERE PST_SN = CAST(#{pstSn} AS NUMERIC)
+	</update>
+	
+	<!-- 게시글 삭제 시 게시글 내 댓글 삭제 -->
+	<update id="deleteCmntInPst">
+		UPDATE SZMS.PT_INFO_SHRN_BBS_CMNT_M 
+		SET DEL_YN = 'Y'
+			, LAST_MDFCN_DT = CURRENT_TIMESTAMP
+			, LAST_MDFR_ID = #{userId}
+		WHERE PST_SN = CAST(#{pstSn} AS NUMERIC)
+	</update>
+</mapper>

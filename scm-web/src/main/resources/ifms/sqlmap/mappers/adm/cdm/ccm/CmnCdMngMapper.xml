@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ifms.adm.cdm.ccm.mapper.CmnCdMngMapper">
+	<!-- 총건수 -->
+	<select id="selectCmnCdMngTotalCount" parameterType="map" resultType="int">
+		SELECT COUNT(CM.*)
+		FROM SZMS.PT_COM_CD_C CM
+		INNER JOIN SZMS.PT_CD_CLSF_CD_M CC
+		ON CM.CD_GROUP_ID = CC.CD_GROUP_ID 
+		WHERE 1 = 1
+			<if test="cdGroupId != ''">
+			AND CC.CD_GROUP_ID LIKE '%' || #{cdGroupId} || '%'
+			</if>
+			<if test="cdGroupNm != ''">
+			AND CC.CD_GROUP_NM LIKE '%' || #{cdGroupNm} || '%'
+			</if>
+			<if test="groupUseYn != ''">
+			AND CC.USE_YN = #{groupUseYn}
+			</if>
+			<if test="cdId != ''">
+			AND CM.CD_ID LIKE '%' || #{cdId} || '%'
+			</if>
+			<if test="cdNm != ''">
+			AND CM.CD_NM LIKE '%' || #{cdNm} || '%'
+			</if> 
+			<if test="cdUseYn != ''">
+			AND CM.USE_YN = #{cdUseYn}
+			</if>
+	</select>
+
+	<!-- 공통 코드 목록 -->
+	<select id="selectCmnCdMngList" parameterType="map" resultType="egovMap">
+		SELECT (SELECT COUNT(*) FROM SZMS.PT_COM_CD_C) - ROW_NUMBER() OVER (ORDER BY CM.FRST_REG_DT DESC, CM.CD_GROUP_ID DESC, CM.SORT_SEQ ) + 1 AS ROW_NUM
+			, CM.CD_GROUP_ID
+			, CC.CD_GROUP_NM 
+			, CM.CD_ID
+			, CM.CD_NM
+			, CC.CD_EXPLN 
+			, CM.SORT_SEQ 
+			, CASE WHEN CM.USE_YN = 'Y' THEN '사용'
+				ELSE '미사용'
+				END AS CD_USE_YN 
+			, CASE WHEN CC.USE_YN = 'Y' THEN '사용'
+				ELSE '미사용'
+				END AS GROUP_USE_YN
+			, TO_CHAR(CM.FRST_REG_DT, 'YYYY-MM-DD') AS FRST_REG_DT
+			, CM.FRST_RGTR_ID 
+			, CM.LAST_MDFR_ID 
+			, TO_CHAR(CM.LAST_MDFCN_DT, 'YYYY-MM-DD') AS LAST_MDFCN_DT
+		FROM SZMS.PT_COM_CD_C CM
+		INNER JOIN SZMS.PT_CD_CLSF_CD_M CC
+		ON CM.CD_GROUP_ID = CC.CD_GROUP_ID 
+		WHERE 1 = 1
+			<if test="cdGroupId != ''">
+			AND CC.CD_GROUP_ID LIKE '%' || #{cdGroupId} || '%'
+			</if>
+			<if test="cdGroupNm != ''">
+			AND CC.CD_GROUP_NM LIKE '%' || #{cdGroupNm} || '%'
+			</if>
+			<if test="groupUseYn != ''">
+			AND CC.USE_YN = #{groupUseYn}
+			</if>
+			<if test="cdId != ''">
+			AND CM.CD_ID LIKE '%' || #{cdId} || '%'
+			</if>
+			<if test="cdNm != ''">
+			AND CM.CD_NM LIKE '%' || #{cdNm} || '%'
+			</if> 
+			<if test="cdUseYn != ''">
+			AND CM.USE_YN = #{cdUseYn}
+			</if>
+		ORDER BY CM.FRST_REG_DT DESC, CC.CD_GROUP_ID DESC, CM.SORT_SEQ
+		OFFSET #{startNo} ROWS FETCH NEXT #{listCount} ROWS ONLY
+	</select>
+	
+	<!-- 마지막 정렬 순서 조회 -->
+	<select id="selectLastSortSeq" parameterType="map" resultType="int">
+		SELECT COALESCE(MAX(SORT_SEQ), 0) + 1 AS SORT_SEQ 
+		FROM SZMS.PT_COM_CD_C
+		WHERE CD_GROUP_ID = #{cdGroupId}
+	</select>
+	
+	<select id="duplicateId" parameterType="map" resultType="boolean">
+		SELECT CASE WHEN COUNT(*) = 0 THEN TRUE
+				ELSE FALSE
+				END
+		FROM SZMS.PT_COM_CD_C
+		WHERE CD_GROUP_ID = #{cdGroupId}
+			AND CD_ID = #{cdId}
+	</select>
+	
+	
+	<!-- 등록 -->
+	<insert id="insertCmnCdMng" parameterType="map">
+		INSERT INTO SZMS.PT_COM_CD_C(
+			CD_GROUP_ID
+			, CD_ID
+			, CD_NM
+			, USE_YN
+			, CD_EXPLN
+			, SORT_SEQ
+			, FRST_REG_DT
+			, FRST_RGTR_ID
+		)
+		VALUES (
+			#{cdGroupId}
+			, #{cdId}
+			, #{cdNm}
+			, #{useYn}
+			, #{cdExpln}
+			, CAST(#{sortSeq} AS NUMERIC)
+			, CURRENT_TIMESTAMP
+			, #{userId}
+		)
+	</insert>
+	
+	<!-- 상세 -->
+	<select id="selectCmnCdMngDetail" parameterType="map" resultType="egovMap">
+		SELECT CM.CD_GROUP_ID
+			, CC.CD_GROUP_NM 
+			, CM.CD_ID
+			, CM.CD_NM
+			, CM.CD_EXPLN 
+			, CM.SORT_SEQ 
+			, CASE WHEN CM.USE_YN = 'Y' THEN '사용'
+				ELSE '미사용'
+				END AS USE_YN 
+			, TO_CHAR(CM.FRST_REG_DT, 'YYYY-MM-DD') AS FRST_REG_DT
+			, CM.FRST_RGTR_ID 
+			, CM.LAST_MDFR_ID 
+			, TO_CHAR(CM.LAST_MDFCN_DT, 'YYYY-MM-DD') AS LAST_MDFCN_DT
+		FROM SZMS.PT_COM_CD_C CM
+		INNER JOIN SZMS.PT_CD_CLSF_CD_M CC
+		ON CM.CD_GROUP_ID = CC.CD_GROUP_ID 
+		WHERE 1 = 1
+			AND CM.CD_GROUP_ID = #{detailCdGroupId} 
+			AND CM.CD_ID = #{detailCdId} 
+	</select>
+	
+	<!-- 삭제 -->
+	<delete id="deleteCmnCdMng" parameterType="map">
+		DELETE FROM SZMS.PT_COM_CD_C
+		WHERE 1 = 1
+			AND CD_GROUP_ID = #{cdGroupId} 
+			AND CD_ID = #{cdId} 
+	</delete>
+	
+	<!-- 수정 -->
+	<update id="updateCmnCdMng" parameterType="map">
+		UPDATE SZMS.PT_COM_CD_C
+		SET CD_GROUP_ID = #{cdGroupId}
+			, CD_ID = #{cdId}
+			, CD_NM = #{cdNm}
+			, SORT_SEQ = CAST(#{sortSeq} AS NUMERIC)
+			, USE_YN = #{useYn}
+			, CD_EXPLN = #{cdExpln}
+			, LAST_MDFCN_DT = CURRENT_TIMESTAMP
+			, LAST_MDFR_ID = #{userId}
+		WHERE 1 = 1
+			AND CD_GROUP_ID = #{orgnlCdGroupId} 
+			AND CD_ID = #{orgnlCdId} 
+	</update>
+</mapper>

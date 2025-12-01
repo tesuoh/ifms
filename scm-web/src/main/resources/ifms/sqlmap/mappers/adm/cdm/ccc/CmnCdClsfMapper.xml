@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ifms.adm.cdm.ccc.mapper.CmnCdClsfMapper">
+
+	<!-- 공통코드 분류 총건수 -->
+	<select id="selectCmnCdClsfTotalCount" parameterType="map" resultType="int">
+		SELECT COUNT(*)
+		FROM SZMS.PT_CD_CLSF_CD_M
+		WHERE 1 = 1
+			<if test="cdGroupId != ''">
+			AND CD_GROUP_ID LIKE '%' || #{cdGroupId} || '%'
+			</if>
+			<if test="cdGroupNm != ''">
+			AND CD_GROUP_NM LIKE '%' || #{cdGroupNm} || '%'
+			</if>
+			<if test="useYn != ''">
+			AND USE_YN = #{useYn}
+			</if>
+	</select>
+	
+	
+	<!-- 공통코드 분류 관리 목록 -->
+	<select id="selectCmnCdClsfList" parameterType="map" resultType="egovMap">
+		SELECT ROW_NUMBER() OVER (ORDER BY FRST_REG_DT, CD_GROUP_ID DESC) AS ROW_NUM
+			, CD_GROUP_ID 
+			, CD_GROUP_NM 
+			, CASE WHEN USE_YN = 'Y' THEN '사용'
+				ELSE '미사용'
+				END AS USE_YN
+			, CD_MNG_SE_CD 
+			, CD_LEN 
+			, CD_EXPLN 
+			, FRST_RGTR_ID 
+			, TO_CHAR(FRST_REG_DT, 'YYYY-MM-DD') AS FRST_REG_DT
+			, LAST_MDFR_ID 
+			, TO_CHAR(LAST_MDFCN_DT, 'YYYY-MM-DD') AS LAST_MDFCN_DT 
+		FROM SZMS.PT_CD_CLSF_CD_M
+		WHERE 1 = 1
+			<if test="cdGroupId != ''">
+			AND CD_GROUP_ID LIKE '%' || #{cdGroupId} || '%'
+			</if>
+			<if test="cdGroupNm != ''">
+			AND CD_GROUP_NM LIKE '%' || #{cdGroupNm} || '%'
+			</if>
+			<if test="useYn != ''">
+			AND USE_YN = #{useYn}
+			</if>
+		ORDER BY ROW_NUM DESC
+		OFFSET #{startNo} ROWS FETCH NEXT #{listCount} ROWS ONLY
+	</select>
+	
+	<!-- 상세 -->
+	<select id="selectCmnCdClsfDetail" parameterType="map" resultType="egovMap">
+		SELECT CD_GROUP_ID 
+			, CD_GROUP_NM 
+			, CD_LEN 
+			, CASE WHEN USE_YN = 'Y' THEN '사용'
+				ELSE '미사용'
+				END AS USE_YN
+			, CD_EXPLN 
+			, FRST_RGTR_ID 
+			, TO_CHAR(FRST_REG_DT, 'YYYY-MM-DD') AS FRST_REG_DT
+			, LAST_MDFR_ID 
+			, TO_CHAR(LAST_MDFCN_DT, 'YYYY-MM-DD') AS LAST_MDFCN_DT 
+		FROM SZMS.PT_CD_CLSF_CD_M
+		WHERE 1 = 1
+			AND CD_GROUP_ID = #{detailCdGroupId}
+	</select>
+	
+	<!-- 등록 -->
+	<insert id="insertCmnCdClsf" parameterType="map">
+		INSERT INTO SZMS.PT_CD_CLSF_CD_M (
+			CD_GROUP_ID 
+			, CD_GROUP_NM 
+			, CD_LEN 
+			, USE_YN
+			, CD_EXPLN 
+			, FRST_RGTR_ID 
+			, FRST_REG_DT 
+		)
+		VALUES (
+			#{cdGroupId}
+			, #{cdGroupNm}
+			, CAST(#{cdLen} AS NUMERIC)
+			, #{useYn}
+			, #{cdExpln}
+			, #{userId}
+			, CURRENT_TIMESTAMP
+		)
+	</insert>
+	
+	<!-- 수정 -->
+	<update id="updateCmnCdClsf" parameterType="map">
+		UPDATE SZMS.PT_CD_CLSF_CD_M
+		SET CD_GROUP_ID = #{cdGroupId}
+			, CD_GROUP_NM = #{cdGroupNm}
+			, CD_LEN = CAST(#{cdLen} AS NUMERIC)
+			, USE_YN = #{useYn}
+			, CD_EXPLN = #{cdExpln}
+			, LAST_MDFR_ID = #{userId}
+			, LAST_MDFCN_DT = CURRENT_TIMESTAMP
+		WHERE 1 = 1
+			AND CD_GROUP_ID = #{orgnlCdGroupId}
+	</update>
+	
+	<!-- 삭제 -->
+	<delete id="deleteCmnCdClsf" parameterType="map">
+		DELETE FROM SZMS.PT_CD_CLSF_CD_M
+		WHERE 1 = 1
+			AND CD_GROUP_ID = #{cdGroupId}
+	</delete>
+</mapper>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<!-- CSS & javascript (JSP 파일 include) 시작 -->
+	<head>
+		<title>보호구역 통합관리시스템 > 로그인페이지</title>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name = "viewport" content = "user-scalable=no, width=device-width">
+		<meta name="author" content="보호구역 통합관리시스템">
+		<!-- description -->
+		<meta name="description" content="보호구역 통합관리시스템 프로젝트">
+		<!-- keywords -->
+		<meta name="keywords" content="">
+		<!-- favicon -->
+		<link rel="shortcut icon" href="../com/img/common/icon/favicon.ico">
+		<link rel="apple-touch-icon" href="../com/img/common/icon/favicon.ico">
+
+		<!-- ==============================================================
+			플러그인
+		============================================================== -->
+		<!-- 공통 -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/font-awesome/css/font-awesome.css" />
+		<link rel="stylesheet" type="text/css" href="../com/plugins/simple-line-icons/simple-line-icons.css" />
+		<script type="text/javascript" src="../com/plugins/jquery.min.js"></script>
+		<script type="text/javascript" src="../com/plugins/js.cookie.min.js"></script>
+        <script type="text/javascript" src="../com/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+		
+		<!-- bootstrap -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/bootstrap/css/bootstrap.css" />
+		<script type="text/javascript" src="../com/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+		<!-- bootstrap-datepicker -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css" />
+		<link rel="stylesheet" type="text/css" href="../com/plugins/bootstrap-timepicker/css/bootstrap-timepicker.css" />
+		<link rel="stylesheet" type="text/css" href="../com/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" />
+		<script type="text/javascript" src="../com/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+		<script type="text/javascript" src="../com/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.kr.min.js"></script>
+		<script type="text/javascript" src="../com/plugins/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+		<script type="text/javascript" src="../com/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+		<script type="text/javascript" src="../com/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.kr.js"></script>
+		<script type="text/javascript" src="../com/js/bootstrap-datepicker.kr.js"></script>
+		<script type="text/javascript" src="../com/js/components-date-time-pickers.js"></script>
+
+		<!-- bootstrap-fileinput -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/bootstrap-fileinput/bootstrap-fileinput.css" />
+		<script type="text/javascript" src="../com/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
+
+		<!-- bootstrap-tabdrop -->
+		<script type="text/javascript" src="../com/plugins/bootstrap-tabdrop/js/bootstrap-tabdrop.js"></script>
+
+		<!-- jstree -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/jstree/dist/themes/default/style.css" />
+		<script type="text/javascript" src="../com/plugins/jstree/dist/jstree.js"></script>
+		<script type="text/javascript" src="../com/js/ui-tree.js"></script>
+
+		<!-- div 크기 변경 감지 https://marcj.github.io/css-element-queries/ -->
+		<script type="text/javascript" src="../com/plugins/css-element-queries/ResizeSensor.js"></script>
+		<script type="text/javascript" src="../com/plugins/css-element-queries/ElementQueries.js"></script>
+		
+		<!-- 전체 레이어 모달 팝업 -->
+		<link type="text/css" rel="stylesheet" href="../com/plugins/magnific-popup/magnific-popup.css">
+		<script type="text/javascript" src="../com/plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+		<!-- 컨텐츠 셀렉트 -->
+		<script type="text/javascript" src="../com/plugins/slideNav/slideNav.js"></script>
+
+		<!-- 상단메뉴 -->
+		<link type="text/css" rel="stylesheet" href="../com/plugins/menu/css/menu.css">
+		<script type="text/javascript" src="../com/plugins/menu/js/custom.js"></script>
+
+        <!-- ==============================================================
+			공통 커스텀
+		============================================================== -->	
+		<!-- 스타일 css -->
+		<link rel="stylesheet" type="text/css" href="../com/css/components.css" />
+		<link type="text/css" rel="stylesheet" href="../com/css/style.css">
+
+		<!-- 전체 조합 css -->
+		<link type="text/css" rel="stylesheet" href="../com/css/common.css">
+		<link type="text/css" rel="stylesheet" href="../com/css/common-ie.css">
+
+		<!-- 공통 script -->
+		<script type="text/javascript" src="../com/js/app.js"></script>
+		<script type="text/javascript" src="../com/js/login.js"></script><!-- !!! 필독 : 로그인 화면은 "login.js"를 넣습니다. -->
+
+		<!-- ==============================================================
+			로그인 페이지
+		============================================================== -->
+		<!-- 레이아웃 CSS -->
+		<link type="text/css" rel="stylesheet" href="../com/css/login.css"><!-- !!! 필독 : 로그인 화면은 "login.css"를 넣습니다. -->
+		<link type="text/css" rel="stylesheet" href="../com/css/responsive.css">
+
+	</head>
+	<!-- CSS & javascript (JSP 파일 include) 끝 -->
+
+	<body class="login-page"><!-- !!! 필독 : 로그인 화면은 class="login-page" 이렇게 1개의 class로만 구성합니다. -->
+		<!-- 헤더 시작 -->
+		<header>
+			<!-- 로고 시작 -->
+			<div class="logo">
+				<a href="#"><img src="../com/img/common/header/logo.png" alt="logo"></a>
+			</div>
+			<!-- 로고 끝 -->
+		</header>
+		<!-- 헤더 끝 -->
+
+		<!-- 페이지 컨테이너 시작 -->
+		<section class="page-container">
+
+			<div class="page-content">
+
+				<!-- 컨텐츠 시작 -->
+				<div class="login-content">
+
+					<!-- 페이지 타이틀 시작 -->
+					<h1 class="page-title"><span>로그인</span></h1>
+					<p class="page-title-sub">
+						보호구역 통합관리시스템의 행정업무의 권한을 갖고 있는 사용자만 로그인 가능합니다.
+					</p>
+					<!-- 페이지 타이틀 끝 -->
+		
+					<!-- 아이디로그인 시작 -->
+					<div class="id-login-wrapper">
+						<div class="login-input-group">
+							<div class="portlet light bordered">
+								<div class="portlet-title">
+									<span class="form-title">경찰청 보호구역 로그인 관리자 정보</span>
+								</div>
+								<div class="portlet-body">
+									<!-- 테이블 시작 -->
+									<div class="table-scrollable">
+										<table class="table table-bordered">
+											<caption>경찰청 보호구역 로그인 관리자 정보 테이블 요약</caption>
+											<colgroup>
+												<col style="width:20%;">
+												<col style="width:auto;">
+											</colgroup>
+											<tbody>
+												<tr>
+													<th class="td-head" scope="row">USER_NM</th>
+													<td>보호구역관리자</td>
+												</tr>
+												<tr>
+													<th class="td-head" scope="row">USER_ID</th>
+													<td>szms009</td>
+												</tr>
+												<tr>
+													<th class="td-head" scope="row">POLSTN_CD</th>
+													<td>GVM001</td>
+												</tr>
+												<tr>
+													<th class="td-head" scope="row">TELNO</th>
+													<td>01000000000</td>
+												</tr>
+												<tr>
+													<th class="td-head" scope="row">LCLGV_CD</th>
+													<td>11000</td>
+												</tr>
+												<tr>
+													<th class="td-head" scope="row">AUTHRT_SN</th>
+													<td>901</td>
+												</tr>
+												<tr>
+													<th class="td-head" scope="row">szmsid</th>
+													<td>szms009</td>
+												</tr>
+												<tr>
+													<th class="td-head" scope="row">APRV_YN</th>
+													<td>Y</td>
+												</tr>
+												<tr>
+													<th class="td-head" scope="row">LGN_FAIL_NMTM</th>
+													<td>0</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+									<!-- 테이블 끝 -->
+								</div>
+							</div>
+						</div>
+		
+						<div class="login-btn-group">
+							<button type="button" class="btn btn-primary"><span>관리자 접속</span></button>
+						</div>
+					</div>
+					<!-- 아이디로그인 끝 -->
+		
+				</div>
+				<!-- 컨텐츠 끝 -->
+
+			</div>
+
+		</section>
+		<!-- 페이지 컨테이너 끝 -->
+
+		<!-- footer 시작 -->
+		<footer class="page-footer">
+
+			<div class="page-footer-link">
+				<ul class="page-footer-info">
+					<li><a href="#">개인정보처리방침</a></li>
+					<li><a href="#">회원약관</a></li>
+					<li><a href="#">이메일주소 무단 수집 거부</a></li>
+					<li><a href="#">저작권정책</a></li>
+				</ul>
+			</div>
+			<div class="page-footer-inner">
+				<div class="page-footer-logo">
+					<img src="../com/img/common/footer/logo_footer.png" alt="home" />
+				</div>
+				<div class="page-footer-container">
+					<span class="address">주소 ㅣ 전화번호 02-</span>
+					<span class="copyright">ⓒ2024 all rights reserved.</span>
+				</div>
+				<div class="page-family-site">
+					<select id="familySite" class="form-control" title="관련사이트">
+						<option value="https://www.naver.com/">관련사이트</option>
+					</select>
+					<script language="javascript">
+						function go_familySite(){
+							window.open(document.getElementById("familySite").value,'_blank');
+						}
+					</script>
+					<button type="button" class="btn dark" onclick="javascript:go_familySite();" title="새창으로 열림"><span>관련사이트 이동</span></button>
+				</div>
+			</div>
+
+		</footer>
+		<!-- footer 끝 -->
+
+	</body>
+
+</html>

@@ -1,0 +1,79 @@
+############################################################
+# 1. Eclipse / STS
+############################################################
+.project
+.classpath
+.settings/
+.loadpath
+.factorypath
+.apt_generated/
+.mtj.tmp/
+
+# workspace-level (절대 추가 금지)
+.metadata/
+Servers/
+
+############################################################
+# 2. OS / Editor
+############################################################
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+._*
+
+.vscode/
+.idea/
+*.iml
+out/
+
+############################################################
+# 3. Maven
+############################################################
+target/
+**/target/        # 모든 모듈 내부 target 폴더 일괄 제외
+
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+############################################################
+# 4. Java / Build Files
+############################################################
+*.class
+*.log
+*.war
+*.jar
+*.ear
+*.nar
+*.hprof
+hs_err_pid*
+
+############################################################
+# 5. Spring / Tomcat (WTP 포함)
+############################################################
+logs/
+tmp/
+temp/
+**/wtpwebapps/    # Eclipse WTP 자동 배포폴더
+**/.tomcatPlugin/
+
+############################################################
+# 6. Node (프론트 엔드가 있을 경우)
+############################################################
+node_modules/
+dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+############################################################
+# 7. Local 환경 파일
+############################################################
+*local.properties
+*local.yml
+*application-local*

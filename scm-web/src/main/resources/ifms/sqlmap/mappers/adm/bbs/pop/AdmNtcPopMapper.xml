@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ifms.adm.bbs.pop.mapper.AdmNtcPopMapper">
+
+	<!-- 팝업관리 총건수 -->
+	<select id="selectPopListTotalCount" parameterType="map" resultType="int">
+		SELECT COUNT(*) 
+		FROM SZMS.PT_NTC_POPUP_M
+		WHERE 1 = 1
+			AND DEL_YN = 'N'
+			<if test="sysClsfCd != ''">  
+	  		  	AND SYS_CLSF_CD = #{sysClsfCd}
+  		  	</if>
+			<if test="popupTtl != ''">  
+  		  		AND POPUP_TTL LIKE '%' || #{popupTtl} || '%' 
+  		  	</if>
+			<if test="popupBgngDt != ''">  
+  		  		AND POPUP_BGNG_DT <![CDATA[ >= ]]> #{popupBgngDt}::TIMESTAMP
+  		  	</if>
+			<if test="popupEndDt != ''">  
+  		  		AND POPUP_End_DT <![CDATA[ <= ]]> #{popupEndDt}::TIMESTAMP
+  		  	</if>
+	</select>
+	
+	<!-- 팝업관리조회 -->
+	<select id="selectPopList" parameterType="map" resultType="egovMap">
+		SELECT ROW_NUMBER() OVER (ORDER BY POPUP_SN) AS ROW_NUM
+			, POPUP_SN 
+			, POPUP_TTL 
+			, FILE_GROUP_SN 
+			, TO_CHAR(POPUP_BGNG_DT, 'YYYY-MM-DD') AS POPUP_BGNG_DT 
+			, TO_CHAR(POPUP_END_DT, 'YYYY-MM-DD') AS POPUP_END_DT 
+			, POPUP_SZ_SE_CD
+			, ACS_URL_ADDR 
+			, DEL_YN 
+			, TO_CHAR(FRST_REG_DT, 'YYYY-MM-DD') AS FRST_REG_DT
+			, SYS_CLSF_CD
+		FROM SZMS.PT_NTC_POPUP_M
+		WHERE 1 = 1
+			AND DEL_YN = 'N'
+			<if test="sysClsfCd != ''">  
+	  		  	AND SYS_CLSF_CD = #{sysClsfCd}
+  		  	</if>
+			<if test="popupTtl != ''">  
+  		  		AND POPUP_TTL LIKE '%' || #{popupTtl} || '%' 
+  		  	</if>
+			<if test="popupBgngDt != ''">  
+  		  		AND POPUP_BGNG_DT <![CDATA[ >= ]]> #{popupBgngDt}::TIMESTAMP
+  		  	</if>
+			<if test="popupEndDt != ''">  
+  		  		AND POPUP_End_DT <![CDATA[ <= ]]> #{popupEndDt}::TIMESTAMP
+  		  	</if>
+		ORDER BY POPUP_SN DESC
+		OFFSET #{startNo} ROWS FETCH NEXT #{listCount} ROWS ONLY
+	</select>
+	
+	<!-- 등록 -->
+	<insert id="insertPop" parameterType="map">
+		INSERT INTO SZMS.PT_NTC_POPUP_M(
+			POPUP_SN 
+			, POPUP_TTL 
+			, FILE_GROUP_SN 
+			, POPUP_BGNG_DT 
+			, POPUP_END_DT
+			, POPUP_SZ_SE_CD 
+			, FRST_RGTR_ID 
+			, FRST_REG_DT 
+			, ACS_URL_ADDR
+			, SYS_CLSF_CD
+		)
+		VALUES (
+			NEXTVAL('SZMS.SQ_PT_NTC_POPUP_M')
+			, #{popupTtl}
+			, #{fileGroupSn}
+			, #{popupBgngDt}::TIMESTAMP
+			, #{popupEndDt}::TIMESTAMP
+			, #{popupSz}			
+			, #{frstRgtrId}
+			, CURRENT_TIMESTAMP
+			, #{acsUrlAddr}
+			, #{sysClsfCd}
+		)
+	</insert>
+	
+	<!-- 상세 -->
+	<select id="selectPopDetail" parameterType="String" resultType="egovMap">
+		SELECT POPUP_SN 
+			, POPUP_TTL 
+			, TO_CHAR(POPUP_BGNG_DT, 'YYYY-MM-DD') AS POPUP_BGNG_DT 
+			, TO_CHAR(POPUP_END_DT, 'YYYY-MM-DD') AS POPUP_END_DT 
+			, CASE WHEN POPUP_SZ_SE_CD = 'sm' THEN 'Small'
+				ELSE 'Basic'
+				END AS POPUP_SZ_SE_CD 
+			, ACS_URL_ADDR 
+			, TO_CHAR(P.FRST_REG_DT, 'YYYY-MM-DD') AS FRST_REG_DT
+			, F.FILE_GROUP_SN 
+			, F.ATCH_FILE_URL_ADDR
+			, F.ORGNL_FILE_NM
+			, F.ORGNL_FILE_EXTN_NM
+			, F.ATCH_FILE_SZ
+			, F.FILE_DTL_SN
+			, F.SRVR_FILE_NM
+			, CONCAT(F.ATCH_FILE_URL_ADDR, '/', F.ORGNL_FILE_NM, '.', F.ORGNL_FILE_EXTN_NM) AS FILE_FULL_PATH
+			, SYS_CLSF_CD
+		FROM SZMS.PT_NTC_POPUP_M P
+		LEFT JOIN SZMS.PT_COM_AHFL_M F
+			ON P.FILE_GROUP_SN = F.FILE_GROUP_SN 
+			AND F.DEL_YN = 'N'
+		WHERE 1 = 1
+			AND P.DEL_YN = 'N'
+			AND POPUP_SN = CAST(#{popupSn} AS NUMERIC)
+	</select>	
+	
+	<!-- 삭제 -->
+	<update id="deletePop" parameterType="map">
+		UPDATE SZMS.PT_NTC_POPUP_M
+		SET DEL_YN = 'Y'
+			, LAST_MDFR_ID = #{userId}
+			, LAST_MDFCN_DT = CURRENT_TIMESTAMP
+		WHERE 1 = 1
+			AND POPUP_SN = CAST(#{popupSn} AS NUMERIC)
+	</update>	
+	
+	<!-- 첨부파일 삭제를 위한 정보 가져오기 -->
+	<select id="getFileInfo" parameterType="map" resultType="egovMap">
+		SELECT F.FILE_GROUP_SN
+			, F.FILE_DTL_SN
+		FROM SZMS.PT_NTC_POPUP_M P 
+		LEFT JOIN SZMS.PT_COM_AHFL_M F
+			ON P.FILE_GROUP_SN = F.FILE_GROUP_SN 
+			AND F.DEL_YN = 'N'
+		WHERE 1 = 1
+			AND P.POPUP_SN = CAST(#{popupSn} AS NUMERIC)
+	</select>
+	
+	<!-- 수정 -->
+	<update id="updatePop" parameterType="map">
+		UPDATE SZMS.PT_NTC_POPUP_M
+		SET FILE_GROUP_SN = #{fileGroupSn}
+			, POPUP_TTL = #{popupTtl}
+			, POPUP_BGNG_DT = #{popupBgngDt}::TIMESTAMP
+			, POPUP_END_DT = #{popupEndDt}::TIMESTAMP
+			, POPUP_SZ_SE_CD = #{popupSz}
+			, LAST_MDFR_ID = #{userId}
+			, LAST_MDFCN_DT = CURRENT_TIMESTAMP
+			, ACS_URL_ADDR = #{acsUrlAddr}
+		WHERE 1 = 1
+			AND POPUP_SN = CAST(#{popupSn} AS NUMERIC)
+	</update>
+
+</mapper>

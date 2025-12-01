@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+						http://www.springframework.org/schema/aop
+						https://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!-- AOP 자동 프록시 생성 설정 추가 -->
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+
+	<aop:config>
+		<aop:pointcut id="serviceMethod" expression="execution(* ifms..service.impl.*Impl.*(..))" />
+
+		<aop:aspect ref="exceptionTransfer">
+			<aop:after-throwing throwing="exception" pointcut-ref="serviceMethod" method="transfer" />
+		</aop:aspect>
+	</aop:config>
+
+	<bean id="exceptionTransfer" class="org.egovframe.rte.fdl.cmmn.aspect.ExceptionTransfer">
+	</bean>
+
+	
+</beans>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ifms.adm.opl.mapper.CmnOplLogMapper">
+
+    <select id="selectCmnUahPtUsrAcsHstList" parameterType="map" resultType="egovMap">
+    	WITH base_region AS (
+		    SELECT
+		        DISTINCT
+		        CASE 
+		            WHEN RIGHT(LEFT(stdg_cd, 5), 1) = '0' THEN LEFT(stdg_cd, 4) 
+		            ELSE LEFT(stdg_cd, 5) 
+		        END AS stdg_sgg_cd,
+		        CASE 
+		            WHEN LEFT(stdg_cd, 5) = '36110' OR ctpv_nm LIKE '%세종%' 
+		            THEN '세종특별자치시' 
+		            ELSE ctpv_nm 
+		        END AS ctpv_nm,
+		        CASE 
+		            WHEN LEFT(stdg_cd, 5) = '36110' OR ctpv_nm LIKE '%세종%' 
+		            THEN '세종특별자치시' 
+		            ELSE sgg_nm 
+		        END AS sgg_nm
+		    FROM szms.pt_stdg_cd_c
+		    WHERE stty_emd_nm = '' AND sgg_nm != ''
+		),
+		
+		survey_approval AS (
+		    SELECT
+		        b.mng_stdg_ctpv_cd || b.mng_stdg_sgg_cd AS mng_stdg_cd,
+		        COUNT(*) AS sign_cnt
+		    FROM cad.cad_fclty_aprv_prcs_hstry_h a
+		    LEFT JOIN szms.pz_ptzn_dsgn_m b ON a.ptzn_mng_no = b.ptzn_mng_no
+		    WHERE (pjt_no IS NULL OR pjt_no = '') = FALSE
+		    AND TO_CHAR(COALESCE(a.last_mdfcn_dt, a.frst_reg_dt), 'yyyy-mm-dd')  between #{searchYmd} and #{searchYmd2}
+		    GROUP BY mng_stdg_cd
+		),
+		
+		cad_upload AS (
+		    SELECT
+		        c.mng_stdg_ctpv_cd || c.mng_stdg_sgg_cd AS mng_stdg_cd,
+		        COUNT(*) AS dxf_upload_cnt
+		    FROM szms.pz_accnd_exmn_stus_data_d a
+		    LEFT JOIN szms.pt_com_ahfl_m b ON a.flrpln_file_group_sn = b.file_group_sn
+		    LEFT JOIN szms.pz_ptzn_dsgn_m c ON a.ptzn_mng_no = c.ptzn_mng_no
+		    WHERE del_yn = 'N'
+		    AND TO_CHAR(b.frst_reg_dt, 'yyyy-mm-dd')  between #{searchYmd} and #{searchYmd2}
+		    GROUP BY mng_stdg_cd
+		),
+		
+		designation AS (
+		    SELECT
+		        a.stdg_ctpv_cd || a.stdg_sgg_cd AS mng_stdg_cd,
+		        COUNT(1) AS dsgn_apply_cnt
+		    FROM szms.pz_ptzn_dsgn_apply_m a
+		    LEFT JOIN szms.pz_ptzn_dsgn_apply_data_a b ON a.ptzn_dsgn_aply_sn = b.ptzn_dsgn_aply_sn
+		    WHERE b.aprv_yn = 'Y'
+		    AND TO_CHAR(a.frst_reg_dt, 'yyyy-mm-dd')  between #{searchYmd} and #{searchYmd2}
+		    GROUP BY mng_stdg_cd
+		),
+		
+		designation_cancel AS (
+		    SELECT
+		        b.mng_stdg_ctpv_cd || b.mng_stdg_sgg_cd AS mng_stdg_cd,
+		        COUNT(1) AS dsgn_rmv_cnt
+		    FROM szms.pz_ptzn_dsgn_rmv_data_a a
+		    LEFT JOIN szms.pz_ptzn_dsgn_m b ON a.ptzn_mng_no = b.ptzn_mng_no
+		    WHERE a.rmv_aprv_ymd IS NOT NULL
+		    AND TO_CHAR(a.frst_reg_dt, 'yyyy-mm-dd') between #{searchYmd} and #{searchYmd2}
+		    GROUP BY mng_stdg_cd
+		),
+		
+		facility_mgmt AS (
+		    SELECT
+		        b.mng_stdg_ctpv_cd || b.mng_stdg_sgg_cd AS mng_stdg_cd,
+		        COUNT(*) AS facility_cnt
+		    FROM cad.cad_fclty_aprv_prcs_hstry_h a
+		    LEFT JOIN szms.pz_ptzn_dsgn_m b ON a.ptzn_mng_no = b.ptzn_mng_no
+		    WHERE (pjt_no IS NULL OR pjt_no = '') = TRUE
+		    AND TO_CHAR(COALESCE(a.last_mdfcn_dt, a.frst_reg_dt), 'yyyy-mm-dd') between #{searchYmd} and #{searchYmd2}
+		GROUP BY mng_stdg_cd
+		),
+		
+		login_count AS (
+		    SELECT
+		        b.ogdp_inst_cd,
+		        COUNT(*) AS login_cnt
+		    FROM szms.pt_lgn_h a
+		    LEFT JOIN szms.pt_user_info_m b ON a.user_id = b.user_id
+		    WHERE TO_CHAR(cntn_dt, 'yyyy-mm-dd') between #{searchYmd} and #{searchYmd2}
+		    GROUP BY b.ogdp_inst_cd
+		)
+		
+		SELECT
+		    CASE 
+		        WHEN GROUPING(br.stdg_sgg_cd) = 1 THEN 'all' 
+		        ELSE br.stdg_sgg_cd 
+		    END AS stdg_sgg_cd,
+		    CASE 
+		        WHEN GROUPING(br.ctpv_nm) = 1 THEN '전체' 
+		        ELSE br.ctpv_nm 
+		    END AS ctpv_nm,
+		    CASE 
+		        WHEN GROUPING(br.sgg_nm) = 1 THEN '전체' 
+		        ELSE br.sgg_nm 
+		    END AS sgg_nm,
+		    SUM(COALESCE(sa.sign_cnt, 0)) AS survey_approval_count,
+		    SUM(COALESCE(cu.dxf_upload_cnt, 0)) AS cad_upload_count,
+		    SUM(COALESCE(d.dsgn_apply_cnt, 0)) AS designation_count,
+		    SUM(COALESCE(dc.dsgn_rmv_cnt, 0)) AS designation_cancel_count,
+		    SUM(COALESCE(fm.facility_cnt, 0)) AS facility_management_count,
+		    SUM(COALESCE(lc.login_cnt, 0)) AS login_count
+		FROM base_region br
+		LEFT JOIN survey_approval sa ON sa.mng_stdg_cd LIKE CONCAT(br.stdg_sgg_cd, '%')
+		LEFT JOIN cad_upload cu ON cu.mng_stdg_cd LIKE CONCAT(br.stdg_sgg_cd, '%')
+		LEFT JOIN designation d ON d.mng_stdg_cd LIKE CONCAT(br.stdg_sgg_cd, '%')
+		LEFT JOIN designation_cancel dc ON dc.mng_stdg_cd LIKE CONCAT(br.stdg_sgg_cd, '%')
+		LEFT JOIN facility_mgmt fm ON fm.mng_stdg_cd LIKE CONCAT(br.stdg_sgg_cd, '%')
+		LEFT JOIN login_count lc ON lc.ogdp_inst_cd LIKE CONCAT(br.stdg_sgg_cd, '%')
+		GROUP BY GROUPING SETS (
+		    (br.stdg_sgg_cd, br.ctpv_nm, br.sgg_nm), 
+		    ()
+		)
+		ORDER BY GROUPING(br.stdg_sgg_cd) DESC, br.stdg_sgg_cd ASC, br.ctpv_nm ASC, br.sgg_nm ASC;
+    </select>
+    
+</mapper>

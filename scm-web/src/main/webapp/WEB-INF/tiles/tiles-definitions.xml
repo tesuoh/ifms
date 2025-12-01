@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+    <!-- 로그인 페이지 정의 -->
+    <definition name="cmn/usr/lgn/login.tiles" extends="tiles-layout-cmn">
+        <put-attribute name="body" value="/WEB-INF/jsp/cmn/usr/lgn/login.jsp" />
+    </definition>
+
+    <!-- 관리자 메인 페이지 정의 -->
+    <definition name="adm/main/admMain.do" extends="tiles-layout-adm">
+        <put-attribute name="body" value="/WEB-INF/jsp/adm/main/admMain.jsp" />
+    </definition>
+
+    <definition name="adm/*.do" extends="tiles-layout-adm">
+        <put-attribute name="body" value="/WEB-INF/jsp/adm/{1}.jsp" />
+    </definition>
+
+    <definition name="adm/*/*.do" extends="tiles-layout-adm">
+        <put-attribute name="body" value="/WEB-INF/jsp/adm/{1}/{2}.jsp" />
+    </definition>
+
+    <definition name="adm/*/*/*.do" extends="tiles-layout-adm">
+        <put-attribute name="body" value="/WEB-INF/jsp/adm/{1}/{2}/{3}.jsp" />
+    </definition>
+    
+    <!-- 시설(FCL) 페이지 정의 -->
+	<definition name="fcl/main/fclMain.do" extends="tiles-layout-adm">
+	    <put-attribute name="body" value="/WEB-INF/jsp/fcl/main/fclMain.jsp" />
+	</definition>
+	
+	<definition name="fcl/*.do" extends="tiles-layout-adm">
+	    <put-attribute name="body" value="/WEB-INF/jsp/fcl/{1}.jsp" />
+	</definition>
+	
+	<definition name="fcl/*/*.do" extends="tiles-layout-adm">
+	    <put-attribute name="body" value="/WEB-INF/jsp/fcl/{1}/{2}.jsp" />
+	</definition>
+	
+	<definition name="fcl/*/*/*.do" extends="tiles-layout-adm">
+	    <put-attribute name="body" value="/WEB-INF/jsp/fcl/{1}/{2}/{3}.jsp" />
+	</definition>
+	
+	<!-- 항행(NST) 페이지 정의 -->
+	<definition name="nst/main/nstMain.do" extends="tiles-layout-adm">
+	    <put-attribute name="body" value="/WEB-INF/jsp/fcl/main/fclMain.jsp" />
+	</definition>
+	
+	<definition name="nst/*.do" extends="tiles-layout-adm">
+	    <put-attribute name="body" value="/WEB-INF/jsp/fcl/{1}.jsp" />
+	</definition>
+	
+	<definition name="nst/*/*.do" extends="tiles-layout-adm">
+	    <put-attribute name="body" value="/WEB-INF/jsp/fcl/{1}/{2}.jsp" />
+	</definition>
+	
+	<definition name="nst/*/*/*.do" extends="tiles-layout-adm">
+	    <put-attribute name="body" value="/WEB-INF/jsp/fcl/{1}/{2}/{3}.jsp" />
+	</definition>
+	
+	<!-- GIS 페이지 정의 -->
+	<definition name="gis/main/gisMain.do" extends="tiles-layout-adm">
+	    <put-attribute name="body" value="/WEB-INF/jsp/fcl/main/fclMain.jsp" />
+	</definition>
+	
+	<definition name="gis/*.do" extends="tiles-layout-adm">
+	    <put-attribute name="body" value="/WEB-INF/jsp/fcl/{1}.jsp" />
+	</definition>
+	
+	<definition name="gis/*/*.do" extends="tiles-layout-adm">
+	    <put-attribute name="body" value="/WEB-INF/jsp/fcl/{1}/{2}.jsp" />
+	</definition>
+	
+	<definition name="gis/*/*/*.do" extends="tiles-layout-adm">
+	    <put-attribute name="body" value="/WEB-INF/jsp/fcl/{1}/{2}/{3}.jsp" />
+	</definition>
+
+    <!-- 지도 메인 페이지 정의 -->
+	<!-- 2024-11-11 lsw : 지도 레이아웃 -->
+	<!-- 지도 화면 타일즈(행정 - 실태조사) -->
+    <definition name="mapFs/*.do" extends="tiles-layout-map-fs">
+        <put-attribute name="body" value="/WEB-INF/jsp/biz/{1}.jsp" />
+    </definition>
+
+    <definition name="mapFs/*/*.do" extends="tiles-layout-map-fs">
+        <put-attribute name="body" value="/WEB-INF/jsp/biz/{1}/{2}.jsp" />
+    </definition>
+
+    <definition name="mapFs/*/*/*.do" extends="tiles-layout-map-fs">
+        <put-attribute name="body" value="/WEB-INF/jsp/biz/{1}/{2}/{3}.jsp" />
+    </definition>
+
+	<!-- 지도 화면 타일즈(행정 - 사고현황 조회) -->
+    <definition name="mapAcci/*.do" extends="tiles-layout-map-acci">
+        <put-attribute name="body" value="/WEB-INF/jsp/biz/{1}.jsp" />
+    </definition>
+    
+    <definition name="mapAcci/*/*.do" extends="tiles-layout-map-acci">
+        <put-attribute name="body" value="/WEB-INF/jsp/biz/{1}/{2}.jsp" />
+    </definition>
+
+    <definition name="mapAcci/*/*/*.do" extends="tiles-layout-map-acci">
+        <put-attribute name="body" value="/WEB-INF/jsp/biz/{1}/{2}/{3}.jsp" />
+    </definition>
+    
+   	<!-- 지도 화면 타일즈(대민) -->
+<!--     <definition name="mapPtl/*.do" extends="tiles-layout-map-ptl"> -->
+<!--         <put-attribute name="body" value="/WEB-INF/jsp/map/{1}.jsp" /> -->
+<!--     </definition> -->
+    
+<!--     <definition name="mapPtl/*/*.do" extends="tiles-layout-map-ptl"> -->
+<!--         <put-attribute name="body" value="/WEB-INF/jsp/map/{1}/{2}.jsp" /> -->
+<!--     </definition> -->
+
+<!--     <definition name="mapPtl/*/*/*.do" extends="tiles-layout-map-ptl"> -->
+<!--         <put-attribute name="body" value="/WEB-INF/jsp/map/{1}/{2}/{3}.jsp" /> -->
+<!--     </definition> -->
+
+    
+    <definition name="*.page" extends="page-layout">
+        <put-attribute name="body" value="/WEB-INF/jsp/{1}.jsp" />
+    </definition>
+    <definition name="*/*.page" extends="page-layout">
+        <put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}.jsp" />
+    </definition>
+    <definition name="*/*/*.page" extends="page-layout">
+        <put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}.jsp" />
+    </definition>
+    <definition name="*/*/*/*.page" extends="page-layout">
+        <put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}.jsp" />
+    </definition>
+    <definition name="*/*/*/*/*.page" extends="page-layout">
+        <put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}.jsp" />
+    </definition>
+
+    <definition name="*.pop" extends="pop-layout">
+        <put-attribute name="body" value="/WEB-INF/jsp/{1}.jsp" />
+    </definition>
+    <definition name="*/*.pop" extends="pop-layout">
+        <put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}.jsp" />
+    </definition>
+    <definition name="*/*/*.pop" extends="pop-layout">
+        <put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}.jsp" />
+    </definition>
+    <definition name="*/*/*/*.pop" extends="pop-layout">
+        <put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}.jsp" />
+    </definition>
+    <definition name="*/*/*/*/*.pop" extends="pop-layout">
+        <put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}/{5}.jsp" />
+    </definition>
+
+</tiles-definitions>

@@ -1,0 +1,36 @@
+package ${package}.service;
+
+import ${package}.mapper.${entityName}Mapper;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * ${comment} Service
+ */
+@Service
+public class ${entityName}Service {
+
+    private final ${entityName}Mapper ${lowerEntity}Mapper;
+
+    public ${entityName}Service(${entityName}Mapper ${lowerEntity}Mapper) {
+        this.${lowerEntity}Mapper = ${lowerEntity}Mapper;
+    }
+
+    public List<Map<String,Object>> select${entityName}List(String searchKeyword, int pageNo, int pageSize) {
+        // Mapper 호출 시 검색 키워드나 페이징 파라미터를 넘겨줄 수 있음
+        return ${lowerEntity}Mapper.select${entityName}List(searchKeyword, pageNo, pageSize);
+    }
+
+    public Map<String,Object> select${entityName}Detail(Long id) {
+        return ${lowerEntity}Mapper.select${entityName}Detail(id);
+    }
+
+    public void insert${entityName}(Map<String, Object> paramMap) {
+        ${lowerEntity}Mapper.insert${entityName}(paramMap);
+    }
+
+    public void update${entityName}(Map<String, Object> paramMap) {
+        ${lowerEntity}Mapper.update${entityName}(paramMap);
+    }
+}

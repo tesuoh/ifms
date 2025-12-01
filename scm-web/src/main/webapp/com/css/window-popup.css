@@ -1,0 +1,96 @@
+@charset "utf-8";
+
+/* ----------------------------------
+
+Name: window-popup.css
+Categorie : 윈도우팝업
+Author : 이상혁
+Version : v.1.0
+Created : 2022-08-30
+Last update : 2022-08-30
+
+-------------------------------------
+
+/* --------------------------------------------
+ * 윈도우 팝업
+/* ------------------------------------------ */
+body, 
+.navbar, 
+.parallax, 
+.page-footer, 
+.menu-all-popup-wrapper 
+.mfp-container {
+    min-width: auto;
+}
+.page-content-wrapper {
+    width: auto;
+    min-width: auto;
+}
+.page-content {
+    padding: 20px;
+}
+.page-content.no-blank{
+    padding: 0px;
+}
+.contents-row.row-blank {
+    padding: 0px 20px;
+}
+.page-window-popup.page-window-popup {
+    overflow-y: auto;
+}
+.page-window-popup.page-window-popup .navbar {
+    position: relative;
+    margin-bottom: 0px;
+    background-color: #007ac3;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border: none;
+}
+.page-window-popup.page-window-popup .page-header-text {
+    position: absolute;
+    top: 12px;
+    left: 20px;
+    color:#fff; 
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.page-window-popup .content-wrapper {
+    display: block;
+}
+.map-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+.map-wrapper .map-area {
+    width: 100%;
+    height: calc(100vh - 50px);
+}
+.window-popup-map-top-bar {
+    position: absolute;
+    padding: 10px;
+    width: 100%;
+    z-index: 1;
+}
+.window-popup-map-top-bar .map-top-bar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    gap: 20px;
+    height: 100%;
+    background-color: #fff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+.window-popup-map-top-bar .map-top-bar-inner .map-top-default-btn-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    gap: 4px;
+}
+.window-popup-map-top-bar .map-top-bar-inner .map-top-date {
+    margin-left: auto;
+}

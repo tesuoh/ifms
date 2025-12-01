@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<title>보호구역 통합관리시스템</title>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name = "viewport" content = "user-scalable=no, width=device-width">
+		<meta name="author" content="보호구역 통합관리시스템">
+		<!-- description -->
+		<meta name="description" content="보호구역 통합관리시스템 프로젝트">
+		<!-- keywords -->
+		<meta name="keywords" content="">
+		<!-- favicon -->
+		<link rel="shortcut icon" href="../../com/img/common/icon/favicon.ico">
+		<link rel="apple-touch-icon" href="../../com/img/common/icon/favicon.ico">
+
+		<!-- ==============================================================
+			플러그인
+		============================================================== -->
+		<!-- 공통 -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/font-awesome/css/font-awesome.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/simple-line-icons/simple-line-icons.css" />
+		<script type="text/javascript" src="../../com/plugins/jquery.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/js.cookie.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+
+		<!-- bootstrap -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap/css/bootstrap.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+		<!-- bootstrap-datepicker -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-timepicker/css/bootstrap-timepicker.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.kr.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.kr.js"></script>
+		<script type="text/javascript" src="../../com/js/bootstrap-datepicker.kr.js"></script>
+		<script type="text/javascript" src="../../com/js/components-date-time-pickers.js"></script>
+
+		<!-- bootstrap-fileinput -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-fileinput/bootstrap-fileinput.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
+
+		<!-- bootstrap-tabdrop -->
+		<script type="text/javascript" src="../../com/plugins/bootstrap-tabdrop/js/bootstrap-tabdrop.js"></script>
+
+		<!-- jstree -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/jstree/dist/themes/default/style.css" />
+		<script type="text/javascript" src="../../com/plugins/jstree/dist/jstree.js"></script>
+		<script type="text/javascript" src="../../com/js/ui-tree.js"></script>
+
+		<!-- div 크기 변경 감지 https://marcj.github.io/css-element-queries/ -->
+		<script type="text/javascript" src="../../com/plugins/css-element-queries/ResizeSensor.js"></script>
+		<script type="text/javascript" src="../../com/plugins/css-element-queries/ElementQueries.js"></script>
+		
+		<!-- 전체 레이어 모달 팝업 -->
+		<link type="text/css" rel="stylesheet" href="../../com/plugins/magnific-popup/magnific-popup.css">
+		<script type="text/javascript" src="../../com/plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+		<!-- 컨텐츠 셀렉트 -->
+		<script type="text/javascript" src="../../com/plugins/slideNav/slideNav.js"></script>
+
+        <!-- ==============================================================
+			공통 커스텀
+		============================================================== -->
+		<!-- 공통 script -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/font-awesome/css/font-awesome.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/simple-line-icons/simple-line-icons.css" />
+		<script type="text/javascript" src="../../com/js/app.js"></script>
+
+		<!-- 스타일 css -->
+		<link type="text/css" rel="stylesheet" href="../../com/css/components.css" />
+		<link type="text/css" rel="stylesheet" href="../../com/css/style.css" />
+
+		<!-- 전체 조합 css -->
+		<link type="text/css" rel="stylesheet" href="../../com/css/common.css" />
+		<link type="text/css" rel="stylesheet" href="../../com/css/common-ie.css">
+
+		<!-- 지도 css -->
+		<link type="text/css" rel="stylesheet" href="../../com/css/map.css" />
+		<script type="text/javascript" src="../../com/js/map.js"></script>
+
+		<!-- 구글 맵 시작 (작업시 삭제할것) -->
+		<script src="http://maps.googleapis.com/maps/api/js"></script>
+		<script>
+			function initialize() {
+			  var mapProp = {
+				center: new google.maps.LatLng(37.250943, 127.028344),
+				zoom:15,
+				zoomControl:true,
+				zoomControlOptions: {
+				  style:google.maps.ZoomControlStyle.SMALL
+				},
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			  };
+			  var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+			}
+			google.maps.event.addDomListener(window, 'load', initialize);
+		</script>
+		<!-- 구글 맵 끝 (작업시 삭제할것) -->
+
+	</head>
+	<body class="system-map-page map-admin-page">
+
+		<!-- 페이지 컨테이너 시작 -->
+		<section class="page-container">
+
+			<div class="page-content-wrapper">
+
+				<!-- 서브메뉴 시작 -->
+				<div class="page-sidebar-wrapper">
+					
+					<div class="sidebar-toggler">
+						<a href="javascript:;" class="">Sidebar</a>
+					</div>
+					<div class="page-sidebar">
+
+						<div class="page-sidebar-logo">
+							<a href="javascript:void(0);" title="경찰청 로고" class="logo">
+								<img src="../../com/img/common/header/logo.png" class="logo-top" alt="경찰청 로고">
+							</a>
+							<div class="header-project-name">보호구역 통합관리시스템</div>
+						</div>
+
+						<div class="system-left-tab-wrapper">
+							<!-- 탭 시작 -->
+							<ul class="system-left-tab-group">
+								<li class="active">
+									<a href="#system_left_test_info_tab_1" data-toggle="tab" class="tab-list"> 통합검색 </a>
+								</li>
+								<li>
+									<a href="#system_left_test_info_tab_2" data-toggle="tab" class="tab-api"> 레이어 </a>
+								</li>
+							</ul>
+							<div class="tab-content">
+	
+								<!-- 탭1 컨텐츠 시작 -->
+								<div class="tab-pane active in" id="system_left_test_info_tab_1">
+
+									<div class="treeview-project-name">
+										<p class="project-title">검색할 주소를 입력해주세요.</p>
+										<div class="project-search">
+											<div class="input-group">
+												<!--input id명칭과 for가 동일해야함 (웹접근성)-->
+												<label class="input-label-none" for="labelEx">주소검색</label>
+												<select id="labelEx" class="bs-select form-control" style="width:100%;">
+													<option>주소검색</option>
+													<option>선택1</option>
+												</select>
+											</div>
+											<div class="input-group">
+												<input type="text" class="form-control search">
+												<span class="input-group-btn">
+													<button class="btn btn-primary btn-icon-single btn-icon-search" type="button" alt="검색버튼"></button>
+												</span>
+											</div>
+										</div>
+									</div>
+
+									<h1 class="page-title-1depth"><span>검색결과</span></h1>
+			
+									<!-- 검색결과 시작 -->
+									<div class="map-left-search-result">
+										<div class="table-scrollable grid-table">
+											<table class="table table-medium table-tbody">
+												<caption>검색된 주소 테이블</caption>
+												<colgroup>
+													<col style="width:auto;">
+													<col style="width:70px;">
+												</colgroup>
+												<thead>
+													<tr>
+														<th>검색된 주소</th>
+														<th>위치이동</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>
+															<a href="#" class="search-result-group">
+																<span class="search-result-icon">A</span>
+																<span class="search-result-text-group">
+																	<span class="search-result-title">영신초등학교</span>
+																	<span class="search-result-address">서울특별시 영등포구 도신로60길 23(신길동)</span>
+																	<span class="search-result-address">서울특별시 영등포구 신길동 121 영신초등학교</span>
+																</span>
+															</a>
+														</td>
+														<td class="t-center">
+															<button type="button" class="btn btn-icon-single btn-small btn-icon-guidance" title="위치로 이동하기"></button>
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<a href="#" class="search-result-group">
+																<span class="search-result-icon">B</span>
+																<span class="search-result-text-group">
+																	<span class="search-result-title">영신초등학교</span>
+																	<span class="search-result-address">서울특별시 영등포구 도신로60길 23(신길동)</span>
+																	<span class="search-result-address">서울특별시 영등포구 신길동 121 영신초등학교</span>
+																</span>
+															</a>
+														</td>
+														<td class="t-center">
+															<button type="button" class="btn btn-icon-single btn-small btn-icon-guidance" title="위치로 이동하기"></button>
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<a href="#" class="search-result-group">
+																<span class="search-result-icon">C</span>
+																<span class="search-result-text-group">
+																	<span class="search-result-title">영신초등학교</span>
+																	<span class="search-result-address">서울특별시 영등포구 도신로60길 23(신길동)</span>
+																	<span class="search-result-address">서울특별시 영등포구 신길동 121 영신초등학교</span>
+																</span>
+															</a>
+														</td>
+														<td class="t-center">
+															<button type="button" class="btn btn-icon-single btn-small btn-icon-guidance" title="위치로 이동하기"></button>
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<a href="#" class="search-result-group">
+																<span class="search-result-icon">D</span>
+																<span class="search-result-text-group">
+																	<span class="search-result-title">영신초등학교</span>
+																	<span class="search-result-address">서울특별시 영등포구 도신로60길 23(신길동)</span>
+																	<span class="search-result-address">서울특별시 영등포구 신길동 121 영신초등학교</span>
+																</span>
+															</a>
+														</td>
+														<td class="t-center">
+															<button type="button" class="btn btn-icon-single btn-small btn-icon-guidance" title="위치로 이동하기"></button>
+														</td>
+													</tr>
+												</tbody>
+
+												<!-- 검색된 데이터가 없을때 시작 -->
+												<!-- <td colspan="2"> col 갯수만큼 숫자를 넣어줍니다. -->
+												<!-- <tbody>
+													<tr>
+														<td colspan="2">
+															<div class="no-data-wrapper">
+																<div class="no-data-inner">
+																	<div class="no-data-icon"></div>
+																	<p class="no-data-text">데이터가 없습니다.</p>
+																</div>
+															</div>
+														</td>
+													</tr>
+												</tbody> -->
+												<!-- 검색된 데이터가 없을때 끝 -->
+											</table>
+										</div>
+										<div class="pagination-wrapper">
+											<div class="pagination-panel">
+												<a href="javascript:void(0);" class="icon icon-arrow-start" title="처음으로">처음으로</a>
+												<a href="javascript:void(0);" class="icon icon-arrow-left" title="이전">이전</a>
+
+												<label class="input-label-none" for="paginationInput">현재페이지</label>
+												<input type="text" id="paginationInput" class="form-control pagination-panel-input" maxlenght="5" value="1">
+
+												<span class="pagination-panel-total">/ 3</span>
+
+												<a href="javascript:void(0);" class="icon icon-arrow-right" title="다음">다음</a>
+												<a href="javascript:void(0);" class="icon icon-arrow-end" title="끝으로">끝으로</a>
+											</div>
+										</div>
+										<div class="table-bottom-control">
+											<button type="button" class="btn btn-dark-gray btn-icon-left btn-icon-refresh"><span>초기화</span></button>
+										</div>
+									</div>
+									<!-- 검색결과 끝 -->
+								</div>
+								<!-- 탭1 컨텐츠 끝 -->
+	
+								<!-- 탭2 컨텐츠 시작 -->
+								<div class="tab-pane" id="system_left_test_info_tab_2">
+
+									<div class="treeview-project-name">
+										<div class="project-search">
+
+											<div class="contents-row">
+												<h1 class="page-title-1depth"><span>어린이 보호구역</span></h1>
+												<div class="table-title-control">
+													<label class="mt-checkbox mt-checkbox-outline">
+														<input type="checkbox" value="1" checked=""> 전체선택
+														<span></span>
+													</label>
+												</div>
+												<div class="portlet scrollOptionY">
+													<div class="mt-checkbox-list">
+														<label class="mt-checkbox mt-checkbox-outline search-menu-span-icon">
+															<!-- 레이어 심볼 색깔은 아래에 인라인에 직접 스타일 할 수 있습니다. -->
+															<span class="span-icon span-icon-circle" style="background-color:rgb(236 197 35);"></span>
+															<input type="checkbox" value="1" checked=""> 지정
+															<span></span>
+														</label>
+														<label class="mt-checkbox mt-checkbox-outline search-menu-span-icon">
+															<!-- 레이어 심볼 색깔은 아래에 인라인에 직접 스타일 할 수 있습니다. -->
+															<span class="span-icon span-icon-circle-line" style="border-color:rgb(236 197 35);"></span>
+															<input type="checkbox" value="2"> 미지정
+															<span></span>
+														</label>
+														<label class="mt-checkbox mt-checkbox-outline search-menu-span-icon">
+															<!-- 레이어 심볼 색깔은 아래에 인라인에 직접 스타일 할 수 있습니다. -->
+															<span class="span-icon span-icon-line" style="background-color:rgb(236 197 35);"></span>
+															<input type="checkbox" value="3"> 보호구역
+															<span></span>
+														</label>
+														<label class="mt-checkbox mt-checkbox-outline search-menu-span-icon">
+															<!-- 레이어 심볼 색깔은 아래에 인라인에 직접 스타일 할 수 있습니다. -->
+															<span class="span-icon span-icon-line-pattern" style="background-color:rgb(236 197 35);"></span>
+															<input type="checkbox" value="3"> 통합보호구역
+															<span></span>
+														</label>
+													</div>
+												</div>
+											</div>
+
+											<hr class="portlet-body-title-hr">
+
+											<div class="contents-row">
+												<h1 class="page-title-1depth"><span>노인 보호구역</span></h1>
+												<div class="table-title-control">
+													<label class="mt-checkbox mt-checkbox-outline">
+														<input type="checkbox" value="1" checked=""> 전체선택
+														<span></span>
+													</label>
+												</div>
+												<div class="portlet scrollOptionY">
+													<div class="mt-checkbox-list">
+														<label class="mt-checkbox mt-checkbox-outline search-menu-span-icon">
+															<!-- 레이어 심볼 색깔은 아래에 인라인에 직접 스타일 할 수 있습니다. -->
+															<span class="span-icon span-icon-circle" style="background-color:rgb(40 181 83);"></span>
+															<input type="checkbox" value="1" checked=""> 지정
+															<span></span>
+														</label>
+														<label class="mt-checkbox mt-checkbox-outline search-menu-span-icon">
+															<!-- 레이어 심볼 색깔은 아래에 인라인에 직접 스타일 할 수 있습니다. -->
+															<span class="span-icon span-icon-circle-line" style="border-color:rgb(40 181 83);"></span>
+															<input type="checkbox" value="2"> 미지정
+															<span></span>
+														</label>
+														<label class="mt-checkbox mt-checkbox-outline search-menu-span-icon">
+															<!-- 레이어 심볼 색깔은 아래에 인라인에 직접 스타일 할 수 있습니다. -->
+															<span class="span-icon span-icon-line" style="background-color:rgb(40 181 83);"></span>
+															<input type="checkbox" value="3"> 보호구역
+															<span></span>
+														</label>
+														<label class="mt-checkbox mt-checkbox-outline search-menu-span-icon">
+															<!-- 레이어 심볼 색깔은 아래에 인라인에 직접 스타일 할 수 있습니다. -->
+															<span class="span-icon span-icon-line-pattern" style="background-color:rgb(40 181 83);"></span>
+															<input type="checkbox" value="3"> 통합보호구역
+															<span></span>
+														</label>
+													</div>
+												</div>
+											</div>
+
+											<hr class="portlet-body-title-hr">
+
+											<div class="contents-row">
+												<h1 class="page-title-1depth"><span>장애인 보호구역</span></h1>
+												<div class="table-title-control">
+													<label class="mt-checkbox mt-checkbox-outline">
+														<input type="checkbox" value="1" checked=""> 전체선택
+														<span></span>
+													</label>
+												</div>
+												<div class="portlet scrollOptionY">
+													<div class="mt-checkbox-list">
+														<label class="mt-checkbox mt-checkbox-outline search-menu-span-icon">
+															<!-- 레이어 심볼 색깔은 아래에 인라인에 직접 스타일 할 수 있습니다. -->
+															<span class="span-icon span-icon-circle" style="background-color:rgb(148 69 221);"></span>
+															<input type="checkbox" value="1" checked=""> 지정
+															<span></span>
+														</label>
+														<label class="mt-checkbox mt-checkbox-outline search-menu-span-icon">
+															<!-- 레이어 심볼 색깔은 아래에 인라인에 직접 스타일 할 수 있습니다. -->
+															<span class="span-icon span-icon-circle-line" style="border-color:rgb(148 69 221);"></span>
+															<input type="checkbox" value="2"> 미지정
+															<span></span>
+														</label>
+														<label class="mt-checkbox mt-checkbox-outline search-menu-span-icon">
+															<!-- 레이어 심볼 색깔은 아래에 인라인에 직접 스타일 할 수 있습니다. -->
+															<span class="span-icon span-icon-line" style="background-color:rgb(148 69 221);"></span>
+															<input type="checkbox" value="3"> 보호구역
+															<span></span>
+														</label>
+														<label class="mt-checkbox mt-checkbox-outline search-menu-span-icon">
+															<!-- 레이어 심볼 색깔은 아래에 인라인에 직접 스타일 할 수 있습니다. -->
+															<span class="span-icon span-icon-line-pattern" style="background-color:rgb(148 69 221);"></span>
+															<input type="checkbox" value="3"> 통합보호구역
+															<span></span>
+														</label>
+													</div>
+												</div>
+											</div>
+
+											<button class="btn btn-primary btn-icon-left btn-icon-search" type="button">검색</button>
+
+										</div>
+									</div>
+
+									<div class="table-bottom-control">
+										<button type="button" class="btn btn-dark-gray btn-icon-left btn-icon-refresh"><span>초기화</span></button>
+									</div>
+
+								</div>
+								<!-- 탭2 컨텐츠 끝 -->
+	
+							</div>
+							<!-- 탭 끝 -->
+						</div>
+
+					</div>
+				</div>
+				<!-- 서브메뉴 끝 -->
+				<!-- 컨텐츠 시작 -->
+				<div id="content" class="page-content">
+
+					<!-- 헤더 (JSP 파일 include) 시작 -->
+					<header id="header">
+						<!-- 시스템 글로벌 메뉴 시작 -->
+						<div class="member-wrapper">
+							<div class="head-etc">
+								<ul class="etc-ul">
+									<li class="li">
+										<a href="#" class="btn btn-txt ico-user ico-before xsm" target="_blank">홍길동님</a>
+									</li>
+									<li class="li">
+										<a href="#" class="btn btn-txt ico-logout ico-before xsm" target="_blank">로그아웃</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<!-- 시스템 글로벌 메뉴 끝 -->
+					</header>
+					<!-- 헤더 (JSP 파일 include) 끝 -->
+
+					<div class="page-content-inner">
+
+						<div class="map-control-wrapper">
+							
+							<!-- 지도 상단 컨트롤 시작 -->
+							<div class="map-top-control-wrapper">
+								<div class="sidebar-top-toggler">
+									<a href="javascript:;" class="">Sidebar</a>
+								</div>
+								
+								<div class="page-top-btn-group">
+
+									<div class="btn-group toggle-btn-group" data-toggle="buttons">
+										<a type="button" class="btn btn-default top-menu-icon top-menu-icon-01 active"> <input type="radio" class="toggle"> 지정 </a>
+										<a type="button" class="btn btn-default top-menu-icon top-menu-icon-02"> <input type="radio" class="toggle"> 구역 </a>
+										<a type="button" class="btn btn-default top-menu-icon top-menu-icon-03"> <input type="radio" class="toggle"> 통합 </a>
+									</div>
+									<!-- 지도제어 시작 -->
+									<div class="map-top-control-group">
+										<ul class="map-top-btn-group">
+											<!-- 하위메뉴 없는것 -->
+											<!-- <li>
+												<a href="#" class="map-top-btn map-btn-icon-01">생성</a>
+											</li> -->
+											<!-- 하위메뉴 있는것 -->
+											<li>
+												<!-- 설명서 - https://getbootstrap.com/docs/4.0/components/dropdowns/ -->
+												<div class="dropdown map-top-dropdown">
+													<a href="#" class="map-top-btn map-btn-icon-01 dropdown-toggle" id="dropdownTopMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">생성</a>
+													<div class="dropdown-menu dropdown-menu-left dropdownTopMenuButton1" aria-labelledby="dropdownTopMenuButton1">
+														<a class="dropdown-item dropdown-btn-icon dropdown-btn-icon-01" href="#">플라곤</a>
+														<a class="dropdown-item dropdown-btn-icon dropdown-btn-icon-02" href="#">라인</a>
+													</div>
+												</div>
+											</li>
+											<li>
+												<a href="#" class="map-top-btn map-btn-icon-02">조회</a>
+											</li>
+											<li>
+												<a href="#" class="map-top-btn map-btn-icon-03">삭제</a>
+											</li>
+											<li>
+												<a href="#" class="map-top-btn map-btn-icon-04">이동</a>
+											</li>
+											<!-- 하위메뉴 없는것 -->
+											<!-- <li>
+												<a href="#" class="map-top-btn map-btn-icon-05">형상</a>
+											</li> -->
+											<!-- 하위메뉴 있는것 -->
+											<li>
+												<!-- 설명서 - https://getbootstrap.com/docs/4.0/components/dropdowns/ -->
+												<div class="dropdown map-top-dropdown">
+													<a href="#" class="map-top-btn map-btn-icon-05 dropdown-toggle" id="dropdownTopMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">형상</a>
+													<div class="dropdown-menu dropdown-menu-left dropdownTopMenuButton2" aria-labelledby="dropdownTopMenuButton2">
+														<a class="dropdown-item dropdown-btn-icon dropdown-btn-icon-03" href="#">이동</a>
+														<a class="dropdown-item dropdown-btn-icon dropdown-btn-icon-04" href="#">회전</a>
+														<a class="dropdown-item dropdown-btn-icon dropdown-btn-icon-05" href="#">편집</a>
+													</div>
+												</div>
+											</li>
+											<li>
+												<a href="#" class="map-top-btn map-btn-icon-06">닫기</a>
+											</li>
+											<li>
+												<a href="#" class="map-top-btn map-btn-icon-07">통합</a>
+											</li>
+											<li>
+												<a href="#" class="map-top-btn map-btn-icon-08">해제</a>
+											</li>
+											<li>
+												<a href="#" class="map-top-btn map-btn-icon-09">저장하기</a>
+											</li>
+											<li>
+												<a href="#" class="map-top-btn map-btn-icon-10">취소</a>
+											</li>
+										</ul>
+									</div>
+									<!-- 지도제어 끝 -->
+
+								</div>
+
+								<!-- 확장 메뉴 (필요없을시 삭제해도됨) 시작 -->
+								<div class="map-control">
+
+									<div class="dropdown map-control-dropdown">
+										<div class="map-control-dropdown-group">
+											<a href="#help_popup" class="map-control-btn help-btn" data-toggle="modal"></a>
+										</div>
+										<div class="map-control-dropdown-group">
+											<!-- 설명서 - https://getbootstrap.com/docs/4.0/components/dropdowns/ -->
+											<a href="javascript:;" class="map-control-btn control-btn dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+											<div class="dropdown-menu dropdown-menu-right dropdownMenuButton2" aria-labelledby="dropdownMenuButton2">
+												<a class="dropdown-item" href="#">맵 등록정보</a>
+												<div class="hl"></div>
+												<a class="dropdown-item" href="#">맵 저장</a>
+												<a class="dropdown-item" href="#">맵 불러오기</a>
+												<a class="dropdown-item" href="#">새 맵</a>
+												<div class="hl"></div>
+												<a class="dropdown-item" href="#">앨리먼트 추가</a>
+												<a class="dropdown-item" href="#">앨리먼트 삭제</a>
+												<a class="dropdown-item" href="#">앨리먼트 복사</a>
+												<a class="dropdown-item" href="#">앨리먼트 붙여넣기</a>
+											</div>
+										</div>
+									</div>
+			
+								</div>
+								<!-- 확장 메뉴 (필요없을시 삭제해도됨) 끝 -->
+
+							</div>
+							<!-- 지도 상단 컨트롤 끝 -->
+
+							<!-- 지도 오른쪽 컨트롤 시작 -->
+							<div class="map-right-control-wrapper">
+								<div class="sidebar-right-toggler">
+									<a href="javascript:;" class="">Sidebar</a>
+								</div>
+								<!-- 지도제어 시작 -->
+								<div class="map-right-control-group">
+									<ul class="map-right-btn-group">
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-zoom-in">확대</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-zoom-out">축소</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-choice">선택</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-move">이동</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-area-choice">영역선택</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-screen">화면저장</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-distance">거리</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-area">면적</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-line">선</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-triangle">삼각형</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-circle">원</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-square">사각형</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-delete">삭제</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-delete-all">전체삭제</a>
+										</li>
+									</ul>
+								</div>
+								<!-- 지도제어 끝 -->
+							</div>
+							<!-- 지도 오른쪽 컨트롤 끝 -->
+						</div>
+						
+					</div>
+
+					<!-- 지도 시작 -->
+					<div class="map-wrapper">
+						<div id="googleMap" class="map-area"></div>
+					</div>
+					<!-- 지도 끝 -->
+
+				</div>
+				<!-- 컨텐츠 끝 -->
+
+			</div>
+
+		</section>
+		<!-- 페이지 컨테이너 끝 -->
+
+		<!-- 모달팝업 시작 -->
+		<div class="modal fade bs-modal-lg" id="help_popup" tabindex="-1" role="help_popup" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+						<h4 class="modal-title">도움말</h4>
+					</div>
+					<div class="modal-body">
+						<!-- 내용 시작 -->
+						<div class="contents-row">
+							<ul class="list-solo-ul ulli-decimal">
+								<li>
+									보호지정 선택 (지정)
+								</li>
+								<li>
+									관리대상 제어 선택
+									<ul class="contents-ul">
+										<li>
+											<span class="list-point-text">생성</span> 보호지정 신규 생성
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+						<!-- 내용 끝 -->
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 모달팝업 끝 -->
+
+	</body>
+</html>

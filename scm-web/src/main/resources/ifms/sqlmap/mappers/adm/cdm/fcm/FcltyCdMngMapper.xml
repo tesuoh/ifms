@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ifms.adm.cdm.fcm.mapper.FcltyCdMngMapper">
+
+	<!-- 시설물코드 총건수 -->
+	<select id="selectFcltyCdMngTotalCount" parameterType="map" resultType="int">
+		SELECT COUNT(*)
+		FROM cad.cad_ptzn_fclty_cd_c
+		WHERE 1 = 1
+			and indct_yn = 'Y'
+			and fclty_ftur_knd_nm = 'POINT_POINT'
+			<if test="searchBlckNm != ''">
+			AND blck_nm LIKE '%' || #{searchBlckNm} || '%'
+			</if>
+			<if test="searchPtznFcltySeCd != ''">
+			AND ptzn_fclty_se_cd LIKE '%' || #{searchPtznFcltySeCd} || '%'
+			</if>
+			<if test="searcgFcltyNm != ''">
+			AND fclty_nm LIKE '%' || #{searcgFcltyNm} || '%'
+			</if>
+	</select>
+	
+	
+	<!-- 시설물코드 관리 목록 -->
+	<select id="selectFcltyCdMngList" parameterType="map" resultType="egovMap">
+		SELECT ROW_NUMBER() OVER (ORDER BY ptzn_fclty_sn desc) AS ROW_NUM
+			, ptzn_fclty_sn 
+			, fclty_clsf_nm 
+			, lyr_nm
+			, blck_nm 
+			, ptzn_fclty_se_cd 
+			, fclty_nm
+			, img_file_path_nm
+			, up_ptzn_fclty_sn  
+			, indct_yn
+			, expsr_yn
+			, FRST_RGTR_ID 
+			, TO_CHAR(FRST_REG_DT, 'YYYY-MM-DD') AS FRST_REG_DT
+			, LAST_MDFR_ID 
+			, TO_CHAR(LAST_MDFCN_DT, 'YYYY-MM-DD') AS LAST_MDFCN_DT 
+		FROM cad.cad_ptzn_fclty_cd_c
+		WHERE 1 = 1
+<!-- 			and indct_yn = 'Y' -->
+			and fclty_ftur_knd_nm = 'POINT_POINT'
+			<if test="searchBlckNm != ''">
+			AND blck_nm LIKE '%' || #{searchBlckNm} || '%'
+			</if>
+			<if test="searchPtznFcltySeCd != ''">
+			AND ptzn_fclty_se_cd LIKE '%' || #{searchPtznFcltySeCd} || '%'
+			</if>
+			<if test="searcgFcltyNm != ''">
+			AND fclty_nm LIKE '%' || #{searcgFcltyNm} || '%'
+			</if>
+		ORDER BY ptzn_fclty_sn desc
+		OFFSET #{startNo} ROWS FETCH NEXT #{listCount} ROWS ONLY
+	</select>
+	
+	<!-- 시설물코드 분류 목록 -->
+	<select id="selectFcltyCdClsfList" parameterType="map" resultType="egovMap">
+		select 
+			fclty_clsf_nm
+			, lyr_nm
+			, tmpr_tbl_nm
+			, stus_tbl_nm
+		from cad.cad_ptzn_fclty_cd_c
+		where fclty_ftur_knd_nm = 'POINT_POINT' and fclty_clsf_nm != '신호기'
+		group by fclty_clsf_nm, lyr_nm, tmpr_tbl_nm, stus_tbl_nm
+		order by lyr_nm;
+	</select>
+	
+	<!-- 코드 중복 조회 -->
+	<select id="selectFcltyCdCnt" parameterType="map" resultType="int">
+		select count(1) 
+		from cad.cad_ptzn_fclty_cd_c 
+		where ptzn_fclty_se_cd = #{ptznFcltySeCd};
+	</select>
+	
+	<!-- 등록 -->
+	<insert id="insertFcltyCdMng" parameterType="map">
+		<selectKey keyProperty="indctSeq" resultType="int" order="BEFORE">
+			select coalesce(max(indct_seq), 0) + 1 
+			from cad.cad_ptzn_fclty_cd_c 
+			where up_ptzn_fclty_sn = #{upPtznFcltySn}::int;
+		</selectKey>
+		INSERT INTO cad.cad_ptzn_fclty_cd_c
+		(
+			ptzn_fclty_sn
+			, fclty_clsf_nm
+			, lyr_nm
+			, blck_nm
+			, ptzn_fclty_se_cd
+			, fclty_nm
+			, entty_knd_nm
+			, tmpr_tbl_nm
+			, stus_tbl_nm
+			, img_file_path_nm
+			, fclty_ftur_knd_nm
+			, up_ptzn_fclty_sn
+			, wks_fclty_nm
+			, indct_yn
+			, expsr_yn
+			, indct_seq
+			, frst_rgtr_id, frst_reg_dt)
+		VALUES(
+			(select coalesce(max(ptzn_fclty_sn), 0) + 1 from cad.cad_ptzn_fclty_cd_c)
+			, #{fcltyClsfNm}
+			, #{lyrNm}
+			, #{blckNm}
+			, #{ptznFcltySeCd}
+			, #{fcltyNm}
+			, 'INSERT'
+			, #{tmprTblNm}
+			, #{stusTblNm}
+			, #{iconFileNm}
+			, 'POINT_POINT'
+			, #{upPtznFcltySn}::int
+			, ''
+			, 'Y'
+			, 'Y'
+			, #{indctSeq}
+			, #{userId}, CURRENT_TIMESTAMP);
+	</insert>
+	
+	<!-- 코드 삭제가능여부 조회 -->
+	<select id="selectFcltyCdDelYn" parameterType="map" resultType="string">
+		select expsr_yn 
+		from cad.cad_ptzn_fclty_cd_c 
+		where ptzn_fclty_sn = #{ptznFcltySn}::int;
+	</select>
+	
+	<!-- 첨부파일 삭제를 위한 정보 가져오기(리스트) -->
+	<select id="getFileInfoList" parameterType="map" resultType="egovMap">
+		SELECT 
+			FILE_GROUP_SN
+			, FILE_DTL_SN
+			, DEL_YN
+		FROM SZMS.PT_COM_AHFL_M 
+		WHERE FILE_GROUP_SN = (
+			SELECT F.FILE_GROUP_SN
+			FROM cad.cad_ptzn_fclty_cd_c P 
+			LEFT JOIN SZMS.PT_COM_AHFL_M F
+			ON P.img_file_path_nm = F.srvr_file_nm||'.'||F.orgnl_file_extn_nm 
+			WHERE 1 = 1
+				AND P.img_file_path_nm = (select img_file_path_nm from cad.cad_ptzn_fclty_cd_c where ptzn_fclty_sn = #{ptznFcltySn}::int))
+	</select>
+	
+	<!-- 삭제 -->
+	<delete id="deleteFcltyCdMng" parameterType="map">
+		DELETE FROM cad.cad_ptzn_fclty_cd_c
+		WHERE 1 = 1
+			AND ptzn_fclty_sn = #{ptznFcltySn}::int;
+	</delete>
+</mapper>

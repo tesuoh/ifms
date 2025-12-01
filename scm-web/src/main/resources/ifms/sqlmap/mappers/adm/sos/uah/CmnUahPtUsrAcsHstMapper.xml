@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ifms.adm.sos.uah.mapper.CmnUahPtUsrAcsHstMapper">
+
+    <select id="selectCmnUahPtUsrAcsHstListCnt" resultType="int" parameterType="map">
+        SELECT COUNT(*)
+        FROM szms.pt_lgn_h lh
+        JOIN szms.pt_user_info_m ui ON lh.user_id = ui.user_id
+        WHERE 1=1
+        <if test="userId != null and userId != ''">
+            AND lh.user_id LIKE '%' || #{userId} || '%'
+        </if>
+        <if test="userNm != null and userNm != ''">
+            AND ui.user_nm LIKE '%' || #{userNm} || '%'
+        </if>
+        <if test="strtCntnDt != null and strtCntnDt != ''">
+            AND lh.cntn_dt <![CDATA[>=]]> TO_DATE(#{strtCntnDt}, 'YYYY-MM-DD')
+        </if>
+        <if test="endCntnDt != null and endCntnDt != ''">
+            AND lh.cntn_dt <![CDATA[<]]> TO_DATE(#{endCntnDt}, 'YYYY-MM-DD') + INTERVAL '1 day'
+        </if>
+        <if test="instNm != null and instNm != ''">
+            AND (
+            CASE
+            WHEN ui.ogdp_inst_cd = '99999' THEN
+            ( SELECT COALESCE(p.lgvofc_nm, '') || ' ' || COALESCE(p.cmptnc_polstn_nm, '')
+            FROM szms.pz_stdg_polstn_m p
+            WHERE p.polstn_cd = ui.polstn_cd)
+            ELSE
+            ( SELECT cd_nm
+            FROM szms.pt_com_cd_c
+            WHERE cd_group_id = 'inst_clsf_cd'
+            AND cd_id = ui.ogdp_inst_cd)
+            END
+            ) LIKE '%' || #{instNm} || '%'
+        </if>
+    </select>
+
+
+    <select id="selectCmnUahPtUsrAcsHstList" resultType="egovMap" parameterType="map">
+        SELECT
+        ROW_NUMBER() OVER (ORDER BY cntn_dt asc) AS rownum,
+        lh.user_id,
+        ui.user_nm,
+        ui.ogdp_inst_cd,
+        case when ui.ogdp_inst_cd = '99999' then ( select COALESCE(p.lgvofc_nm, '')|| ' ' || COALESCE(p.cmptnc_polstn_nm, '')
+                                                    from szms.pz_stdg_polstn_m p
+                                                   where p.polstn_cd = ui.polstn_cd)
+                                            else ( select cd_nm
+                                                     from szms.pt_com_cd_c
+                                                    where 1=1
+                                                      and cd_group_id = 'inst_clsf_cd'
+                                                      and cd_id = ui.ogdp_inst_cd)
+        end as inst_nm,
+        ui.use_yn,
+        ui.lgn_fail_nmtm,
+        ui.use_hr_bgng_hm,
+        ui.use_hr_end_hm,
+        ui.aprv_yn,
+        lh.cntn_dt
+        FROM szms.pt_lgn_h lh
+        JOIN szms.pt_user_info_m ui ON lh.user_id = ui.user_id
+        WHERE 1=1
+        <if test="userId != null and userId != ''">
+            AND lh.user_id LIKE '%' || #{userId} || '%'
+        </if>
+        <if test="userNm != null and userNm != ''">
+            AND ui.user_nm LIKE '%' || #{userNm} || '%'
+        </if>
+        <if test="strtCntnDt != null and strtCntnDt != ''">
+            AND lh.cntn_dt <![CDATA[>=]]> TO_DATE(#{strtCntnDt}, 'YYYY-MM-DD')
+        </if>
+        <if test="endCntnDt != null and endCntnDt != ''">
+            AND lh.cntn_dt <![CDATA[<]]> TO_DATE(#{endCntnDt}, 'YYYY-MM-DD') + INTERVAL '1 day'
+        </if>
+        <if test="instNm != null and instNm != ''">
+            AND (
+            CASE
+            WHEN ui.ogdp_inst_cd = '99999' THEN
+            ( SELECT COALESCE(p.lgvofc_nm, '') || ' ' || COALESCE(p.cmptnc_polstn_nm, '')
+            FROM szms.pz_stdg_polstn_m p
+            WHERE p.polstn_cd = ui.polstn_cd)
+            ELSE
+            ( SELECT cd_nm
+            FROM szms.pt_com_cd_c
+            WHERE cd_group_id = 'inst_clsf_cd'
+            AND cd_id = ui.ogdp_inst_cd)
+            END
+            ) LIKE '%' || #{instNm} || '%'
+        </if>
+        ORDER BY lh.cntn_dt DESC
+        OFFSET #{startNo} ROWS FETCH NEXT #{listCount} ROWS ONLY
+    </select>
+
+
+
+</mapper>

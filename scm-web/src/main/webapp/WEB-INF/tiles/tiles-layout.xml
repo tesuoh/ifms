@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+    <!-- 공통 레이아웃 정의 -->
+    <definition name="tiles-layout-cmn" template="/WEB-INF/tiles/common/tilesFrame.jsp">
+        <put-attribute name="header"    value="/WEB-INF/tiles/common/header.jsp" />
+        <put-attribute name="footer"    value="/WEB-INF/tiles/common/footer.jsp" />
+        <put-attribute name="loadFile"  value="/WEB-INF/tiles/common/loadFile.jsp" />
+        <put-attribute name="quick"     value="/WEB-INF/tiles/common/quick.jsp" />
+        <put-attribute name="left"      value="/WEB-INF/tiles/common/left.jsp" />
+        <put-attribute name="modal"      value="/WEB-INF/tiles/common/modal.jsp" />
+        <put-attribute name="body" value="" />
+    </definition>
+
+    <!-- 관리자 화면 타일즈 -->
+    <definition name="tiles-layout-adm" template="/WEB-INF/tiles/adm/tilesFrame.jsp">
+        <put-attribute name="loadFile"  value="/WEB-INF/tiles/adm/loadFile.jsp" />
+        <put-attribute name="header"    value="/WEB-INF/tiles/adm/header.jsp" />
+        <put-attribute name="quick"     value="/WEB-INF/tiles/adm/quick.jsp" />
+        <put-attribute name="left"      value="/WEB-INF/tiles/adm/left.jsp" />
+        <put-attribute name="footer"    value="/WEB-INF/tiles/adm/footer.jsp" />
+        <put-attribute name="modal"      value="/WEB-INF/tiles/adm/modal.jsp" />
+        <put-attribute name="body"      value=""/>
+    </definition>
+
+    <definition name="page-layout" template="/WEB-INF/tiles/page/page_layout.jsp">
+        <put-attribute name="body"      value=""/>
+    </definition>
+
+    <definition name="pop-layout" template="/WEB-INF/tiles/pop/pop_layout.jsp">
+        <put-attribute name="title"      value="SZMS | 보호구역관리시스템"/>
+        <put-attribute name="loadFile"   value="/WEB-INF/tiles/pop/pop_loadFile.jsp" />
+        <put-attribute name="header"     value="/WEB-INF/tiles/pop/pop_header.jsp"/>
+        <put-attribute name="body"       value=""/>
+        <put-attribute name="modal"      value="/WEB-INF/tiles/adm/modal.jsp" />
+    </definition>
+
+	<!-- 지도 화면 타일즈(행정 - 실태조사) -->
+    <definition name="tiles-layout-map-fs" template="/WEB-INF/tiles/map/tilesFrame.jsp">
+        <put-attribute name="loadFile"  value="/WEB-INF/tiles/map/loadFile.jsp" />
+        <put-attribute name="header"    value="/WEB-INF/tiles/map/header.jsp" />
+        <put-attribute name="quick"     value="/WEB-INF/tiles/map/quick.jsp" />
+        <put-attribute name="left"      value="/WEB-INF/tiles/map/fs/left.jsp" />
+        <put-attribute name="modal"      value="/WEB-INF/tiles/map/fs/modal.jsp" />
+        <put-attribute name="body"      value=""/>
+    </definition>
+    
+    <!-- 지도 화면 타일즈(행정 - 사고현황 조회) -->
+    <definition name="tiles-layout-map-acci" template="/WEB-INF/tiles/map/tilesFrame.jsp">
+        <put-attribute name="loadFile"  value="/WEB-INF/tiles/map/loadFile.jsp" />
+        <put-attribute name="header"    value="/WEB-INF/tiles/map/header.jsp" />
+        <put-attribute name="quick"     value="/WEB-INF/tiles/map/quick.jsp" />
+        <put-attribute name="left"      value="/WEB-INF/tiles/map/acci/left.jsp" />
+        <put-attribute name="modal"      value="/WEB-INF/tiles/map/acci/modal.jsp" />
+        <put-attribute name="body"      value=""/>
+    </definition>
+    
+	<!-- 지도 팝업용 레이아웃 정의 -->
+	<definition name="map-popup-layout" template="/WEB-INF/tiles/pop/map_popup_layout.jsp">
+        <put-attribute name="loadFile"  value="/WEB-INF/tiles/map/loadFile.jsp" />
+        <put-attribute name="header"    value="/WEB-INF/tiles/map/header.jsp" />
+        <put-attribute name="quick"     value="/WEB-INF/tiles/map/quick.jsp" />
+        <put-attribute name="left"      value="/WEB-INF/tiles/map/acci/left.jsp" />
+        <put-attribute name="modal"      value="/WEB-INF/tiles/map/acci/modal.jsp" />
+	    <put-attribute name="body" value=""/>
+	</definition>
+	
+	<!-- 지도 팝업용 패턴 매핑 -->
+	<definition name="*/*/*.map-pop" extends="map-popup-layout">
+	    <put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}.jsp"/>
+	</definition>
+
+</tiles-definitions>

@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<title>보호구역 통합관리시스템</title>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name = "viewport" content = "user-scalable=no, width=device-width">
+		<meta name="author" content="보호구역 통합관리시스템">
+		<!-- description -->
+		<meta name="description" content="보호구역 통합관리시스템 프로젝트">
+		<!-- keywords -->
+		<meta name="keywords" content="">
+		<!-- favicon -->
+		<link rel="shortcut icon" href="../../com/img/common/icon/favicon.ico">
+		<link rel="apple-touch-icon" href="../../com/img/common/icon/favicon.ico">
+
+		<!-- ==============================================================
+			플러그인
+		============================================================== -->
+		<!-- 공통 -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/font-awesome/css/font-awesome.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/simple-line-icons/simple-line-icons.css" />
+		<script type="text/javascript" src="../../com/plugins/jquery.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/js.cookie.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+
+		<!-- bootstrap -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap/css/bootstrap.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+		<!-- bootstrap-datepicker -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-timepicker/css/bootstrap-timepicker.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.kr.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.kr.js"></script>
+		<script type="text/javascript" src="../../com/js/bootstrap-datepicker.kr.js"></script>
+		<script type="text/javascript" src="../../com/js/components-date-time-pickers.js"></script>
+
+		<!-- bootstrap-fileinput -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-fileinput/bootstrap-fileinput.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
+
+		<!-- bootstrap-tabdrop -->
+		<script type="text/javascript" src="../../com/plugins/bootstrap-tabdrop/js/bootstrap-tabdrop.js"></script>
+
+		<!-- jstree -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/jstree/dist/themes/default/style.css" />
+		<script type="text/javascript" src="../../com/plugins/jstree/dist/jstree.js"></script>
+		<script type="text/javascript" src="../../com/js/ui-tree.js"></script>
+
+		<!-- div 크기 변경 감지 https://marcj.github.io/css-element-queries/ -->
+		<script type="text/javascript" src="../../com/plugins/css-element-queries/ResizeSensor.js"></script>
+		<script type="text/javascript" src="../../com/plugins/css-element-queries/ElementQueries.js"></script>
+		
+		<!-- 전체 레이어 모달 팝업 -->
+		<link type="text/css" rel="stylesheet" href="../../com/plugins/magnific-popup/magnific-popup.css">
+		<script type="text/javascript" src="../../com/plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+		<!-- 컨텐츠 셀렉트 -->
+		<script type="text/javascript" src="../../com/plugins/slideNav/slideNav.js"></script>
+
+        <!-- ==============================================================
+			공통 커스텀
+		============================================================== -->
+		<!-- 공통 script -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/font-awesome/css/font-awesome.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/simple-line-icons/simple-line-icons.css" />
+		<script type="text/javascript" src="../../com/js/app.js"></script>
+
+		<!-- 스타일 css -->
+		<link type="text/css" rel="stylesheet" href="../../com/css/components.css" />
+		<link type="text/css" rel="stylesheet" href="../../com/css/style.css" />
+
+		<!-- 전체 조합 css -->
+		<link type="text/css" rel="stylesheet" href="../../com/css/common.css" />
+		<link type="text/css" rel="stylesheet" href="../../com/css/common-ie.css">
+
+		<!-- 지도 css -->
+		<link type="text/css" rel="stylesheet" href="../../com/css/map.css" />
+		<link type="text/css" rel="stylesheet" href="../../com/css/map-fact-finding-survey.css" />
+		<script type="text/javascript" src="../../com/js/map-fact-finding-survey.js"></script>
+
+		<!-- 구글 맵 시작 (작업시 삭제할것) -->
+		<script src="http://maps.googleapis.com/maps/api/js"></script>
+		<script>
+			function initialize() {
+			  var mapProp = {
+				center: new google.maps.LatLng(37.250943, 127.028344),
+				zoom:15,
+				zoomControl:true,
+				zoomControlOptions: {
+				  style:google.maps.ZoomControlStyle.SMALL
+				},
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			  };
+			  var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+			}
+			google.maps.event.addDomListener(window, 'load', initialize);
+		</script>
+		<!-- 구글 맵 끝 (작업시 삭제할것) -->
+
+	</head>
+	<body class="system-map-page map-admin-page fact-finding-survey-map-page">
+
+		<!-- 페이지 컨테이너 시작 -->
+		<section class="page-container">
+
+			<div class="page-content-wrapper">
+
+				<!-- 서브메뉴 시작 -->
+				<div class="page-sidebar-wrapper">
+					
+					<div class="sidebar-toggler">
+						<a href="javascript:;" class="">Sidebar</a>
+					</div>
+					<div class="page-sidebar">
+
+						<div class="page-sidebar-logo">
+							<a href="javascript:void(0);" title="경찰청 로고" class="logo">
+								<img src="../../com/img/common/header/logo.png" class="logo-top" alt="경찰청 로고">
+							</a>
+							<div class="header-project-name">보호구역 통합관리시스템</div>
+						</div>
+
+						<div class="project-address-wrapper">
+							<div class="project-address-inner">
+								<p class="project-title">실태조사 진행 위치</p>
+								<div class="project-address">
+									<p class="project-address-text">
+										청운초등학교 (서울 종로구 자하문로 105)
+									</p>
+									<p class="project-address-date">
+										데이터 기준 : 2024-01-01 13:00
+									</p>
+									<button class="btn btn-default" type="button">목록으로 돌아가기</button>
+								</div>
+							</div>
+						</div>
+
+						<div class="system-left-tab-wrapper">
+							<!-- 탭 시작 -->
+							<ul class="system-left-tab-group">
+								<li class="active">
+									<a href="#system_left_test_info_tab_1" data-toggle="tab" class="tab-layer"> 레이어 ON/OFF </a>
+								</li>
+								<li>
+									<a href="#system_left_test_info_tab_2" data-toggle="tab" class="tab-facilities"> 시설물관리 </a>
+								</li>
+							</ul>
+							<div class="tab-content">
+	
+								<!-- 탭1 컨텐츠 시작 -->
+								<div class="tab-pane active in" id="system_left_test_info_tab_1">
+
+									<div class="row map-tree-row">
+										<div class="map-tree-col">
+											<div class="project-contents-box">
+												<div class="project-contents">
+		
+													<div class="contents-row">
+														<h1 class="page-title-1depth"><span>현황</span></h1>
+														<div class="table-title-control">
+															<label class="mt-checkbox mt-checkbox-outline">
+																<input type="checkbox" value="1" checked=""> 전체선택
+																<span></span>
+															</label>
+														</div>
+														<div class="portlet">
+															<!-- 트리메뉴 시작 - 참고 : https://www.jstree.com/ -->
+															<div id="map_tree_1" class="tree-demo">
+																<ul>
+																	<li>
+																		<a href="javascript:;">CCTV</a>
+																	</li>
+																	<li>
+																		<a href="javascript:;">신호기</a>
+																	</li>
+																	<li>
+																		<a href="javascript:;">경보등</a>
+																	</li>
+																	<li>
+																		<a href="javascript:;">안전표지</a>
+																	</li>
+																	<li>
+																		노면표시
+																		<ul>
+																			<li data-jstree='{ "selected" : true }'>
+																				<a href="javascript:;">주차금지(점선,단선,복선)</a>
+																			</li>
+																			<li>
+																				<a href="javascript:;">지그재그선</a>
+																			</li>
+																			<li>
+																				<a href="javascript:;">횡단보도</a>
+																			</li>
+																			<li>
+																				<a href="javascript:;">고원식횡단보도</a>
+																			</li>
+																			<li>
+																				<a href="javascript:;">기타_점</a>
+																			</li>
+																			<li>
+																				<a href="javascript:;">기타_선</a>
+																			</li>
+																			<li>
+																				<a href="javascript:;">기타_면</a>
+																			</li>
+																		</ul>
+																	</li>
+																	<li>
+																		도로부속물
+																		<ul>
+																			<li data-jstree='{ "selected" : true }'>
+																				<a href="javascript:;">과속방지턱</a>
+																			</li>
+																			<li>
+																				<a href="javascript:;">미끄럼방지시설</a>
+																			</li>
+																			<li>
+																				<a href="javascript:;">방호울차리</a>
+																			</li>
+																			<li>
+																				<a href="javascript:;">무단횡단금지시설</a>
+																			</li>
+																		</ul>
+																	</li>
+																	<li>
+																		기타시설물
+																		<ul>
+																			<li>
+																				<a href="javascript:;">기타_점</a>
+																			</li>
+																			<li>
+																				<a href="javascript:;">기타_선</a>
+																			</li>
+																			<li>
+																				<a href="javascript:;">기타_면</a>
+																			</li>
+																		</ul>
+																	</li>
+																</ul>
+															</div>
+															<script>
+																$('#map_tree_1').jstree({
+																	"core" : {
+																		"themes" : {
+																			"responsive": false
+																		}            
+																	},
+																	"types" : {
+																		"default" : {
+																			"icon" : "fa fa-folder icon-state-warning icon-lg"
+																		},
+																		"file" : {
+																			"icon" : "fa fa-file icon-state-warning icon-lg"
+																		}
+																	},
+																	"plugins": ["checkbox", "types"]
+																});
+		
+																$('#map_tree_1').on('select_node.jstree', function(e,data) { 
+																	var link = $('#' + data.selected).find('a');
+																	if (link.attr("href") != "#" && link.attr("href") != "javascript:;" && link.attr("href") != "") {
+																		if (link.attr("target") == "_blank") {
+																			link.attr("href").target = "_blank";
+																		}
+																		document.location.href = link.attr("href");
+																		return false;
+																	}
+																});
+															</script>
+															<!-- 트리메뉴 끝 -->
+														</div>
+													</div>
+		
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="table-bottom-control">
+										<button type="button" class="btn btn-dark-gray btn-icon-left btn-icon-refresh"><span>초기화</span></button>
+									</div>
+
+								</div>
+								<!-- 탭1 컨텐츠 끝 -->
+	
+								<!-- 탭2 컨텐츠 시작 -->
+								<div class="tab-pane" id="system_left_test_info_tab_2">
+
+									<div class="map-flex-row">
+										<div class="map-flex-col">
+											<div class="project-contents-box">
+												<div class="project-contents">
+		
+													<div class="contents-row">
+														<!-- 시설물관리 제어 시작 -->
+														<div class="panel-group accordion">
+															
+															<div class="panel panel-default">
+																<div class="panel-heading">
+																	<div class="panel-title">
+																		<!-- 링크 활성화 일때는 class="accordion-toggle active"로 active를 추가합니다. -->
+																		<a class="accordion-toggle active" href="#">CCTV</a>
+																	</div>
+																</div>
+															</div>
+															
+															<div class="panel panel-default">
+																<div class="panel-heading">
+																	<div class="panel-title">
+																		<a class="accordion-toggle" href="#">신호기</a>
+																	</div>
+																</div>
+															</div>
+
+															<div class="panel panel-default">
+																<div class="panel-heading">
+																	<div class="panel-title">
+																		<!-- 열림상태는 class="accordion-toggle accordion-toggle-styled" -->
+																		<!-- 닫힘상태는 class="accordion-toggle accordion-toggle-styled collapsed" -->
+																		<a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" data-parent="#accordion3" href="#collapse_3_1">안전표지</a>
+																	</div>
+																</div>
+																<!-- 열림상태는 class="panel-collapse collapse in" -->
+																<!-- 닫힘상태는 class="panel-collapse collapse" -->
+																<div id="collapse_3_1" class="panel-collapse collapse in">
+																	<div class="panel-body">
+																		<!-- 링크 활성화 일때는 class="btn btn-default active"로 active를 추가합니다. -->
+																		<button type="button" class="btn btn-default active">주의표지</button>
+																		<button type="button" class="btn btn-default">규제표지</button>
+																		<button type="button" class="btn btn-default">지시표지</button>
+																		<button type="button" class="btn btn-default">보조표지</button>
+																		<button type="button" class="btn btn-default">통합표지</button>
+																	</div>
+																</div>
+															</div>
+															
+															<div class="panel panel-default">
+																<div class="panel-heading">
+																	<div class="panel-title">
+																		<a class="accordion-toggle" href="#">노면표시</a>
+																	</div>
+																</div>
+															</div>
+															
+															<div class="panel panel-default">
+																<div class="panel-heading">
+																	<div class="panel-title">
+																		<a class="accordion-toggle" href="#">도로부속물</a>
+																	</div>
+																</div>
+															</div>
+															
+															<div class="panel panel-default">
+																<div class="panel-heading">
+																	<div class="panel-title">
+																		<a class="accordion-toggle" href="#">기타 시설물</a>
+																	</div>
+																</div>
+															</div>
+															
+															<div class="panel panel-default">
+																<div class="panel-heading">
+																	<div class="panel-title">
+																		<a class="accordion-toggle" href="#">보차도 분리</a>
+																	</div>
+																</div>
+															</div>
+
+														</div>
+														<!-- 시설물관리 제어 끝 -->
+													</div>
+		
+												</div>
+											</div>
+										</div>
+										<div class="map-flex-col">
+											<div class="project-contents-box">
+												<div class="project-contents">
+		
+													<div class="contents-row">
+														<div class="input-group">
+															<input type="text" class="form-control search" placeholder="검색어 입력">
+															<span class="input-group-btn">
+																<button class="btn btn-primary btn-icon-single btn-icon-search" type="button" alt="검색버튼"></button>
+															</span>
+														</div>
+													</div>
+
+													<hr class="portlet-body-title-hr">
+													
+													<div class="contents-row scrollOptionY" style="max-height: 444px;"><!-- 왼쪽 토글버튼 그룹의 사이즈가  -->
+														<div class="facilities-link-wrapper">
+															<!-- 링크 활성화 일때는 class="facilities-link active"로 active를 추가합니다. -->
+															<div class="facilities-link active">
+																<div class="facilities-link-img">
+																	<img src="../../com/img/common/svg/facilities/301_101.svg" alt="다기능단속장비 아이콘" />
+																</div>
+																<div class="facilities-link-text">
+																	다기능단속장비
+																</div>
+															</div>
+															<div class="facilities-link">
+																<div class="facilities-link-img">
+																	<img src="../../com/img/common/svg/facilities/temp.svg" alt="속도위반단속장비 아이콘" />
+																</div>
+																<div class="facilities-link-text">
+																	속도위반단속장비
+																</div>
+															</div>
+															<div class="facilities-link">
+																<div class="facilities-link-img">
+																	<img src="../../com/img/common/svg/facilities/temp.svg" alt="주정차단속장비 아이콘" />
+																</div>
+																<div class="facilities-link-text">
+																	주정차단속장비
+																</div>
+															</div>
+															<div class="facilities-link">
+																<div class="facilities-link-img">
+																	<img src="../../com/img/common/svg/facilities/temp.svg" alt="방범용CCTV 아이콘" />
+																</div>
+																<div class="facilities-link-text">
+																	방범용CCTV
+																</div>
+															</div>
+															<div class="facilities-link">
+																<div class="facilities-link-img">
+																	<img src="../../com/img/common/svg/facilities/temp.svg" alt="교통관제용CCTV 아이콘" />
+																</div>
+																<div class="facilities-link-text">
+																	교통관제용CCTV
+																</div>
+															</div>
+															<div class="facilities-link">
+																<div class="facilities-link-img">
+																	<img src="../../com/img/common/svg/facilities/temp.svg" alt="기타 아이콘" />
+																</div>
+																<div class="facilities-link-text">
+																	기타
+																</div>
+															</div>
+														</div>
+													</div>
+		
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="table-bottom-control">
+										<button type="button" class="btn btn-dark-gray btn-icon-left btn-icon-refresh"><span>초기화</span></button>
+									</div>
+
+								</div>
+								<!-- 탭2 컨텐츠 끝 -->
+	
+							</div>
+							<!-- 탭 끝 -->
+						</div>
+
+					</div>
+				</div>
+				<!-- 서브메뉴 끝 -->
+				<!-- 컨텐츠 시작 -->
+				<div id="content" class="page-content">
+
+					<!-- 헤더 (JSP 파일 include) 시작 -->
+					<header id="header">
+						<!-- 시스템 글로벌 메뉴 시작 -->
+						<div class="member-wrapper">
+							<div class="head-etc">
+								<ul class="etc-ul">
+									<li class="li">
+										<a href="#" class="btn btn-txt ico-user ico-before xsm" target="_blank">홍길동님</a>
+									</li>
+									<li class="li">
+										<a href="#" class="btn btn-txt ico-logout ico-before xsm" target="_blank">로그아웃</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<!-- 시스템 글로벌 메뉴 끝 -->
+					</header>
+					<!-- 헤더 (JSP 파일 include) 끝 -->
+
+					<div class="page-content-inner">
+
+						<div class="map-control-wrapper">
+
+							<!-- 시설물 클릭 시 사이드바 옆에 띄우는 버튼 시작 -->
+							<div class="map-left-btn-wrapper">
+								<div class="btn-group-vertical">
+									<button type="button" class="btn btn-default btn-icon-left btn-icon-refresh active">생성</button>
+									<button type="button" class="btn btn-default btn-icon-left btn-icon-refresh">닫기</button>
+								</div>
+							</div>
+							<!-- 시설물 클릭 시 사이드바 옆에 띄우는 버튼 끝 -->
+
+							<!-- 지도 위에 띄울 버튼 시작 -->
+							<div class="map-inner-btn-wrapper" style="top: 200px; left: 400px"><!-- 위치를 지도에 맞게 스타일 지정 하세요. -->
+								<div class="btn-group">
+									<button type="button" class="btn btn-default btn-icon-left btn-icon-refresh active">이동</button>
+									<button type="button" class="btn btn-default btn-icon-left btn-icon-refresh">회전</button>
+									<button type="button" class="btn btn-default btn-icon-left btn-icon-refresh">편집</button>
+									<button type="button" class="btn btn-default btn-icon-left btn-icon-refresh">조회</button>
+									<button type="button" class="btn btn-default btn-icon-left btn-icon-refresh">닫기</button>
+								</div>
+							</div>
+							<!-- 지도 위에 띄울 버튼 끝 -->
+							
+							<!-- 지도 상단 컨트롤 시작 -->
+							<div class="map-top-control-wrapper">
+								<div class="sidebar-top-toggler">
+									<a href="javascript:;" class="">Sidebar</a>
+								</div>
+								
+								<div class="page-top-btn-group">
+
+									<div class="select-group">
+										<span class="input-group-label">
+											<label class="input-label-display" for="labelEx">지도화면 테마</label>
+										</span>
+										<select id="labelEx" class="form-control">
+											<option>기본지도</option>
+											<option>다크지도</option>
+											<option>브이월드지도</option>
+										</select>
+									</div>
+
+									<!-- 지도제어 시작 -->
+									<div class="map-top-default-control-group">
+										<ul class="map-top-default-btn-group">
+											<li>
+												<button type="button" class="btn btn-default">시설물 수량 검증하기</button>
+											</li>
+											<li>
+												<button type="button" class="btn btn-default">등록 보고서 다운로드</button>
+											</li>
+											<li>
+												<button type="button" class="btn btn-default">등록 조사표 다운로드</button>
+											</li>
+											<li>
+												<button type="button" class="btn btn-primary">승인처리</button>
+											</li>
+										</ul>
+									</div>
+									<!-- 지도제어 끝 -->
+
+								</div>
+
+								<!-- 확장 메뉴 (필요없을시 삭제해도됨) 시작 -->
+								<div class="map-control">
+
+									<div class="dropdown map-control-dropdown">
+										<div class="map-control-dropdown-group">
+											<!-- 설명서 - https://getbootstrap.com/docs/4.0/components/dropdowns/ -->
+											<a href="javascript:;" class="map-control-btn control-btn dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+											<div class="dropdown-menu dropdown-menu-right dropdownMenuButton2" aria-labelledby="dropdownMenuButton2">
+												<a class="dropdown-item" href="#">맵 등록정보</a>
+												<div class="hl"></div>
+												<a class="dropdown-item" href="#">맵 저장</a>
+												<a class="dropdown-item" href="#">맵 불러오기</a>
+												<a class="dropdown-item" href="#">새 맵</a>
+												<div class="hl"></div>
+												<a class="dropdown-item" href="#">앨리먼트 추가</a>
+												<a class="dropdown-item" href="#">앨리먼트 삭제</a>
+												<a class="dropdown-item" href="#">앨리먼트 복사</a>
+												<a class="dropdown-item" href="#">앨리먼트 붙여넣기</a>
+											</div>
+										</div>
+									</div>
+			
+								</div>
+								<!-- 확장 메뉴 (필요없을시 삭제해도됨) 끝 -->
+
+							</div>
+							<!-- 지도 상단 컨트롤 끝 -->
+
+							<!-- 지도 오른쪽 컨트롤 시작 -->
+							<div class="map-right-control-wrapper">
+								<div class="sidebar-right-toggler">
+									<a href="javascript:;" class="">Sidebar</a>
+								</div>
+								<!-- 지도제어 시작 -->
+								<div class="map-right-control-group map-right-control-col-1">
+									<ul class="map-right-btn-group">
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-zoom-in">확대</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-zoom-out">축소</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-distance">거리</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-area">면적</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-delete">지우기</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-reset">초기화</a>
+										</li>
+									</ul>
+								</div>
+								<!-- 지도제어 끝 -->
+							</div>
+							<!-- 지도 오른쪽 컨트롤 끝 -->
+						</div>
+						
+					</div>
+
+					<!-- 지도 시작 -->
+					<div class="map-wrapper">
+						<div id="googleMap" class="map-area"></div>
+					</div>
+					<!-- 지도 끝 -->
+
+				</div>
+				<!-- 컨텐츠 끝 -->
+
+			</div>
+
+		</section>
+		<!-- 페이지 컨테이너 끝 -->
+
+		<!-- 모달팝업 시작 -->
+		<div class="modal fade bs-modal-lg" id="help_popup" tabindex="-1" role="help_popup" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+						<h4 class="modal-title">도움말</h4>
+					</div>
+					<div class="modal-body">
+						<!-- 내용 시작 -->
+						<div class="contents-row">
+							<ul class="list-solo-ul ulli-decimal">
+								<li>
+									보호지정 선택 (지정)
+								</li>
+								<li>
+									관리대상 제어 선택
+									<ul class="contents-ul">
+										<li>
+											<span class="list-point-text">생성</span> 보호지정 신규 생성
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+						<!-- 내용 끝 -->
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 모달팝업 끝 -->
+
+	</body>
+</html>

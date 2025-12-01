@@ -1,0 +1,65 @@
+package szms.zzzzzzzz.service.impl;
+
+import java.util.List;
+
+import org.egovframe.rte.psl.dataaccess.mapper.Mapper;
+
+import szms.zzzzzzzz.vo.yyyyyyyyVO;
+
+/**
+ * 경찰청 보호구역통합관리시스템 구축사업 (2024) 
+ * xxxxxxxx Mapper
+ */
+ 
+@Mapper("uuuuuuuMapper")
+interface yyyyyyyyMapper {
+
+	///**
+	// * xxxxxxxx 목록 정보 조회 (Paging 처리)
+	// * @param yyyyyyyyVO
+	// * @return 목록 조회 결과
+	// */
+	//List<yyyyyyyyVO> selectyyyyyyyyListPaging(yyyyyyyyVO uuuuuuuVO);
+	
+	///**
+	// * xxxxxxxx 목록 정보 조회
+	// * @param yyyyyyyyVO
+	// * @return 목록 조회 결과
+	// */
+	//List<yyyyyyyyVO> selectyyyyyyyyList(yyyyyyyyVO uuuuuuuVO);	
+	
+	///**
+	// * xxxxxxxx 상세 정보 조회
+	// * @param yyyyyyyyVO
+	// * @return 상세 조회 결과
+	// */
+	//yyyyyyyyVO selectyyyyyyyyDetail(yyyyyyyyVO uuuuuuuVO);
+	
+	///**
+	// * xxxxxxxx 등록 처리
+	// * @param yyyyyyyyVO
+	// * @return 등록 처리 건수
+	// */
+	//int insertyyyyyyyy(yyyyyyyyVO uuuuuuuVO);
+	
+	///**
+	// * xxxxxxxx 수정 처리
+	// * @param yyyyyyyyVO
+	// * @return 수정 처리ㅐ 건수
+	// */
+	//int updateyyyyyyyy(yyyyyyyyVO uuuuuuuVO);
+	
+	///**
+	// * xxxxxxxx 삭제 처리
+	// * @param yyyyyyyyVO
+	// * @return 삭제 처리 건수
+	// */
+	//int deleteyyyyyyyy(yyyyyyyyVO uuuuuuuVO);
+	
+	///**
+	// * xxxxxxxx 삭제여부 처리
+	// * @param yyyyyyyyVO
+	// * @return 삭제여부 처리 건수
+	// */
+	//int updateyyyyyyyyDelAt(yyyyyyyyVO uuuuuuuVO);
+}

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="ko" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="ko" class="ie9 no-js"> <![endif]-->
+<html lang="ko">
+	<head>
+		<title>Markup Guide</title>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name = "viewport" content = "user-scalable=no, width=device-width">
+		<meta name="author" content="Markup Guide">
+		<!-- description -->
+		<meta name="description" content="HTML, CSS, JS, 컴포넌트, 모듈등의 가이드">
+		<!-- keywords -->
+		<meta name="keywords" content="">
+		<!-- favicon -->
+		<link rel="shortcut icon" href="../com/img/common/icon/favicon.ico">
+
+		<!-- ==============================================================
+			플러그인
+		============================================================== -->
+		<!-- 공통 -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/font-awesome/css/font-awesome.css" />
+		<link rel="stylesheet" type="text/css" href="../com/plugins/simple-line-icons/simple-line-icons.css" />
+		<script type="text/javascript" src="../com/plugins/jquery.min.js"></script>
+		<script type="text/javascript" src="../com/plugins/js.cookie.min.js"></script>
+		<script type="text/javascript" src="../com/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+		
+		<!-- bootstrap -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/bootstrap/css/bootstrap.css" />
+		<script type="text/javascript" src="../com/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+		<!-- bootstrap-datepicker -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css" />
+		<link rel="stylesheet" type="text/css" href="../com/plugins/bootstrap-timepicker/css/bootstrap-timepicker.css" />
+		<link rel="stylesheet" type="text/css" href="../com/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" />
+		<script type="text/javascript" src="../com/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+		<script type="text/javascript" src="../com/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.kr.min.js"></script>
+		<script type="text/javascript" src="../com/plugins/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+		<script type="text/javascript" src="../com/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+		<script type="text/javascript" src="../com/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.kr.js"></script>
+		<script type="text/javascript" src="../com/js/bootstrap-datepicker.kr.js"></script>
+		<script type="text/javascript" src="../com/js/components-date-time-pickers.js"></script>
+
+		<!-- bootstrap-fileinput -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/bootstrap-fileinput/bootstrap-fileinput.css" />
+		<script type="text/javascript" src="../com/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
+
+		<!-- bootstrap-tabdrop -->
+		<script type="text/javascript" src="../com/plugins/bootstrap-tabdrop/js/bootstrap-tabdrop.js"></script>
+
+		<!-- jstree -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/jstree/dist/themes/default/style.css" />
+		<script type="text/javascript" src="../com/plugins/jstree/dist/jstree.js"></script>
+		<script type="text/javascript" src="../com/js/ui-tree.js"></script>
+
+		<!-- bootstrap-switch -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/bootstrap-switch/css/bootstrap-switch.min.css" />
+		<script type="text/javascript" src="../com/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+
+		<!-- splitter -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/jquery-touch-splitter/css/touchsplitter.css" />
+		<script type="text/javascript" src="../com/plugins/jquery-touch-splitter/js/jquery.touchsplitter.js"></script>
+
+		<!-- Select Splitter -->
+		<script type="text/javascript" src="../com/plugins/bootstrap-selectsplitter/bootstrap-selectsplitter.min.js"></script>
+
+		<!-- Multiple Select -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/bootstrap-select/css/bootstrap-select.css">
+		<script type="text/javascript" src="../com/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+		<!-- Multiple Select Group -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/jquery-multi-select/css/multi-select.css" />
+        <script type="text/javascript" src="../com/plugins/jquery-multi-select/js/jquery.multi-select.js"></script>
+
+		<!-- div 크기 변경 감지 https://marcj.github.io/css-element-queries/ -->
+		<script type="text/javascript" src="../com/plugins/css-element-queries/ResizeSensor.js"></script>
+		<script type="text/javascript" src="../com/plugins/css-element-queries/ElementQueries.js"></script>
+		
+		<!-- 레이어 모달 팝업 -->
+		<link type="text/css" rel="stylesheet" href="../com/plugins/magnific-popup/magnific-popup.css">
+		<script type="text/javascript" src="../com/plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+		<!-- ==============================================================
+			amcharts script 영역
+		============================================================== -->
+		<script type="text/javascript" src="../com/plugins/amcharts4/core.js"></script>
+		<script type="text/javascript" src="../com/plugins/amcharts4/charts.js"></script>
+		<script type="text/javascript" src="../com/plugins/amcharts4/maps.js"></script>
+		<script type="text/javascript" src="../com/plugins/amcharts4/themes/animated.js"></script>
+		<script>
+			am4core.addLicense("ch-custom-attribution"); // 라이센스 인증 (amcharts 로고 없어짐)
+		</script>
+
+        <!-- ==============================================================
+			공통 커스텀
+		============================================================== -->	
+		<!-- 스타일 css -->
+		<link rel="stylesheet" type="text/css" href="../com/css/components.css" />
+		<link type="text/css" rel="stylesheet" href="../com/css/style.css">
+
+		<!-- 전체 조합 css -->
+		<link type="text/css" rel="stylesheet" href="../com/css/common.css">
+		<link type="text/css" rel="stylesheet" href="../com/css/common-ie.css">
+
+		<!-- 공통 script -->
+		<script type="text/javascript" src="../com/js/app.js"></script>
+		<script type="text/javascript" src="../com/js/common.js"></script>
+
+		<!-- ==============================================================
+			가이드
+		============================================================== -->
+		<link type="text/css" rel="stylesheet" href="com/css/guide.css">
+		<script type="text/javascript" src="com/js/include.js"></script>
+	</head>
+	<body class="page-guide">
+
+		<!-- 글로벌 시작 -->
+		<header class="page-header navbar navbar-fixed-top">
+			<div class="page-header-inner">
+				<div class="page-logo">
+					<a href="index.html">
+						<span class="logo-default">Markup Guide</span>
+					</a>
+				</div>
+			</div>
+		</header>
+		<!-- 글로벌 끝 -->
+
+		<!-- 페이지 컨테이너 시작 -->
+		<section class="page-container">
+
+			<div class="page-content-wrapper">
+
+				<!-- 왼쪽메뉴 시작 -->
+				<div class="page-sidebar-wrapper"></div>
+				<!-- 왼쪽메뉴 끝 -->
+
+				<!-- 컨텐츠 시작 -->
+				<div class="page-content">
+
+					<div class="page-content-inner">
+
+						<h1 class="page-title-1depth"><span>프로젝트 환경</span></h1>
+						
+						<!-- 내용 시작 -->
+						<div class="content-wrapper">
+
+							<ul class="guideUL font-dark uppercase padB0">
+								<li>아래 종류는 마크업 작업시 기본적인 가이드 관련 내용입니다.</li>
+								<li>HTML 또는 개발 작업시 지켜야 할 항목들 입니다.</li>
+								<li>OS 지원 / 문서타입 / 기본 해상도 / 인코딩 은 기획단계에서 나오기 때문에 꼭 확인해야 합니다.</li>
+							</ul>
+							<div class="portlet">
+								<div class="portlet-body">
+									<div class="portlet-body-hr">
+										<h3 class="portlet-body-title">OS 지원</h3>
+										<hr class="portlet-body-title-hr">
+										<p>WINDOW 10 이상</p>
+									</div>
+
+									<div class="portlet-body-hr">
+										<h3 class="portlet-body-title">문서타입</h3>
+										<hr class="portlet-body-title-hr">
+										<p>&lt;!DOCTYPE HTML&gt;, html5, css3</p>
+									</div>
+
+									<div class="portlet-body-hr">
+										<h3 class="portlet-body-title">인코딩</h3>
+										<hr class="portlet-body-title-hr">
+										<p>UTF-8</p>
+									</div>
+
+									<div class="portlet-body-hr">
+										<h3 class="portlet-body-title">브라우저</h3>
+										<p>기본적으로 크로스 브라우징은 익스플로러 10이상, 크롬을 맞추며, 최신브라우저를 기준으로 한다.</p>
+										<hr class="portlet-body-title-hr">
+										<p>
+											<img class="marR30" src="com/img/common/bg/ico_ie.gif" alt="" />
+											<img class="marR30" src="com/img/common/bg/ico_c.gif" alt="" />
+											<img class="marR30" src="com/img/common/bg/ico_s.gif" alt="" />
+											<img class="marR30" src="com/img/common/bg/ico_f.gif" alt="" />
+											<img class="marR30" src="com/img/common/bg/ico_o.gif" alt="" />
+										</p>
+									</div>
+
+									<div class="portlet-body-hr">
+										<h3 class="portlet-body-title">기본 해상도</h3>
+										<hr class="portlet-body-title-hr">
+										<p>1280px X 720px (디자인 상황에 따라 달라질수 있음)</p>
+									</div>
+
+									<div class="portlet-body-hr">
+										<h3 class="portlet-body-title">CSS 수정 및 설정</h3>
+										<hr class="portlet-body-title-hr">
+										<ul class="guideUL font-dark">
+											<li>inline style을 되도록 허용 하지 않으며, from 태그에 관해서만 허용한다. (width, height 값만 허용하도록 한다)</li>
+											<li>개발시 수정이 필요한 CSS가 있을 경우 반드시 작업자에게 요청.</li>
+										</ul>
+									</div>
+
+									<div class="portlet-body-hr">
+										<h3 class="portlet-body-title">UI 및 컴포넌트</h3>
+										<hr class="portlet-body-title-hr">
+										<ul class="guideUL font-dark">
+											<li>본 프로잭트의 web application은 Bootstrap v3.3.7 라이브러리를 사용합니다.</li>
+											<li>
+												Bootstrap v3.3.7의 API는 
+												<a href="https://getbootstrap.com/" target="_blank">https://getbootstrap.com/</a>
+												를 참고합니다.
+											</li>
+										</ul>
+									</div>
+
+									<div class="portlet-body-hr">
+										<h3 class="portlet-body-title">차트 설정</h3>
+										<hr class="portlet-body-title-hr">
+										<ul class="guideUL font-dark">
+											<li>본 프로잭트의 Chart는 amcharts(<a href="https://www.amcharts.com/" target="_blank">https://www.amcharts.com/</a>)를 사용합니다.</li>
+											<li>amcharts의 API는 <a href="https://www.amcharts.com/docs/v4/" target="_blank">https://www.amcharts.com/docs/v4/</a>를 참고합니다.</li>
+											<li>
+												amcharts는 웹에서 커스터마이징하여 코드를 작성해볼 수 있는 Editor를 제공해주는데 
+												<a href="https://editor4.amcharts.com/am4editor/#/am4editor/design" target="_blank">https://editor4.amcharts.com/am4editor/#/am4editor/design</a>
+												를 접속하여 유용합니다.
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<!-- 내용 끝 -->
+						
+					</div>
+
+				</div>
+				<!-- 컨텐츠 끝 -->
+
+			</div>
+
+		</section>
+		<!-- 페이지 컨테이너 끝 -->
+
+		<!-- footer 시작 -->
+		<footer class="page-footer"></footer>
+		<!-- footer 끝 -->
+
+	</body>
+	<script type="text/javascript">
+		menu(0);
+		footer();
+		function menu(index) {
+			$include_pageSlider[index].prependTo(".page-sidebar-wrapper").find(".page-sidebar-menu >.nav-item").removeClass("active").find("a .arrow.open").removeClass("open");
+			$include_pageSlider[index].find(".page-sidebar-menu >.nav-item").eq(0).addClass("active").find(">a .arrow").addClass("open");
+			$include_pageSlider[index].find(".page-sidebar-menu >.nav-item").eq(0).find(".sub-menu li").eq(0).addClass("active");
+		}
+		function footer() {
+			$include_footer.prependTo(".page-footer");
+		}
+	</script>
+</html>

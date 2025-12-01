@@ -1,0 +1,148 @@
+@charset "utf-8";
+
+/* ----------------------------------
+
+Name: responsive-map-daemin.css
+Categorie : 지도 대민서비스 반응형 레이아웃
+Author : 이상혁
+Version : v.1.0
+Created : 2024-09-30
+Last update : 2024-09-30
+-------------------------------------
+
+Table of contents
+
+	01. 레이아웃
+
+------------------------------------- */
+
+/* ===================================
+	01. 레이아웃 시작
+====================================== */
+body, 
+.navbar, 
+.parallax, 
+.page-footer, 
+.page-content-wrapper, 
+.nav-header-container, 
+.menu-all-popup-wrapper .mfp-container {
+	min-width: auto;
+}
+header {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	flex-direction: row;
+	gap: 40px;
+	height: 60px;
+}
+header .member-wrapper {
+	margin-left: auto;
+}
+.page-header-logo {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	flex-direction: row;
+}
+.page-header-logo .logo-top {
+	width: 150px;
+}
+.page-header-logo .header-project-name {
+	font-weight: bold;
+    font-size: 20px;
+    color: #000;
+}
+.map-wrapper,
+.page-content {
+	padding: 0px;
+}
+.page-top-btn-group {
+    gap: 20px;
+	flex: 1 0 auto;
+	justify-content: flex-end;
+}
+.select-group {
+	position: relative;
+	display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+	gap: 4px;
+}
+.select-group::after {
+    content: "";
+    display: block;
+    width: 1px;
+    height: 20px;
+    border-right: 1px solid #adb4c1;
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    margin-top: -10px;
+}
+.map-top-default-control-group {
+    
+}
+.map-top-default-control-group .toggle-btn-group .btn {
+	height: 34px;
+}
+.map-top-default-btn-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    gap: 4px;
+}
+.m-page-btn-group {
+	display: none;
+}
+.page-sidebar-wrapper {
+	position: absolute;
+	z-index: 3;
+}
+
+
+@media (min-width: 768px) {
+    
+}
+@media (min-width: 992px) {
+    
+}
+@media (min-width: 1200px) {
+    
+}
+@media (max-width: 1200px) {
+	
+}
+@media (max-width: 992px) {
+	header {
+		gap: 10px;
+	}
+	.page-header-logo .header-project-name {
+		font-size: 16px;
+	}
+	.m-page-btn-group {
+		display: block;
+	}
+	.map-top-default-btn-group {
+		display: none;
+	}
+	.page-top-btn-group {
+		justify-content: flex-end;
+	}
+}
+@media (max-width: 767px) {
+	.page-header-logo .header-project-name {
+		font-size: 16px;
+        word-break: keep-all;
+        line-height: 18px;
+	}
+	.map-view-control-wrapper,
+	.toggle-btn-group .map-view-icon {
+		width: 100%;
+	}
+}
+/* ===================================
+	01. 레이아웃 끝
+====================================== */

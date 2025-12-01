@@ -1,0 +1,73 @@
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="ui"     uri="http://egovframework.gov/ctl/ui"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="double-submit" uri="http://www.egovframe.go.kr/tags/double-submit/jsp" %>
+<!-- JSP file명 : selectyyyyyyyyDetail -->
+
+<h1>xxxxxxxx 상세조회</h1>
+
+<form:form modelAttribute="uuuuuuuVO" name="uuuuuuuVO" method="post">
+	<double-submit:preventer tokenKey="tokenKey"/>  
+		<!-- 컬럼항목 -->
+hhhhhhhh		
+</form:form>
+	
+<!-- 기본버튼 -->		
+<button onclick="fn_selectyyyyyyyyList();">목록이동</button>
+<button onclick="fn_insertyyyyyyyy();">등록</button>
+<button onclick="fn_updateyyyyyyyy();">수정</button>
+<button onclick="fn_deleteyyyyyyyy();">삭제</button>
+<button onclick="fn_updateyyyyyyyyDelAt();">삭제여부처리</button>
+
+<script type="text/javaScript" defer="defer">
+	//서버 처리 메세지
+	$(document).ready(function() {
+		if(!!"<c:out value="${uuuuuuuVO.returnMessage}"/>"){
+			alert("<c:out value="${uuuuuuuVO.returnMessage}"/>");	
+		}
+	});
+	
+	//xxxxxxxx 벨리데이션
+	function fn_validationyyyyyyyy(){
+		return true;
+	}	
+
+	//xxxxxxxx 목록 조회 function 
+	function fn_selectyyyyyyyyList() {
+		if(!confirm("목록으로 이동시 현재 페이지 정보는 저장되지 않습니다.\n 목록으로 이동 하시겠습니까?")){return false;}
+		document.uuuuuuuVO.action = "<c:url value='/oooooooo/selectyyyyyyyyList.do'/>";
+		document.uuuuuuuVO.submit();
+	}  
+        
+	//xxxxxxxx 등록 처리 function 
+	function fn_insertyyyyyyyy() {
+		if(!confirm("등록 하시겠습니까?")){return false;}
+		fn_validationyyyyyyyy();
+		document.uuuuuuuVO.action = "<c:url value='/oooooooo/insertyyyyyyyy.do'/>";
+		document.uuuuuuuVO.submit();
+	}
+	
+	//xxxxxxxx 수정 처리 function 
+	function fn_updateyyyyyyyy() {
+		if(!confirm("수정 하시겠습니까?")){return false;}
+		fn_validationyyyyyyyy();
+		document.uuuuuuuVO.action = "<c:url value='/oooooooo/updateyyyyyyyy.do'/>";
+		document.uuuuuuuVO.submit();
+	}
+	
+	//xxxxxxxx 삭제 처리 function 
+	function fn_deleteyyyyyyyy() {
+		if(!confirm("삭제 하시겠습니까?")){return false;}
+		document.uuuuuuuVO.action = "<c:url value='/oooooooo/deleteyyyyyyyy.do'/>";
+		document.uuuuuuuVO.submit();
+	}
+	
+	//xxxxxxxx 삭제여부 처리 function 
+	function fn_updateyyyyyyyyDelAt() {
+		if(!confirm("삭제 하시겠습니까?")){return false;}
+		document.uuuuuuuVO.action = "<c:url value='/oooooooo/updateyyyyyyyyDelAt.do'/>";
+		document.uuuuuuuVO.submit();
+	}
+</script>

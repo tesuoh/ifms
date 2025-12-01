@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<title>보호구역 통합관리시스템</title>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name = "viewport" content = "user-scalable=no, width=device-width">
+		<meta name="author" content="보호구역 통합관리시스템">
+		<!-- description -->
+		<meta name="description" content="보호구역 통합관리시스템 프로젝트">
+		<!-- keywords -->
+		<meta name="keywords" content="">
+		<!-- favicon -->
+		<link rel="shortcut icon" href="../../com/img/common/icon/favicon.ico">
+		<link rel="apple-touch-icon" href="../../com/img/common/icon/favicon.ico">
+
+		<!-- ==============================================================
+			플러그인
+		============================================================== -->
+		<!-- 공통 -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/font-awesome/css/font-awesome.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/simple-line-icons/simple-line-icons.css" />
+		<script type="text/javascript" src="../../com/plugins/jquery.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/js.cookie.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+
+		<!-- bootstrap -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap/css/bootstrap.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+		<!-- bootstrap-datepicker -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-timepicker/css/bootstrap-timepicker.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.kr.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.kr.js"></script>
+		<script type="text/javascript" src="../../com/js/bootstrap-datepicker.kr.js"></script>
+		<script type="text/javascript" src="../../com/js/components-date-time-pickers.js"></script>
+
+		<!-- bootstrap-fileinput -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-fileinput/bootstrap-fileinput.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
+
+		<!-- bootstrap-tabdrop -->
+		<script type="text/javascript" src="../../com/plugins/bootstrap-tabdrop/js/bootstrap-tabdrop.js"></script>
+
+		<!-- jstree -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/jstree/dist/themes/default/style.css" />
+		<script type="text/javascript" src="../../com/plugins/jstree/dist/jstree.js"></script>
+		<script type="text/javascript" src="../../com/js/ui-tree.js"></script>
+
+		<!-- div 크기 변경 감지 https://marcj.github.io/css-element-queries/ -->
+		<script type="text/javascript" src="../../com/plugins/css-element-queries/ResizeSensor.js"></script>
+		<script type="text/javascript" src="../../com/plugins/css-element-queries/ElementQueries.js"></script>
+		
+		<!-- 전체 레이어 모달 팝업 -->
+		<link type="text/css" rel="stylesheet" href="../../com/plugins/magnific-popup/magnific-popup.css">
+		<script type="text/javascript" src="../../com/plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+		<!-- 컨텐츠 셀렉트 -->
+		<script type="text/javascript" src="../../com/plugins/slideNav/slideNav.js"></script>
+
+        <!-- ==============================================================
+			공통 커스텀
+		============================================================== -->
+		<!-- 공통 script -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/font-awesome/css/font-awesome.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/simple-line-icons/simple-line-icons.css" />
+		<script type="text/javascript" src="../../com/js/app.js"></script>
+
+		<!-- 스타일 css -->
+		<link type="text/css" rel="stylesheet" href="../../com/css/components.css" />
+		<link type="text/css" rel="stylesheet" href="../../com/css/style.css" />
+
+		<!-- 전체 조합 css -->
+		<link type="text/css" rel="stylesheet" href="../../com/css/common.css" />
+		<link type="text/css" rel="stylesheet" href="../../com/css/common-ie.css">
+
+		<!-- 지도 css -->
+		<link type="text/css" rel="stylesheet" href="../../com/css/map.css" />
+		<link type="text/css" rel="stylesheet" href="../../com/css/map-fact-finding-survey.css" />
+		<script type="text/javascript" src="../../com/js/map-fact-finding-survey.js"></script>
+
+		<!-- 구글 맵 시작 (작업시 삭제할것) -->
+		<script src="http://maps.googleapis.com/maps/api/js"></script>
+		<script>
+			function initialize() {
+			  var mapProp = {
+				center: new google.maps.LatLng(37.250943, 127.028344),
+				zoom:15,
+				zoomControl:true,
+				zoomControlOptions: {
+				  style:google.maps.ZoomControlStyle.SMALL
+				},
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			  };
+			  var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+			}
+			google.maps.event.addDomListener(window, 'load', initialize);
+		</script>
+		<!-- 구글 맵 끝 (작업시 삭제할것) -->
+
+	</head>
+	<body class="system-map-page map-admin-page fact-finding-survey-map-page page-sidebar-closed">
+
+		<!-- 페이지 컨테이너 시작 -->
+		<section class="page-container">
+
+			<div class="page-content-wrapper">
+
+				<!-- 서브메뉴 시작 -->
+				<div class="page-sidebar-wrapper">
+					
+					<div class="sidebar-toggler">
+						<a href="javascript:;" class="">Sidebar</a>
+					</div>
+					<div class="page-sidebar">
+
+						<div class="page-sidebar-logo">
+							<a href="javascript:void(0);" title="경찰청 로고" class="logo">
+								<img src="../../com/img/common/header/logo.png" class="logo-top" alt="경찰청 로고">
+							</a>
+							<div class="header-project-name">보호구역 통합관리시스템</div>
+						</div>
+
+					</div>
+				</div>
+				<!-- 서브메뉴 끝 -->
+				<!-- 컨텐츠 시작 -->
+				<div id="content" class="page-content">
+
+					<!-- 헤더 (JSP 파일 include) 시작 -->
+					<header id="header">
+						<!-- 시스템 글로벌 메뉴 시작 -->
+						<div class="member-wrapper">
+							<div class="head-etc">
+								<ul class="etc-ul">
+									<li class="li">
+										<a href="#" class="btn btn-txt ico-user ico-before xsm" target="_blank">홍길동님</a>
+									</li>
+									<li class="li">
+										<a href="#" class="btn btn-txt ico-logout ico-before xsm" target="_blank">로그아웃</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<!-- 시스템 글로벌 메뉴 끝 -->
+					</header>
+					<!-- 헤더 (JSP 파일 include) 끝 -->
+
+					<div class="page-content-inner">
+
+						<div class="map-control-wrapper">
+							
+							<!-- 지도 상단 컨트롤 시작 -->
+							<div class="map-top-control-wrapper">
+								<div class="sidebar-top-toggler">
+									<a href="javascript:;" class="">Sidebar</a>
+								</div>
+								
+								<div class="page-top-btn-group">
+
+									<!-- 지도제어 시작 -->
+									<div class="map-top-default-control-group">
+										<ul class="map-top-default-btn-group">
+											<li>
+												<button onclick="windowsPop_01();" class="btn btn-default"><span>사고정보 조회 팝업 띄우기</span></button>
+												<script>
+													function windowsPop_01(){
+														var url = "SCR-008-02-windowsPopup.html";
+														var name = "윈도우팝업띄우기";
+														var option = "width = 1200, height = 700, top = 100, left = 200, location = no"
+														window.open(url, name, option);
+													}
+												</script>
+											</li>
+										</ul>
+									</div>
+									<!-- 지도제어 끝 -->
+
+								</div>
+
+							</div>
+							<!-- 지도 상단 컨트롤 끝 -->
+						</div>
+						
+					</div>
+
+					<!-- 지도 시작 -->
+					<div class="map-wrapper">
+						<div id="googleMap" class="map-area"></div>
+					</div>
+					<!-- 지도 끝 -->
+
+				</div>
+				<!-- 컨텐츠 끝 -->
+
+			</div>
+
+		</section>
+		<!-- 페이지 컨테이너 끝 -->
+
+	</body>
+</html>

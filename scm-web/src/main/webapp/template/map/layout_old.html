@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<title>보호구역 통합관리시스템</title>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name = "viewport" content = "user-scalable=no, width=device-width">
+		<meta name="author" content="보호구역 통합관리시스템">
+		<!-- description -->
+		<meta name="description" content="보호구역 통합관리시스템 프로젝트">
+		<!-- keywords -->
+		<meta name="keywords" content="">
+		<!-- favicon -->
+		<link rel="shortcut icon" href="../../com/img/common/icon/favicon.ico">
+		<link rel="apple-touch-icon" href="../../com/img/common/icon/favicon.ico">
+
+		<!-- ==============================================================
+			플러그인
+		============================================================== -->
+		<!-- 공통 -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/font-awesome/css/font-awesome.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/simple-line-icons/simple-line-icons.css" />
+		<script type="text/javascript" src="../../com/plugins/jquery.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/js.cookie.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+
+		<!-- bootstrap -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap/css/bootstrap.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+		<!-- bootstrap-datepicker -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-timepicker/css/bootstrap-timepicker.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.kr.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.kr.js"></script>
+		<script type="text/javascript" src="../../com/js/bootstrap-datepicker.kr.js"></script>
+		<script type="text/javascript" src="../../com/js/components-date-time-pickers.js"></script>
+
+		<!-- bootstrap-fileinput -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-fileinput/bootstrap-fileinput.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
+
+		<!-- bootstrap-tabdrop -->
+		<script type="text/javascript" src="../../com/plugins/bootstrap-tabdrop/js/bootstrap-tabdrop.js"></script>
+
+		<!-- jstree -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/jstree/dist/themes/default/style.css" />
+		<script type="text/javascript" src="../../com/plugins/jstree/dist/jstree.js"></script>
+		<script type="text/javascript" src="../../com/js/ui-tree.js"></script>
+
+		<!-- div 크기 변경 감지 https://marcj.github.io/css-element-queries/ -->
+		<script type="text/javascript" src="../../com/plugins/css-element-queries/ResizeSensor.js"></script>
+		<script type="text/javascript" src="../../com/plugins/css-element-queries/ElementQueries.js"></script>
+		
+		<!-- 전체 레이어 모달 팝업 -->
+		<link type="text/css" rel="stylesheet" href="../../com/plugins/magnific-popup/magnific-popup.css">
+		<script type="text/javascript" src="../../com/plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+		<!-- 컨텐츠 셀렉트 -->
+		<script type="text/javascript" src="../../com/plugins/slideNav/slideNav.js"></script>
+
+        <!-- ==============================================================
+			공통 커스텀
+		============================================================== -->
+		<!-- 공통 script -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/font-awesome/css/font-awesome.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/simple-line-icons/simple-line-icons.css" />
+		<script type="text/javascript" src="../../com/js/app.js"></script>
+
+		<!-- 스타일 css -->
+		<link type="text/css" rel="stylesheet" href="../../com/css/components.css" />
+		<link type="text/css" rel="stylesheet" href="../../com/css/style.css" />
+
+		<!-- 전체 조합 css -->
+		<link type="text/css" rel="stylesheet" href="../../com/css/common.css" />
+		<link type="text/css" rel="stylesheet" href="../../com/css/common-ie.css">
+
+		<!-- 지도 css -->
+		<link type="text/css" rel="stylesheet" href="../../com/css/map.css" />
+		<script type="text/javascript" src="../../com/js/map.js"></script>
+
+		<!-- 구글 맵 시작 (작업시 삭제할것) -->
+		<script src="http://maps.googleapis.com/maps/api/js"></script>
+		<script>
+			function initialize() {
+			  var mapProp = {
+				center: new google.maps.LatLng(37.250943, 127.028344),
+				zoom:15,
+				zoomControl:true,
+				zoomControlOptions: {
+				  style:google.maps.ZoomControlStyle.SMALL
+				},
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			  };
+			  var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+			}
+			google.maps.event.addDomListener(window, 'load', initialize);
+		</script>
+		<!-- 구글 맵 끝 (작업시 삭제할것) -->
+
+	</head>
+	<body class="system-map-page">
+
+		<!-- 페이지 컨테이너 시작 -->
+		<section class="page-container">
+
+			<div class="page-content-wrapper">
+				<!-- 서브메뉴 시작 -->
+				<div class="page-sidebar-wrapper">
+					
+					<div class="sidebar-toggler">
+						<a href="javascript:;" class="">Sidebar</a>
+					</div>
+					<div class="page-sidebar">
+
+						<div class="page-sidebar-logo">
+							<a href="javascript:;" class="">보호구역 통합관리시스템</a>
+						</div>
+
+						<div class="system-left-tab-wrapper">
+							<!-- 탭 시작 -->
+							<ul class="system-left-tab-group">
+								<li class="active">
+									<a href="#system_left_test_info_tab_1" data-toggle="tab" class="tab-list"> 통합검색 </a>
+								</li>
+								<li>
+									<a href="#system_left_test_info_tab_2" data-toggle="tab" class="tab-api"> 레이어 </a>
+								</li>
+							</ul>
+							<div class="tab-content">
+	
+								<!-- 탭1 컨텐츠 시작 -->
+								<div class="tab-pane active in" id="system_left_test_info_tab_1">
+
+									<div class="treeview-project-name">
+										<p class="project-title">검색할 주소를 입력해주세요.</p>
+										<div class="input-group project-search">
+											<input type="text" class="form-control search">
+											<span class="input-group-btn">
+												<button class="btn btn-primary btn-icon-single btn-icon-search" type="button" alt="검색버튼"></button>
+											</span>
+										</div>
+									</div>
+
+									<h1 class="page-title-1depth"><span>검색결과</span></h1>
+			
+									<!-- 검색결과 시작 -->
+									<div class="map-left-search-result">
+										<table class="table table-medium table-thead marB0">
+											<caption>테이블 요약</caption>
+											<colgroup>
+												<col style="width:200px;">
+												<col style="width:96px;">
+											</colgroup>
+											<thead>
+												<tr>
+													<th>검색된 주소</th>
+													<th>위치로 이동</th>
+												</tr>
+											</thead>
+										</table>
+										<div class="scrollOptionY" style="max-height: 400px;">
+											<table class="table table-medium table-tbody">
+												<caption>검색된 주소 테이블</caption>
+												<colgroup>
+													<col style="width:200px;">
+													<col style="width:96px;">
+												</colgroup>
+												<tbody>
+													<tr>
+														<td class="search-result-icon"><a href="#">경기도 고양시 일산서구</a></td>
+														<td class="t-center">
+															<button type="button" class="btn btn-icon-single btn-small btn-icon-guidance" title="위치이동"></button>
+														</td>
+													</tr>
+													<tr>
+														<td class="search-result-icon"><a href="#">경기도 고양시 일산서구 경기도 고양시 일산서구 경기도 고양시 일산서구</a></td>
+														<td class="t-center">
+															<button type="button" class="btn btn-icon-single btn-small btn-icon-guidance" title="위치이동"></button>
+														</td>
+													</tr>
+													<tr>
+														<td class="search-result-icon"><a href="#">경기도 고양시 일산서구</a></td>
+														<td class="t-center">
+															<button type="button" class="btn btn-icon-single btn-small btn-icon-guidance" title="위치이동"></button>
+														</td>
+													</tr>
+													<tr>
+														<td class="search-result-icon"><a href="#">경기도 고양시 일산서구</a></td>
+														<td class="t-center">
+															<button type="button" class="btn btn-icon-single btn-small btn-icon-guidance" title="위치이동"></button>
+														</td>
+													</tr>
+													<tr>
+														<td class="search-result-icon"><a href="#">경기도 고양시 일산서구</a></td>
+														<td class="t-center">
+															<button type="button" class="btn btn-icon-single btn-small btn-icon-guidance" title="위치이동"></button>
+														</td>
+													</tr>
+													<tr>
+														<td class="search-result-icon"><a href="#">경기도 고양시 일산서구</a></td>
+														<td class="t-center">
+															<button type="button" class="btn btn-icon-single btn-small btn-icon-guidance" title="위치이동"></button>
+														</td>
+													</tr>
+													<tr>
+														<td class="search-result-icon"><a href="#">경기도 고양시 일산서구</a></td>
+														<td class="t-center">
+															<button type="button" class="btn btn-icon-single btn-small btn-icon-guidance" title="위치이동"></button>
+														</td>
+													</tr>
+													<tr>
+														<td class="search-result-icon"><a href="#">경기도 고양시 일산서구</a></td>
+														<td class="t-center">
+															<button type="button" class="btn btn-icon-single btn-small btn-icon-guidance" title="위치이동"></button>
+														</td>
+													</tr>
+													<tr>
+														<td class="search-result-icon"><a href="#">경기도 고양시 일산서구</a></td>
+														<td class="t-center">
+															<button type="button" class="btn btn-icon-single btn-small btn-icon-guidance" title="위치이동"></button>
+														</td>
+													</tr>
+													<tr>
+														<td class="search-result-icon"><a href="#">경기도 고양시 일산서구</a></td>
+														<td class="t-center">
+															<button type="button" class="btn btn-icon-single btn-small btn-icon-guidance" title="위치이동"></button>
+														</td>
+													</tr>
+													<tr>
+														<td class="search-result-icon"><a href="#">경기도 고양시 일산서구</a></td>
+														<td class="t-center">
+															<button type="button" class="btn btn-icon-single btn-small btn-icon-guidance" title="위치이동"></button>
+														</td>
+													</tr>
+													<tr>
+														<td class="search-result-icon"><a href="#">경기도 고양시 일산서구</a></td>
+														<td class="t-center">
+															<button type="button" class="btn btn-icon-single btn-small btn-icon-guidance" title="위치이동"></button>
+														</td>
+													</tr>
+													<tr>
+														<td class="search-result-icon"><a href="#">경기도 고양시 일산서구</a></td>
+														<td class="t-center">
+															<button type="button" class="btn btn-icon-single btn-small btn-icon-guidance" title="위치이동"></button>
+														</td>
+													</tr>
+												</tbody>
+
+												<!-- 검색된 데이터가 없을때 시작 -->
+												<!-- <tbody>
+													<tr>
+														<td colspan="2">
+															<div class="no-data"></div>
+														</td>
+													</tr>
+												</tbody> -->
+												<!-- 검색된 데이터가 없을때 끝 -->
+											</table>
+										</div>
+										<div class="table-bottom-control">
+											<button type="button" class="btn btn-dark-gray btn-icon-left btn-icon-refresh"><span>초기화</span></button>
+										</div>
+									</div>
+									<!-- 검색결과 끝 -->
+								</div>
+								<!-- 탭1 컨텐츠 끝 -->
+	
+								<!-- 탭2 컨텐츠 시작 -->
+								<div class="tab-pane" id="system_left_test_info_tab_2">
+
+									<div class="treeview-project-name">
+										<div class="project-search">
+
+											<div class="contents-row">
+												<h1 class="page-title-1depth"><span>검색대상을 선택하세요.</span></h1>
+												<div class="table-title-control">
+													<label class="mt-checkbox mt-checkbox-outline">
+														<input type="checkbox" value="1" checked=""> 전체선택
+														<span></span>
+													</label>
+												</div>
+												<div class="portlet scrollOptionY" style="max-height: 140px;">
+													<div class="mt-checkbox-list">
+														<label class="mt-checkbox mt-checkbox-outline search-menu-span-icon menu-icon-01">
+															<!-- 레이어 심볼 색깔은 아래에 인라인에 직접 스타일 할 수 있습니다. -->
+															<span class="span-icon" style="background-color:rgb(236 197 35);"></span>
+															<input type="checkbox" value="1" checked=""> 지하개발사업
+															<span></span>
+														</label>
+														<label class="mt-checkbox mt-checkbox-outline search-menu-span-icon menu-icon-02">
+															<!-- 레이어 심볼 색깔은 아래에 인라인에 직접 스타일 할 수 있습니다. -->
+															<span class="span-icon" style="background-color:rgb(189 215 34);"></span>
+															<input type="checkbox" value="2"> 지하안전평가
+															<span></span>
+														</label>
+														<label class="mt-checkbox mt-checkbox-outline search-menu-span-icon menu-icon-03">
+															<!-- 레이어 심볼 색깔은 아래에 인라인에 직접 스타일 할 수 있습니다. -->
+															<span class="span-icon" style="background-color:rgb(36 213 200);"></span>
+															<input type="checkbox" value="3"> 착공후지하안전조사
+															<span></span>
+														</label>
+														<label class="mt-checkbox mt-checkbox-outline search-menu-span-icon menu-icon-05">
+															<!-- 레이어 심볼 색깔은 아래에 인라인에 직접 스타일 할 수 있습니다. -->
+															<span class="span-icon" style="background-color:rgb(255 110 181);"></span>
+															<input type="checkbox" value="4"> 지반침하사고
+															<span></span>
+														</label>
+														<label class="mt-checkbox mt-checkbox-outline search-menu-span-icon menu-icon-04">
+															<!-- 레이어 심볼 색깔은 아래에 인라인에 직접 스타일 할 수 있습니다. -->
+															<span class="span-icon" style="background-color:rgb(183 108 255);"></span>
+															<input type="checkbox" value="5"> 지반침하위험도평가
+															<span></span>
+														</label>
+														<label class="mt-checkbox mt-checkbox-outline search-menu-span-icon menu-icon-06">
+															<!-- 레이어 심볼 색깔은 아래에 인라인에 직접 스타일 할 수 있습니다. -->
+															<span class="span-icon" style="background-color:rgb(255 127 39);"></span>
+															<input type="checkbox" value="6"> 지하안전점검 – 육안조사
+															<span></span>
+														</label>
+														<label class="mt-checkbox mt-checkbox-outline search-menu-span-icon menu-icon-07">
+															<!-- 레이어 심볼 색깔은 아래에 인라인에 직접 스타일 할 수 있습니다. -->
+															<span class="span-icon" style="background-color:rgb(85 142 213);"></span>
+															<input type="checkbox" value="7"> 지하안전점검 – 공동조사
+															<span></span>
+														</label>
+														<label class="mt-checkbox mt-checkbox-outline search-menu-span-icon menu-icon-08">
+															<!-- 레이어 심볼 색깔은 아래에 인라인에 직접 스타일 할 수 있습니다. -->
+															<span class="span-icon" style="background-color:rgb(217 150 148);"></span>
+															<input type="checkbox" value="8"> 지반탐사 노선
+															<span></span>
+														</label>
+													</div>
+												</div>
+											</div>
+
+											<hr class="portlet-body-title-hr">
+
+											<div class="contents-row">
+												<h1 class="page-title-1depth"><span>공간검색 방법을 선택하세요.</span></h1>
+												<div class="portlet">
+													<div class="mt-radio-inline">
+														<label class="mt-radio mt-radio-outline">
+															<input type="radio" name="radioInline1" value="1" checked=""> 반경 검색
+															<span></span>
+														</label>
+														<label class="mt-radio mt-radio-outline">
+															<input type="radio" name="radioInline1" value="2"> 다각형 검색
+															<span></span>
+														</label>
+													</div>
+												</div>
+											</div>
+
+											<hr class="portlet-body-title-hr">
+
+											<div class="contents-row">
+												<h1 class="page-title-1depth"><span>년도를 입력하세요.</span></h1>
+												<div class="portlet">
+													<div class="form-inline">
+														<!--input id명칭과 for가 동일해야함 (웹접근성)-->
+														<label class="input-label-none" for="yearPicker1">label명</label>
+														<div class="input-group input-icon date year-picker pad0" style="width: 128px;">
+															<i class="fa fa-calendar"></i>
+															<input type="text" id="yearPicker1" name="yearPicker1" title="년도" class="form-control" placeholder="시작년도">
+														</div>
+														<script>       
+															$('#yearPicker1').datepicker({
+																format: 'yyyy',
+																viewMode: "years", 
+																minViewMode: 'years'
+															});
+														</script>
+														<span> ~ </span>
+														<!--input id명칭과 for가 동일해야함 (웹접근성)-->
+														<!--input id명칭과 for가 동일해야함 (웹접근성)-->
+														<label class="input-label-none" for="yearpicker2">label명</label>
+														<div class="input-group input-icon date year-picker pad0" style="width: 128px;">
+															<i class="fa fa-calendar"></i>
+															<input type="text" id="yearpicker2" name="yearpicker2" title="년도" class="form-control" placeholder="끝년도">
+														</div>
+														<script>       
+															$('#yearpicker2').datepicker({
+																format: 'yyyy',
+																viewMode: "years", 
+																minViewMode: 'years'
+															});
+														</script>
+													</div>
+												</div>
+											</div>
+
+											<button class="btn btn-primary btn-icon-left btn-icon-search marT10" type="button">검색</button>
+
+										</div>
+									</div>
+
+									<div class="map-left-search-result">
+
+										<h1 class="page-title-1depth"><span>검색결과</span></h1>
+
+										<div class="contents-row marB10">
+
+											<select class="bs-select form-control" style="width:100%;">
+												<option>전체</option>
+												<option>지하개발사업</option>
+												<option>지하안전평가</option>
+												<option>착공후지하안전조사</option>
+												<option>지반침하사고</option>
+												<option>지반침하위험도평가</option>
+												<option>지하안전점검 – 육안조사</option>
+												<option>지하안전점검 – 공동조사</option>
+												<option>지반탐사 노선</option>
+											</select>
+											
+										</div>
+
+										<div class="table-top-control">
+											<span class="table-count">조회내역 (총 <span class="table-count-text">0</span>건)</span>
+											<button type="button" class="btn btn-small btn-green btn-icon-left btn-icon-download-excel"><span>엑셀다운로드</span></button>
+										</div>
+
+										<div class="map-left-search-result">
+
+											<table class="table table-medium table-thead marB0">
+												<caption>테이블 요약</caption>
+												<colgroup>
+													<col style="width:25%;">
+													<col style="width:25%;">
+													<col style="width:25%;">
+													<col style="width:25%;">
+												</colgroup>
+												<thead>
+													<tr>
+														<th>사업자명</th>
+														<th>등록자</th>
+														<th>정보조회</th>
+														<th>위치조회</th>
+													</tr>
+												</thead>
+											</table>
+											<div class="scrollOptionY" style="max-height: 260px;">
+												<table class="table table-medium table-tbody">
+													<caption>검색된 주소 테이블</caption>
+													<colgroup>
+														<col style="width:25%;">
+														<col style="width:25%;">
+														<col style="width:25%;">
+														<col style="width:25%;">
+													</colgroup>
+													<tbody>
+														<tr>
+															<td class="t-left">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+														</tr>
+														<tr>
+															<td class="t-left">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+														</tr>
+														<tr>
+															<td class="t-left">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+														</tr>
+														<tr>
+															<td class="t-left">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+														</tr>
+														<tr>
+															<td class="t-left">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+														</tr>
+														<tr>
+															<td class="t-left">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+														</tr>
+														<tr>
+															<td class="t-left">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+														</tr>
+														<tr>
+															<td class="t-left">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+														</tr>
+														<tr>
+															<td class="t-left">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+														</tr>
+														<tr>
+															<td class="t-left">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+														</tr>
+														<tr>
+															<td class="t-left">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+															<td class="t-center">
+																<a href="javascript:void(0);">내용</a>
+															</td>
+														</tr>
+													</tbody>
+	
+													<!-- 검색된 데이터가 없을때 시작 -->
+													<!-- <tbody>
+														<tr>
+															<td colspan="4">
+																<div class="no-data"></div>
+															</td>
+														</tr>
+													</tbody> -->
+													<!-- 검색된 데이터가 없을때 끝 -->
+												</table>
+											</div>
+											
+										</div>
+
+										<!-- <div class="table-bottom-control">
+											<button type="button" class="btn btn-dark-gray btn-icon-left btn-icon-refresh"><span>초기화</span></button>
+										</div> -->
+									</div>
+
+								</div>
+								<!-- 탭2 컨텐츠 끝 -->
+	
+							</div>
+							<!-- 탭 끝 -->
+						</div>
+
+					</div>
+				</div>
+				<!-- 서브메뉴 끝 -->
+				<!-- 컨텐츠 시작 -->
+				<div id="content" class="page-content">
+
+					<div class="page-content-inner">
+
+						<div class="map-control-wrapper">
+							<!-- 지도 상단 컨트롤 시작 -->
+							<div class="map-top-control-wrapper">
+								<div class="sidebar-top-toggler">
+									<a href="javascript:;" class="">Sidebar</a>
+								</div>
+								<div class="page-top-btn-group">
+									
+									<!-- 지도제어 시작 -->
+									<div class="map-top-control-group">
+										<ul class="map-top-btn-group">
+											<li>
+												<a href="#" class="map-top-btn map-btn-icon-01">전체화면</a>
+											</li>
+											<li>
+												<a href="#" class="map-top-btn map-btn-icon-02">확대</a>
+											</li>
+											<li>
+												<a href="#" class="map-top-btn map-btn-icon-03">축소</a>
+											</li>
+											<li>
+												<a href="#" class="map-top-btn map-btn-icon-04">이전화면</a>
+											</li>
+											<li>
+												<a href="#" class="map-top-btn map-btn-icon-05">다음화면</a>
+											</li>
+											<li>
+												<a href="#" class="map-top-btn map-btn-icon-06">거리재기</a>
+											</li>
+											<li>
+												<a href="#" class="map-top-btn map-btn-icon-07">면적재기</a>
+											</li>
+											<li>
+												<a href="#" class="map-top-btn map-btn-icon-08">저장하기</a>
+											</li>
+											<li>
+												<a href="#" class="map-top-btn map-btn-icon-09">새로고침</a>
+											</li>
+											<li>
+												<a href="#" class="map-top-btn map-btn-icon-10">위치표시</a>
+											</li>
+											<li>
+												<a href="#" class="map-top-btn map-btn-icon-11">위치표시(점)</a>
+											</li>
+											<li>
+												<a href="#" class="map-top-btn map-btn-icon-12">위치표시(선)</a>
+											</li>
+											<li>
+												<a href="#" class="map-top-btn map-btn-icon-13">위치표시(면)</a>
+											</li>
+											<li>
+												<a href="#" class="map-top-btn map-btn-icon-14">속성조회</a>
+											</li>
+										</ul>
+									</div>
+									<!-- 지도제어 끝 -->
+
+								</div>
+
+								<!-- 확장 메뉴 (필요없을시 삭제해도됨) 시작 -->
+								<div class="map-control">
+
+									<div class="dropdown">
+										<a href="javascript:;" class="map-control-btn control-btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+										<div class="dropdown-menu dropdown-menu-right dropdownMenuButton1" aria-labelledby="dropdownMenuButton1">
+											<a class="dropdown-item" href="#" id="menuMapProperties">맵 등록정보</a>
+											<div class="hl"></div>
+											<a class="dropdown-item" href="#" id="menuSaveMapToJson">맵 저장</a>
+											<a class="dropdown-item" href="#" id="menuOpenMapJsonFile">맵 불러오기</a>
+											<a class="dropdown-item" href="#" id="menuLoadNewMap">새 맵</a>
+											<div class="hl"></div>
+											<a class="dropdown-item" href="#" id="menuShowAddMapElementDialog">앨리먼트 추가</a>
+											<a class="dropdown-item" href="#" id="menuRemoveMapElement">앨리먼트 삭제</a>
+											<a class="dropdown-item" href="#" id="menuCopyMapElement">앨리먼트 복사</a>
+											<a class="dropdown-item" href="#" id="menuPasteMapElement" disabled="disabled">앨리먼트 붙여넣기</a>
+										</div>
+									</div>
+			
+								</div>
+								<!-- 확장 메뉴 (필요없을시 삭제해도됨) 끝 -->
+
+							</div>
+							<!-- 지도 상단 컨트롤 끝 -->
+
+							<!-- 지도 오른쪽 컨트롤 시작 -->
+							<div class="map-right-control-wrapper">
+								<div class="sidebar-right-toggler">
+									<a href="javascript:;" class="">Sidebar</a>
+								</div>
+								<!-- 지도제어 시작 -->
+								<div class="map-right-control-group">
+									<ul class="map-right-btn-group">
+										<li class="row-all">
+											<a href="#" class="map-right-btn map-btn-icon-all">전체 보기</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-zoom-in">확대</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-zoom-out">축소</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-choice">선택</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-move">이동</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-area-choice">영역선택</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-screen">화면저장</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-distance">거리</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-area">면적</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-line">선</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-triangle">삼각형</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-circle">원</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-square">사각형</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-delete">삭제</a>
+										</li>
+										<li>
+											<a href="#" class="map-right-btn map-btn-icon-delete-all">전체삭제</a>
+										</li>
+									</ul>
+								</div>
+								<!-- 지도제어 끝 -->
+							</div>
+							<!-- 지도 오른쪽 컨트롤 끝 -->
+						</div>
+						
+					</div>
+
+					<!-- 지도 시작 -->
+					<div class="map-wrapper">
+						<div id="googleMap" class="map-area"></div>
+					</div>
+					<!-- 지도 끝 -->
+
+				</div>
+				<!-- 컨텐츠 끝 -->
+
+			</div>
+
+		</section>
+		<!-- 페이지 컨테이너 끝 -->
+
+	</body>
+</html>

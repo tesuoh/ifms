@@ -1,0 +1,62 @@
+package szms.zzzzzzzz.service;
+
+import java.util.List;
+
+import szms.zzzzzzzz.vo.yyyyyyyyVO;
+
+/**
+ * 경찰청 보호구역통합관리시스템 구축사업 (2024) 
+ * xxxxxxxx Service
+ */
+
+public interface yyyyyyyyService {
+
+	///**
+	// * xxxxxxxx 목록 정보 조회 (Paging 처리)
+	// * @param yyyyyyyyVO
+	// * @return 목록 조회 결과
+	// */
+	//public List<yyyyyyyyVO> selectyyyyyyyyListPaging(yyyyyyyyVO uuuuuuuVO) throws Exception;
+	
+	///**
+	// * xxxxxxxx 목록 정보 조회
+	// * @param yyyyyyyyVO
+	// * @return 목록 조회 결과
+	// */
+	//public List<yyyyyyyyVO> selectyyyyyyyyList(yyyyyyyyVO uuuuuuuVO) throws Exception;	
+	
+	///**
+	// * xxxxxxxx 상세 정보 조회
+	// * @param yyyyyyyyVO
+	// * @return 상세 조회 결과
+	// */
+	//public yyyyyyyyVO selectyyyyyyyyDetail(yyyyyyyyVO uuuuuuuVO) throws Exception;
+	
+	///**
+	// * xxxxxxxx 등록 처리
+	// * @param yyyyyyyyVO
+	// * @return 등록 처리 건수
+	// */
+	//public int insertyyyyyyyy(yyyyyyyyVO uuuuuuuVO) throws Exception;
+	
+	///**
+	// * xxxxxxxx 수정 처리
+	// * @param yyyyyyyyVO
+	// * @return 수정 처리ㅐ 건수
+	// */
+	//public int updateyyyyyyyy(yyyyyyyyVO uuuuuuuVO) throws Exception;
+	
+	///**
+	// * xxxxxxxx 삭제 처리
+	// * @param yyyyyyyyVO
+	// * @return 삭제 처리 건수
+	// */
+	//public int deleteyyyyyyyy(yyyyyyyyVO uuuuuuuVO) throws Exception;
+	
+	///**
+	// * xxxxxxxx 삭제여부 처리
+	// * @param yyyyyyyyVO
+	// * @return 삭제여부 처리 건수
+	// */
+	//public int updateyyyyyyyyDelAt(yyyyyyyyVO uuuuuuuVO) throws Exception;
+}

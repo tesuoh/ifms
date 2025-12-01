@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ifms.adm.smc.mnu.mapper.CmnMnuPtMenuMngMMapper">
+
+    <select id="selectCmnMnuPtMenuMngListCnt" resultType="int" parameterType="map">
+    </select>
+
+    <select id="selectCmnMnuPtMenuMngList" resultType="egovMap" parameterType="map">
+        /* CmnMnuPtMenuMngMMapper.selectCmnMnuPtMenuMngList */
+        WITH RECURSIVE menu_tree AS (
+            -- 루트 노드를 선택
+            SELECT menu_id,
+                   menu_nm,
+                   rprs_url_addr,
+                   up_menu_id,
+                   indct_seq,
+                   1 AS level,
+                   menu_nm::VARCHAR AS path
+            FROM szms.pt_menu_mng_m
+            WHERE (up_menu_id IS NULL or up_menu_id = '')
+              AND site_clsf_cd = #{siteClsfCd}
+              AND USE_YN = 'Y'
+            UNION ALL
+            -- 자식 노드를 재귀적으로 선택
+            SELECT m.menu_id,
+                   m.menu_nm,
+                   m.rprs_url_addr,
+                   m.up_menu_id,
+                   m.indct_seq,
+                   mt.level + 1 AS level,
+                   (mt.path || ' > ' || m.menu_nm)::VARCHAR AS path
+            FROM szms.pt_menu_mng_m m
+                     JOIN menu_tree mt
+                          ON m.up_menu_id = mt.menu_id
+           WHERE m.use_yn = 'Y'
+        )
+        SELECT mt.menu_id,
+               mt.menu_nm,
+               mt.rprs_url_addr,
+               mt.up_menu_id,
+               mt.indct_seq,
+               mt.level,
+               mt.path,
+               u.url_addr,
+               u.prgrm_nm
+        FROM menu_tree mt
+                 LEFT JOIN szms.pt_url_mng_m u
+                           ON mt.rprs_url_addr = u.url_addr
+        ORDER BY mt.menu_id, mt.path, mt.indct_seq;
+    </select>
+
+    <insert id="insertTopLevelMenu">
+        /* CmnMnuPtMenuMngMMapper.insertTopLevelMenu */
+        With max_id as (
+            SELECT max(cast (menu_id as int )) AS numeric_menu_id
+            from szms.pt_menu_mng_m
+        )
+        INSERT INTO SZMS.PT_MENU_MNG_M (
+            menu_id,
+            site_clsf_cd,
+            menu_nm,
+            rprs_url_addr,
+            up_menu_id,
+            indct_seq,
+            use_yn,
+            frst_rgtr_id,
+            frst_reg_dt
+        ) values (
+            (SELECT max_id.numeric_menu_id + 1
+                FROM max_id
+            ),
+            #{siteClsfCd},
+            #{menuName},
+            null,
+            null,
+            (SELECT COALESCE(MAX(indct_seq), 0) + 1 FROM szms.pt_menu_mng_m WHERE up_menu_id IS NULL and site_clsf_cd = #{siteClsfCd} ),
+            'Y',
+            #{userId},
+            now()
+        )
+    </insert>
+
+    <update id="deleteMenuList" parameterType="map">
+        /* CmnMnuPtMenuMngMMapper.deleteMenuList */
+        UPDATE SZMS.PT_MENU_MNG_M
+           SET USE_YN = 'N',
+               indct_seq = null,
+               last_mdfr_id = #{userId},
+               last_mdfcn_dt = now()
+         WHERE menu_id = #{menuId}
+           AND SITE_CLSF_CD = #{siteClsfCd}
+        <if test="rprsUrlMngNo != null and rprsUrlMngNo != ''">
+            AND RPRS_URL_MNG_NO = #{rprsUrlMngNo}
+        </if>
+           
+    </update>
+
+    <insert id="addSubMenu">
+        /* CmnMnuPtMenuMngMMapper.addSubMenu */
+        With max_id as (
+            SELECT max(cast(menu_id as int)) AS numeric_menu_id
+            from szms.pt_menu_mng_m
+        )
+        INSERT INTO SZMS.PT_MENU_MNG_M (
+            menu_id,
+            site_clsf_cd,
+            menu_nm,
+            up_menu_id,
+            indct_seq,
+            use_yn,
+            frst_rgtr_id,
+            frst_reg_dt
+        ) values (
+            (SELECT max_id.numeric_menu_id + 1
+             FROM max_id
+            ),
+            #{siteClsfCd},
+            #{menuName},
+            #{parentMenuId},
+            (SELECT COALESCE(MAX(indct_seq), 0) + 1 FROM szms.pt_menu_mng_m WHERE up_menu_id =#{parentMenuId} and site_clsf_cd = #{siteClsfCd} ),
+            'Y',
+            #{userId},
+            now()
+        )
+    </insert>
+
+    <select id="selectPrgListCount" resultType="int" parameterType="map">
+        /* CmnMnuPtMenuMngMMapper.selectPrgListCount */
+        SELECT COUNT(*)
+          FROM szms.pt_url_mng_m
+        WHERE 1=1
+        <if test="searchPrgId != null and searchPrgId != ''">
+            AND url_mng_no LIKE '%' || #{searchPrgId} || '%'
+        </if>
+        <if test="searchPrgNm != null and searchPrgNm != ''">
+            AND prgrm_nm LIKE '%' || #{searchPrgNm} || '%'
+        </if>
+    </select>
+
+    <select id="selectPrgList" resultType="egovMap" parameterType="map">
+        /* CmnMnuPtMenuMngMMapper.selectPrgList */
+        SELECT prgrm_nm,
+               url_addr
+          FROM szms.pt_url_mng_m
+         WHERE 1=1
+        <if test="searchPrgNm != null and searchPrgNm != ''">
+            AND prgrm_nm LIKE '%' || #{searchPrgNm} || '%'
+        </if>
+        OFFSET #{startNo} ROWS FETCH NEXT #{listCount} ROWS ONLY
+    </select>
+
+    <update id="updatePrgMenuDtl" parameterType="map">
+        UPDATE szms.pt_menu_mng_m
+        SET site_clsf_cd = #{siteClsfCd},
+            menu_nm = #{menuNm},
+            up_menu_id = #{upMenuId},
+            indct_seq = CAST(#{indctSeq} AS NUMERIC),
+            use_yn = 'Y',
+            last_mdfr_id = #{mdfrId},
+            last_mdfcn_dt = now(),
+            rprs_url_addr = #{urlAddr}
+        WHERE menu_id = #{menuId}
+    </update>
+
+    <insert id="insertUrlMngDtl" >
+        INSERT INTO SZMS.PT_URL_MNG_M (
+            url_addr,
+            prgrm_nm,
+            rprs_prgrm_yn,
+            prgrm_rslt_type_nm,
+            prgrm_clsf_cd,
+            frst_rgtr_id,
+            frst_reg_dt
+        ) values (
+            #{urlAddr},
+            #{prgrmNm},
+            'Y',
+            null,
+            null,
+            #{mdfrId},
+            now()
+        )
+
+    </insert>
+
+    <select id="checkUrlMngDtl" resultType="int" parameterType="map">
+        SELECT COUNT(*) AS CNT
+          FROM SZMS.PT_URL_MNG_M
+         WHERE URL_ADDR = #{urlAddr}
+    </select>
+
+    <update id="updateUrlMngDtl" parameterType="map">
+        UPDATE SZMS.PT_URL_MNG_M
+        SET url_addr = #{urlAddr},
+            prgrm_nm = #{prgrmNm},
+            rprs_prgrm_yn = 'Y',
+            last_mdfr_id = #{mdfrId},
+            last_mdfcn_dt = now()
+        WHERE url_addr = #{urlAddr}
+    </update>
+
+
+
+</mapper>

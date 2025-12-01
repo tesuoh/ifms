@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<!-- CSS & javascript (JSP 파일 include) 시작 -->
+	<head>
+		<title>보호구역 통합관리시스템</title>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name = "viewport" content = "user-scalable=no, width=device-width">
+		<meta name="author" content="보호구역 통합관리시스템">
+		<!-- description -->
+		<meta name="description" content="보호구역 통합관리시스템 프로젝트">
+		<!-- keywords -->
+		<meta name="keywords" content="">
+		<!-- favicon -->
+		<link rel="shortcut icon" href="../../com/img/common/icon/favicon.ico">
+		<link rel="apple-touch-icon" href="../../com/img/common/icon/favicon.ico">
+
+		<!-- ==============================================================
+			플러그인
+		============================================================== -->
+		<!-- 공통 -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/font-awesome/css/font-awesome.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/simple-line-icons/simple-line-icons.css" />
+		<script type="text/javascript" src="../../com/plugins/jquery.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/js.cookie.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+
+		<!-- bootstrap -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap/css/bootstrap.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+		<!-- bootstrap-datepicker -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-timepicker/css/bootstrap-timepicker.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.kr.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.kr.js"></script>
+		<script type="text/javascript" src="../../com/js/bootstrap-datepicker.kr.js"></script>
+		<script type="text/javascript" src="../../com/js/components-date-time-pickers.js"></script>
+
+		<!-- bootstrap-fileinput -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-fileinput/bootstrap-fileinput.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
+
+		<!-- bootstrap-tabdrop -->
+		<script type="text/javascript" src="../../com/plugins/bootstrap-tabdrop/js/bootstrap-tabdrop.js"></script>
+
+		<!-- jstree -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/jstree/dist/themes/default/style.css" />
+		<script type="text/javascript" src="../../com/plugins/jstree/dist/jstree.js"></script>
+		<script type="text/javascript" src="../../com/js/ui-tree.js"></script>
+
+		<!-- div 크기 변경 감지 https://marcj.github.io/css-element-queries/ -->
+		<script type="text/javascript" src="../../com/plugins/css-element-queries/ResizeSensor.js"></script>
+		<script type="text/javascript" src="../../com/plugins/css-element-queries/ElementQueries.js"></script>
+		
+		<!-- 전체 레이어 모달 팝업 -->
+		<link type="text/css" rel="stylesheet" href="../../com/plugins/magnific-popup/magnific-popup.css">
+		<script type="text/javascript" src="../../com/plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+		<!-- 컨텐츠 셀렉트 -->
+		<script type="text/javascript" src="../../com/plugins/slideNav/slideNav.js"></script>
+
+		<!-- 상단메뉴 -->
+		<link type="text/css" rel="stylesheet" href="../../com/plugins/menu/css/menu.css">
+		<script type="text/javascript" src="../../com/plugins/menu/js/custom.js"></script>
+
+		<!-- ==============================================================
+			공통 커스텀
+		============================================================== -->	
+		<!-- 스타일 css -->
+		<link rel="stylesheet" type="text/css" href="../../com/css/components.css" />
+		<link type="text/css" rel="stylesheet" href="../../com/css/style.css">
+
+		<!-- 전체 조합 css -->
+		<link type="text/css" rel="stylesheet" href="../../com/css/common.css">
+		<link type="text/css" rel="stylesheet" href="../../com/css/common-ie.css">
+
+		<!-- 공통 script -->
+		<script type="text/javascript" src="../../com/js/app.js"></script>
+		<script type="text/javascript" src="../../com/js/common.js"></script>
+
+		<!-- KRDS 스크립트 : 패턴 페이지 -->
+		<script type="text/javascript" src="../../com/js/ui-pattern-script.js"></script>
+
+		<!-- ==============================================================
+			프론트
+		============================================================== -->
+		<!-- 레이아웃 CSS -->
+		<link type="text/css" rel="stylesheet" href="../../com/css/front.css">
+		<link type="text/css" rel="stylesheet" href="../../com/css/management.css"><!-- !!! 필독 : 관리자화면들은 "management.css"를 추가 -->
+
+		<!-- !!! 필독 : JSP 상하단 include 예시 완료 후 삭제 !!!!!!! -->
+		<script type="text/javascript" src="../../com/include/include.js"></script>
+
+	</head>
+	<!-- CSS & javascript (JSP 파일 include) 끝 -->
+
+	<body class="page-front page-sub page-management"><!-- !!! 필독 : 관리자에서는 class="page-management" 추가 !!!!!!! -->
+		
+		<!-- 헤더 (JSP 파일 include) 시작 -->
+		<header id="header">
+		</header>
+		<!-- 헤더 (JSP 파일 include) 끝 -->
+
+		<!-- 페이지 컨테이너 시작 -->
+		<section id="container" class="page-container">
+
+			<div class="page-content-wrapper">
+
+				<!-- 서브메뉴 (JSP 파일 include) 시작 -->
+				<div id="sidebar" class="page-sidebar-wrapper">
+				</div>
+				<!-- 서브메뉴 (JSP 파일 include) 끝 -->
+
+				<!-- 컨텐츠 시작 -->
+				<div id="contents" class="page-content"><!-- !!! 필독 : [웹 접근성] 본문 바로가기 id="contents", 주메뉴 바로가기  id="navbar" -->
+
+					<div class="page-content-inner">
+
+						<!-- 카테고리 시작 -->
+						<div class="category-wrapper">
+							<ul class="page-category">
+								<li class="category-item"><a href="#">시스템 운영 및 보안 관리</a></li>
+								<li class="category-item"><a href="#">시스템 장애 신고 등록</a></li>
+							</ul>
+						</div>
+						<!-- 카테고리 끝 -->
+
+						<!-- 페이지 타이틀 시작 -->
+						<h1 class="page-title-1depth"><span>시스템 장애 신고 등록</span></h1>
+						<!-- 페이지 타이틀 끝 -->
+
+						<!-- 내용 시작 -->
+						<div class="content-wrapper">
+
+							<!-- 컨텐츠 행 시작 -->
+							<div class="contents-row">
+
+								<!-- 검색영역 시작 -->
+								<div id="section1" class="page-top-search">
+									<div class="form-inline row">
+										<div class="input-group col-lg-3 col-md-3 col-sm-3 col-xs-3">
+											<span class="input-group-label">
+												<label class="input-label-none" for="labelEx">검색 조건 선택</label>
+											</span>
+											<select id="labelEx" class="form-control">
+												<option>전체</option>
+												<option>선택1</option>
+												<option>선택2</option>
+											</select>
+										</div>
+										<div class="input-group col-lg-9 col-md-9 col-sm-9 col-xs-9">
+											<span class="input-group-label">
+												<label class="input-label-none" for="labelEx">검색어 입력</label>
+											</span>
+											<input type="text" id="labelEx" class="form-control" placeholder="검색어를 입력하세요.">
+											<span class="input-group-btn input-group-last">
+												<button type="button" class="btn dark btn-icon-left btn-icon-refresh">초기화</button>
+												<button type="button" class="btn btn-primary">검색</button>
+											</span>
+										</div>
+									</div>
+								</div>
+								<!-- 검색영역 끝 -->
+
+								<!-- 그리드 시작 -->
+								<div class="data-grid-top-toolbar">
+									<div class="data-grid-search-count">
+										검색 결과 <span class="search-count">24</span>건
+									</div>
+									<ul class="data-grid-sort-count">
+										<li>
+											<strong class="data-grid-sort-label">정렬기준</strong>
+											<div class="data-grid-sort-btn">
+												<button type="button" class="active">관련도순</button>
+												<button type="button">최신순</button>
+												<button type="button">인기순</button>
+											</div>
+										</li>
+									</ul>
+								</div>
+								<div id="section2" class="table-scrollable grid-table">
+									<table class="table table-bordered table-striped table-hover">
+										<caption>테이블 요약</caption>
+										<colgroup>
+											<col style="width:60px;">
+											<col style="width:auto;">
+											<col style="width:100px;">
+											<col style="width:100px;">
+											<col style="width:140px;">
+											<col style="width:100px;">
+										</colgroup>
+										<thead>
+											<tr>
+												<th scope="col"> NO</th>
+												<th scope="col"> 제목 </th>
+												<th scope="col"> 상태 </th>
+												<th scope="col"> 첨부파일 </th>
+												<th scope="col"> 등록일 </th>
+												<th scope="col"> 조회수 </th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>1</td>
+												<td class="t-left"><a href="javascript:void(0);">게시판내용게시판내용게시판내용게시판내용게시판내용</a></td>
+												<td><span class="label label-danger">미처리</span></td>
+												<td><a href="javascript:void(0);" class="icon icon-attach" title="첨부">첨부</a></td>
+												<td>2022.09.20</td>
+												<td>234</td>
+											</tr>
+											<tr>
+												<td>2</td>
+												<td class="t-left"><a href="javascript:void(0);">게시판내용게시판내용게시판내용게시판내용게시판내용</a></td>
+												<td><span class="label label-primary">등록완료</span></td>
+												<td><a href="javascript:void(0);" class="icon icon-attach" title="첨부">첨부</a></td>
+												<td>2022.09.20</td>
+												<td>234</td>
+											</tr>
+											<tr>
+												<td>3</td>
+												<td class="t-left"><a href="javascript:void(0);">게시판내용게시판내용게시판내용게시판내용게시판내용</a></td>
+												<td><span class="label label-info">답변완료</span></td>
+												<td><a href="javascript:void(0);" class="icon icon-attach" title="첨부">첨부</a></td>
+												<td>2022.09.20</td>
+												<td>234</td>
+											</tr>
+											<tr>
+												<td>4</td>
+												<td class="t-left"><a href="javascript:void(0);">게시판내용게시판내용게시판내용게시판내용게시판내용</a></td>
+												<td><span class="label label-info">답변완료</span></td>
+												<td><a href="javascript:void(0);" class="icon icon-attach" title="첨부">첨부</a></td>
+												<td>2022.09.20</td>
+												<td>234</td>
+											</tr>
+											<tr>
+												<td>5</td>
+												<td class="t-left"><a href="javascript:void(0);">게시판내용게시판내용게시판내용게시판내용게시판내용</a></td>
+												<td><span class="label label-info">답변완료</span></td>
+												<td><a href="javascript:void(0);" class="icon icon-attach" title="첨부">첨부</a></td>
+												<td>2022.09.20</td>
+												<td>234</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<!-- 그리드 끝 -->
+
+								<!-- 페이징 시작 -->
+								<div class="pagination-wrapper">
+									<div class="pagination-info">
+										<span class="info-page-total">총 120개</span>
+										<label class="input-label-none" for="infoPageNum">몇줄씩보기</label>
+										<select id="infoPageNum" class="bs-select form-control">
+											<option>5</option>
+											<option>10</option>
+											<option>15</option>
+											<option>20</option>
+											<option>ALL</option>
+										</select>
+										<span class="info-select-text">줄씩보기</span>
+									</div>
+									<div class="pagination-panel">
+										<a href="javascript:void(0);" class="icon icon-arrow-start" title="처음으로">처음으로</a>
+										<a href="javascript:void(0);" class="icon icon-arrow-left" title="이전">이전</a>
+
+										<label class="input-label-none" for="paginationInput">현재페이지</label>
+										<input type="text" id="paginationInput" class="form-control pagination-panel-input" maxlenght="5" value="1">
+
+										<span class="pagination-panel-total">/ 3</span>
+
+										<a href="javascript:void(0);" class="icon icon-arrow-right" title="다음">다음</a>
+										<a href="javascript:void(0);" class="icon icon-arrow-end" title="끝으로">끝으로</a>
+									</div>
+								</div>
+								<!-- 페이징 끝 -->
+
+								<div class="table-bottom-control">
+									<button type="button" class="btn btn-primary">문의하기</button>
+								</div>
+
+							</div>
+							<!-- 컨텐츠 행 끝 -->
+
+						</div>
+						<!-- 내용 끝 -->
+						
+					</div>
+
+				</div>
+				<!-- 컨텐츠 끝 -->
+
+			</div>
+
+		</section>
+		<!-- 페이지 컨테이너 끝 -->
+
+		<!-- footer (JSP 파일 include) 시작 -->
+		<footer id="footer" class="page-footer">
+		</footer>
+		<!-- footer (JSP 파일 include) 끝 -->
+
+		
+
+	</body>
+
+	<!-- 필독 !!!!!! JSP 상하단 include 예시 완료 후 삭제 !!!!!!! 시작 -->
+	<script>
+		//상단메뉴
+		header(0);
+		function header(index) {
+			$include_pageHeader_management.prependTo("header");
+			$include_pageHeader_management.find(".navbar-nav > li").removeClass("active"); // 상단 메뉴의 활성화를 모두 삭제
+			$include_pageHeader_management.find(".navbar-nav > li").eq(1).addClass("active"); // 현재 페이지의 상단 메뉴의 활성화
+		}
+
+		//왼쪽메뉴
+		sidebar(0);
+		function sidebar(index) {
+			$include_sidebar.prependTo("#sidebar");
+			$include_sidebar.find(".page-sidebar-menu > li").removeClass("active"); // 상단 메뉴의 활성화를 모두 삭제
+			$include_sidebar.find(".page-sidebar-menu > li").eq(2).addClass("active"); // 현재 페이지의 상단 메뉴의 활성화
+			$include_sidebar.find(".page-sidebar-menu > li").eq(2).addClass("active").find(".sub-menu > li").removeClass("active");
+			$include_sidebar.find(".page-sidebar-menu > li").eq(2).addClass("active").find(".sub-menu > li").eq(0).addClass("active");
+			$include_sidebar.find(".page-sidebar-menu > li").eq(2).addClass("active").find(".sub-menu > li").eq(0).find(".sub-menu > li").removeClass("active");
+			$include_sidebar.find(".page-sidebar-menu > li").eq(2).addClass("active").find(".sub-menu > li").eq(0).find(".sub-menu > li").eq(0).addClass("active");
+		}
+
+		//풋터
+		footer();
+		function footer() {
+		 	$include_footer.prependTo("footer");
+		}
+	</script>
+	<!-- 필독 !!!!!! JSP 상하단 include 예시 완료 후 삭제 !!!!!!! 끝 -->
+
+</html>

@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ifms.adm.lnk.mng.mapper.LnkMngMapper">
+
+	<select id="selectLnkHistInstAndNm" resultType="egovMap">
+	select link_inst_nm, btch_expln from szms.PT_BTCH_PRGRM_M
+		where ptzn_task_se_cd='BC_200'
+	group by link_inst_nm, btch_expln
+	order by link_inst_nm, btch_expln
+	</select>
+	
+	<select id="selectLnkHistListCount" parameterType="map" resultType="int">
+	select
+		count(*)
+	from
+		szms.pt_btch_excn_hstry_h a,
+		szms.PT_BTCH_PRGRM_M b
+	where
+		a.btch_no = b.btch_no
+		and b.ptzn_task_se_cd = 'BC_200'
+		<if test="linkInstNm != null and linkInstNm != ''">
+			and b.link_inst_nm= #{linkInstNm}
+		</if>
+		<if test="batchExpln != null and batchExpln != ''">
+			and b.btch_expln= #{batchExpln}
+		</if>
+		
+		<if test="scsYn != null and scsYn != ''">
+			and a.scs_yn= #{scsYn}
+		</if>
+		<if test="btchBgngDt != null and btchBgngDt != ''">  
+  		  	and a.btch_prcs_dt <![CDATA[ >= ]]> #{btchBgngDt}::timestamp
+	  	</if>
+	  	<if test="btchEndDt != null and btchEndDt != ''">  
+		  	and a.btch_prcs_dt <![CDATA[ <= ]]> #{btchEndDt}::timestamp
+	  	</if>
+	</select>
+	
+	<select id="selectLnkHistList" parameterType="map" resultType="egovMap">
+		select
+			b.link_inst_nm,
+			b.btch_expln,
+			b.btch_excn_stng_vl,
+			to_char(a.btch_excn_dt,'YYYY-MM-DD HH24:MI:SS') as btch_excn_dt,
+			a.scs_yn,
+			TO_CHAR(a.mdfcn_nocs, 'FM999,999,999') as mdfcn_nocs
+		from
+			szms.pt_btch_excn_hstry_h a,
+			szms.PT_BTCH_PRGRM_M b
+		where
+			a.btch_no = b.btch_no
+			and b.ptzn_task_se_cd = 'BC_200'
+		<if test="linkInstNm != null and linkInstNm != ''">
+			and b.link_inst_nm= #{linkInstNm}
+		</if>
+		<if test="batchExpln != null and batchExpln != ''">
+			and b.btch_expln= #{batchExpln}
+		</if>
+		
+		
+		<if test="scsYn != null and scsYn != ''">
+			and a.scs_yn= #{scsYn}
+		</if>
+		<if test="btchBgngDt != null and btchBgngDt != ''">  
+  		  	and a.btch_prcs_dt <![CDATA[ >= ]]> #{btchBgngDt}::timestamp
+	  	</if>
+	  	<if test="btchEndDt != null and btchEndDt != ''">  
+		  	and a.btch_prcs_dt <![CDATA[ <= ]]> #{btchEndDt}::timestamp
+	  	</if>
+	order by
+		a.btch_excn_dt desc
+	OFFSET #{startNo} ROWS FETCH NEXT #{listCount} ROWS ONLY
+	</select>
+
+	<!-- 연계현황 총건수 -->
+	<select id="selectLnkStatTotalCount" parameterType="map" resultType="int">
+		select count(*) as totalCount from (
+		WITH link_stts AS (
+			    SELECT 
+			        info.link_inst_nm,
+			        info.btch_expln,
+			        sum(history.srch_nocs) AS update_count ,
+			        SUM(history.data_sz) as data_sz
+			    FROM szms.PT_BTCH_PRGRM_M info
+			    LEFT JOIN szms.PT_BTCH_EXCN_HSTRY_H history
+			        ON info.btch_no = history.btch_no
+			     <if test="btchBgngDt != ''">  
+  		  		where history.btch_prcs_dt <![CDATA[ >= ]]> #{btchBgngDt}::TIMESTAMP
+	  		  	</if>
+				<if test="btchEndDt != ''">  
+	  		  		AND history.btch_prcs_dt <![CDATA[ <= ]]> #{btchEndDt}::TIMESTAMP
+	  		  	</if>
+			    GROUP BY info.link_inst_nm, info.btch_expln
+			    <if test="linkInst != null and linkInst != ''">
+			      having link_inst_nm= #{linkInst}
+			    </if>
+			),
+			size_cal AS (
+			    SELECT
+			        link_inst_nm,
+			        btch_expln,
+			        update_count,
+			        data_sz
+			    FROM link_stts
+			)
+			SELECT 
+			    COALESCE(link_inst_nm, '전체') AS link_inst_nm,  
+			    COALESCE(btch_expln, '전체') AS btch_expln, 
+			    sum(update_count) as updateCount ,
+			    pg_size_pretty(SUM(round(data_sz,1))) AS dataSize 
+			FROM size_cal
+			GROUP BY GROUPING SETS (
+			    (link_inst_nm, btch_expln),
+			    (link_inst_nm), 
+			    () 
+			)
+			ORDER BY link_inst_nm NULLS FIRST, btch_expln NULLS FIRST
+		) as t 
+	</select>
+	
+	
+	<select id="selectLnkInstList" resultType="String">
+		select link_inst_nm from szms.PT_BTCH_PRGRM_M
+				where ptzn_task_se_cd ='BC_200'
+		group by link_inst_nm
+	</select>
+	
+	<!-- 연계현황  목록 -->
+	<select id="selectLnkStatList" parameterType="map" resultType="egovMap">
+	WITH link_stts AS (
+	    SELECT 
+	        info.link_inst_nm,
+	        info.btch_expln,
+	        sum(history.srch_nocs) AS update_count ,
+	        SUM(history.data_sz) as data_sz
+	    FROM szms.PT_BTCH_PRGRM_M info
+	    LEFT JOIN szms.PT_BTCH_EXCN_HSTRY_H history
+	        ON info.btch_no = history.btch_no
+	        <if test="btchBgngDt != ''">  
+  		  		where history.btch_prcs_dt <![CDATA[ >= ]]> #{btchBgngDt}::TIMESTAMP
+  		  	</if>
+			<if test="btchEndDt != ''">  
+  		  		AND history.btch_prcs_dt <![CDATA[ <= ]]> #{btchEndDt}::TIMESTAMP
+  		  	</if>
+	        
+	    GROUP BY info.link_inst_nm, info.btch_expln
+	     <if test="linkInst != null and linkInst != ''">
+			      having link_inst_nm= #{linkInst}
+		</if>
+	),
+	size_cal AS (
+	    SELECT
+	        link_inst_nm,
+	        btch_expln,
+	        update_count,
+	        data_sz
+	    FROM link_stts
+	)
+	SELECT 
+	    COALESCE(link_inst_nm, '전체') AS link_inst_nm,  
+	    COALESCE(btch_expln, '전체') AS btch_expln, 
+	    TO_CHAR(sum(update_count), 'FM999,999,999') as updateCount,
+	    pg_size_pretty(SUM(round(data_sz,1))) AS dataSize 
+	FROM size_cal
+	GROUP BY GROUPING SETS (
+	    (link_inst_nm, btch_expln),
+	    (link_inst_nm), 
+	    () 
+	)
+	ORDER BY link_inst_nm NULLS FIRST, btch_expln NULLS FIRST
+
+	</select>
+	
+	
+	<select id="selectOpnList" resultType="String">
+		select 
+		btch_expln 
+				from szms.pt_btch_prgrm_m 
+		where ptzn_task_se_cd = 'BC_300'
+		group by btch_expln
+	</select>
+	
+	<select id="selectLnkApiStaTotalCount" parameterType="map" resultType="int">
+	select count(*)
+		 from (
+	select 
+		b.btch_expln ,
+		A.BTCH_EXCN_DT,
+		A.SCS_YN, 
+		A.SRCH_NOCS,
+		A.DATA_SZ
+	from szms.pt_btch_excn_hstry_h a, szms.pt_btch_prgrm_m b
+		where 1=1 
+			and a.btch_no = b.btch_no
+			and b.ptzn_task_se_cd = 'BC_300'
+		<if test="batchExpln != null and batchExpln != ''">
+			and b.btch_expln= #{batchExpln}
+		</if>
+		
+		<if test="scsYn != null and scsYn != ''">
+			and a.scs_yn= #{scsYn}
+		</if>
+		
+		<if test="btchBgngDt != null and btchBgngDt != ''">  
+  		  	and a.btch_prcs_dt <![CDATA[ >= ]]> #{btchBgngDt}::timestamp
+	  	</if>
+	  	<if test="btchEndDt != null and btchEndDt != ''">  
+		  	and a.btch_prcs_dt <![CDATA[ <= ]]> #{btchEndDt}::timestamp
+	  	</if>
+		
+	order by btch_excn_dt asc ) as t
+	</select>
+	
+	<select id="selectLnkApiStaList" parameterType="map" resultType="egovMap">
+	SELECT 
+		b.btch_expln ,
+		TO_CHAR(A.BTCH_EXCN_DT, 'YYYY-MM-DD HH24:MI:SS') AS BTCH_EXCN_DT,
+		A.SCS_YN, 
+		TO_CHAR(a.SRCH_NOCS, 'FM999,999,999') as SRCH_NOCS,
+		pg_size_pretty(round(A.DATA_SZ,1)) as DATA_SZ
+	FROM szms.PT_BTCH_EXCN_HSTRY_H A, szms.PT_BTCH_PRGRM_M B
+		WHERE 1=1 
+		AND A.BTCH_no = B.BTCH_no
+		AND B.PTZN_TASK_SE_CD = 'BC_300'
+		<if test="batchExpln != null and batchExpln != ''">
+			and b.btch_expln= #{batchExpln}
+		</if>
+		
+		<if test="scsYn != null and scsYn != ''">
+			and a.scs_yn= #{scsYn}
+		</if>
+		
+		<if test="btchBgngDt != null and btchBgngDt != ''">  
+  		  	and a.btch_prcs_dt <![CDATA[ >= ]]> #{btchBgngDt}::timestamp
+	  	</if>
+	  	<if test="btchEndDt != null and btchEndDt != ''">  
+		  	and a.btch_prcs_dt <![CDATA[ <= ]]> #{btchEndDt}::timestamp
+	  	</if>
+	ORDER BY BTCH_EXCN_DT desc
+	 OFFSET #{startNo} ROWS FETCH NEXT #{listCount} ROWS ONLY
+	</select>
+</mapper>

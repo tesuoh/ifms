@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ifms.adm.sos.ucs.mapper.CmnUcsListMapper">
+
+<select id="selectUcsList" parameterType="map" resultType="egovMap">
+with inst_list as (
+select '1' as lgvofc_cd
+		, null as polstn_cd
+		, 0 as ordr_no
+		, '합계' as lgvofc_nm
+		, '' as cmptnc_polstn_nm
+		union all 
+select 
+	lgvofc_cd
+	,polstn_cd
+	,length(polstn_cd) as ordr_no
+	,lgvofc_nm
+	,COALESCE(cmptnc_polstn_nm, '') as cmptnc_polstn_nm
+from szms.pz_stdg_polstn_m
+where use_yn='Y'
+and COALESCE(cmptnc_polstn_nm, '') not like '%지구대%'
+union all 
+ (
+-- 소계가 될 상위 기관
+select 
+	lgvofc_cd
+	,'0' as polstn_cd
+	,1 as ordr_no
+	,lgvofc_nm
+	,'소계' as cmptnc_polstn_nm
+from szms.pz_stdg_polstn_m
+where lgvofc_cd = polstn_cd
+)
+order by lgvofc_cd asc,ordr_no asc, polstn_cd asc  -- NULL 값이 뒤로 가는 문제 해결
+),
+	stts_list as (
+	  WITH menu_urls AS (
+	    SELECT
+	        b.polstn_cd,
+	        a.lgvofc_nm,
+	        a.cmptnc_polstn_nm,
+	        b.menu_id,
+	        b.menu_nm,
+	        SUM(b.sum_cnt) AS total_access_count
+	    FROM szms.st_url_cntn_m b
+	    JOIN szms.pz_stdg_polstn_m a ON a.polstn_cd = b.polstn_cd
+	    WHERE b.ogdp_inst_cd = '99999'
+	        AND b.site_clsf_cd = 'SYS020'
+	        AND b.strg_ymd BETWEEN #{srchBgngDt} AND #{srchEndDt}
+	        and a.cmptnc_polstn_nm not like '%지구대%'
+	    GROUP BY b.polstn_cd, a.lgvofc_nm, a.cmptnc_polstn_nm, b.menu_id, b.menu_nm
+	),
+	
+	pivoted AS (
+	    SELECT
+	        polstn_cd, 
+	        lgvofc_nm,
+	        cmptnc_polstn_nm,
+	        MAX(CASE WHEN menu_id = '29' THEN menu_nm END) AS menu_1_url,
+	        MAX(CASE WHEN menu_id = '29' THEN total_access_count END) AS menu_1_count,
+	        MAX(CASE WHEN menu_id = '34' THEN menu_nm END) AS menu_2_url,
+	        MAX(CASE WHEN menu_id = '34' THEN total_access_count END) AS menu_2_count,
+	        MAX(CASE WHEN menu_id = '38' THEN menu_nm END) AS menu_3_url,
+	        MAX(CASE WHEN menu_id = '38' THEN total_access_count END) AS menu_3_count,
+	        MAX(CASE WHEN menu_id = '44' THEN menu_nm END) AS menu_4_url,
+	        MAX(CASE WHEN menu_id = '44' THEN total_access_count END) AS menu_4_count,
+	        MAX(CASE WHEN menu_id = '46' THEN menu_nm END) AS menu_5_url,
+	        MAX(CASE WHEN menu_id = '46' THEN total_access_count END) AS menu_5_count,
+	        MAX(CASE WHEN menu_id = '48' THEN menu_nm END) AS menu_6_url,
+	        MAX(CASE WHEN menu_id = '48' THEN total_access_count END) AS menu_6_count,
+	        MAX(CASE WHEN menu_id = '58' THEN menu_nm END) AS menu_7_url,
+	        MAX(CASE WHEN menu_id = '58' THEN total_access_count END) AS menu_7_count,
+	        MAX(CASE WHEN menu_id = '0' THEN '기타' END) AS etc_url,
+	        SUM(CASE WHEN menu_id = '0' THEN total_access_count ELSE 0 END) AS etc_count
+	    FROM menu_urls
+	    GROUP BY polstn_cd, lgvofc_nm, cmptnc_polstn_nm
+	),
+	
+	lgn_cnt AS (
+	    SELECT 
+	        inst.polstn_cd,
+	        inst.lgvofc_nm,
+	        inst.cmptnc_polstn_nm,
+	        COUNT(*) AS total_login_count  
+	    FROM szms.pt_lgn_h hist
+	    JOIN szms.pt_user_info_m info ON hist.user_id = info.user_id
+	    JOIN szms.pz_stdg_polstn_m inst ON info.polstn_cd = inst.polstn_cd
+	    WHERE hist.lgn_yn = 'Y'
+	      AND TO_CHAR(hist.cntn_dt, 'YYYYMMDD')  BETWEEN #{srchBgngDt} AND #{srchEndDt}
+	      and inst.cmptnc_polstn_nm not like '%지구대%'
+	    GROUP BY inst.polstn_cd, inst.lgvofc_nm, inst.cmptnc_polstn_nm
+	),
+	
+	final_data AS (
+	    SELECT 
+	        p.polstn_cd, p.lgvofc_nm, COALESCE(p.cmptnc_polstn_nm, '') as cmptnc_polstn_nm, 
+	        case when length(p.polstn_cd) = 2 then 3 else 4 end as ordr_level,
+	        p.menu_1_url, COALESCE(p.menu_1_count,0) AS menu_1_count,  
+	        p.menu_2_url, COALESCE(p.menu_2_count,0) AS menu_2_count, 
+	        p.menu_3_url, COALESCE(p.menu_3_count,0) AS menu_3_count, 
+	        p.menu_4_url, COALESCE(p.menu_4_count,0) AS menu_4_count, 
+	        p.menu_5_url, COALESCE(p.menu_5_count,0) AS menu_5_count, 
+	        p.menu_6_url, COALESCE(p.menu_6_count,0) AS menu_6_count, 
+	        p.menu_7_url, COALESCE(p.menu_7_count,0) AS menu_7_count, 
+	        p.etc_url,    COALESCE(p.etc_count,   0) AS etc_count  ,
+	        COALESCE(lc.total_login_count, 0) AS total_login_count,
+	        COALESCE(p.menu_1_count, 0) + COALESCE(p.menu_2_count, 0) +
+	        COALESCE(p.menu_3_count, 0) + COALESCE(p.menu_4_count, 0) +
+	        COALESCE(p.menu_5_count, 0) + COALESCE(p.menu_6_count, 0) +
+	        COALESCE(p.menu_7_count, 0) + COALESCE(p.etc_count, 0) AS total_access_count_sum
+	    FROM pivoted p
+	    LEFT JOIN lgn_cnt lc 
+	    ON lc.polstn_cd = p.polstn_cd 
+	)
+	
+	-- 전체 및 lgvofc_nm 별 집계 추가
+	SELECT 
+	    NULL AS polstn_cd,
+	    '합계' AS lgvofc_nm,
+	    '' AS cmptnc_polstn_nm,
+	    1 as ordr_level,
+	    NULL AS menu_1_url, SUM(menu_1_count) AS menu_1_count,
+	    NULL AS menu_2_url, SUM(menu_2_count) AS menu_2_count,
+	    NULL AS menu_3_url, SUM(menu_3_count) AS menu_3_count,
+	    NULL AS menu_4_url, SUM(menu_4_count) AS menu_4_count,
+	    NULL AS menu_5_url, SUM(menu_5_count) AS menu_5_count,
+	    NULL AS menu_6_url, SUM(menu_6_count) AS menu_6_count,
+	    NULL AS menu_7_url, SUM(menu_7_count) AS menu_7_count,
+	    NULL AS etc_url, SUM(etc_count) AS etc_count,
+	    SUM(total_login_count) AS total_login_count,
+	    SUM(total_access_count_sum) AS total_access_count_sum
+	FROM final_data
+	
+	UNION ALL
+	(
+	SELECT 
+	    NULL AS polstn_cd,
+	    lgvofc_nm,
+	    '소계' AS cmptnc_polstn_nm,
+	     2 as ordr_level,
+	    NULL AS menu_1_url, SUM(menu_1_count) AS menu_1_count,
+	    NULL AS menu_2_url, SUM(menu_2_count) AS menu_2_count,
+	    NULL AS menu_3_url, SUM(menu_3_count) AS menu_3_count,
+	    NULL AS menu_4_url, SUM(menu_4_count) AS menu_4_count,
+	    NULL AS menu_5_url, SUM(menu_5_count) AS menu_5_count,
+	    NULL AS menu_6_url, SUM(menu_6_count) AS menu_6_count,
+	    NULL AS menu_7_url, SUM(menu_7_count) AS menu_7_count,
+	    NULL AS etc_url, SUM(etc_count) AS etc_count,
+	    SUM(total_login_count) AS total_login_count,
+	    SUM(total_access_count_sum) AS total_access_count_sum
+	FROM final_data
+	GROUP BY lgvofc_nm
+	
+	UNION ALL
+	
+	SELECT * FROM final_data
+	
+	ORDER BY lgvofc_nm, ordr_level asc, cmptnc_polstn_nm
+	)
+)
+select /*+ ORDERED */
+inst_list.lgvofc_nm
+,inst_list.cmptnc_polstn_nm
+,COALESCE(stts_list.menu_1_count          ,0) as menu_1_count          
+,COALESCE(stts_list.menu_2_count          ,0) as menu_2_count          
+,COALESCE(stts_list.menu_3_count          ,0) as menu_3_count          
+,COALESCE(stts_list.menu_4_count          ,0) as menu_4_count          
+,COALESCE(stts_list.menu_5_count          ,0) as menu_5_count          
+,COALESCE(stts_list.menu_6_count          ,0) as menu_6_count          
+,COALESCE(stts_list.menu_7_count          ,0) as menu_7_count          
+,COALESCE(stts_list.etc_count             ,0) as etc_count             
+,COALESCE(stts_list.total_login_count     ,0) as total_login_count     
+,COALESCE(stts_list.total_access_count_sum,0) as total_access_count_sum
+from inst_list
+left outer join stts_list 
+on
+inst_list.lgvofc_nm = stts_list.lgvofc_nm and  
+inst_list.cmptnc_polstn_nm = stts_list.cmptnc_polstn_nm
+order by inst_list.lgvofc_cd ASC, 
+         inst_list.ordr_no ASC, 
+         inst_list.polstn_cd ASC
+
+
+</select>
+    
+</mapper>

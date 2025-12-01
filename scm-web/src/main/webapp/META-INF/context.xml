@@ -1,0 +1,12 @@
+<Context>
+    <Resource name="jdbc/postgresDS"
+              auth="Container"
+              type="javax.sql.DataSource"
+              driverClassName="net.sf.log4jdbc.DriverSpy"
+              url="jdbc:log4jdbc:postgresql://192.168.0.204:5432/opzudb"
+              username="pzapp"
+              password="pzapp#2024"
+              maxTotal="20"
+              maxIdle="10"
+              maxWaitMillis="10000" />
+</Context>

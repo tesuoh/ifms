@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ifms.adm.sos.sds.mapper.SysDsbltvSrMapper">
+	
+	<!-- 총건수 -->
+	<select id="sysDsbltvSrTotalCount" resultType="int" parameterType="map">
+		select count(*)
+		from szms.pt_sys_dsbltv_sr_m
+		where 1 = 1
+			and del_yn = 'N'
+			<if test="srchCondition == 'sysSrvcDmndTtl'">
+				and sys_srvc_dmnd_ttl like '%' || #{srchKeyword} || '%'
+			</if>
+			<if test="srchCondition == 'sysSrvcDmndCn'">
+				and sys_srvc_dmnd_cn like '%' || #{srchKeyword} || '%'
+			</if>
+			<if test="srchCondition == ''">
+				and (sys_srvc_dmnd_cn like '%' || #{srchKeyword} || '%'
+					or sys_srvc_dmnd_ttl like '%' || #{srchKeyword} || '%')
+			</if>
+	</select>
+			
+	<!-- 목록 -->
+	<select id="sysDsbltvSrList" parameterType="map" resultType="egovMap">
+		select ROW_NUMBER() OVER (ORDER BY frst_reg_dt) AS ROW_NUM
+			, sys_srvc_dmnd_sn 
+			, sys_srvc_dmnd_ttl 
+			, inq_cnt 
+			, file_group_sn 
+			, to_char(frst_reg_dt, 'YYYY-MM-DD') as frst_reg_dt 
+			, frst_rgtr_id
+		from szms.pt_sys_dsbltv_sr_m
+		where 1 = 1
+			and del_yn = 'N'
+			<if test="srchCondition == 'sysSrvcDmndTtl'">
+				and sys_srvc_dmnd_ttl like '%' || #{srchKeyword} || '%'
+			</if>
+			<if test="srchCondition == 'sysSrvcDmndCn'">
+				and sys_srvc_dmnd_cn like '%' || #{srchKeyword} || '%'
+			</if>
+			<if test="srchCondition == ''">
+				and (sys_srvc_dmnd_cn like '%' || #{srchKeyword} || '%'
+					or sys_srvc_dmnd_ttl like '%' || #{srchKeyword} || '%')
+			</if>
+		order by ROW_NUM desc
+		OFFSET #{startNo} ROWS FETCH NEXT #{listCount} ROWS ONLY
+	</select>
+	
+	<!-- 상세 -->
+	<select id="sysDsbltvSrDetail" parameterType="map" resultType="egovMap">
+		select sys_srvc_dmnd_sn 
+			, sys_srvc_dmnd_ttl 
+			, inq_cnt 
+			, file_group_sn 
+			, to_char(frst_reg_dt, 'YYYY-MM-DD') as frst_reg_dt 
+			, to_char(last_mdfcn_dt, 'YYYY-MM-DD') as last_mdfcn_dt 
+			, sys_srvc_dmnd_cn 
+			, sys_srvc_prcs_cn 
+		from szms.pt_sys_dsbltv_sr_m
+		where 1 = 1
+			and sys_srvc_dmnd_sn = cast(#{sysSrvcDmndSn} as numeric)
+	</select>
+	
+	<!-- 코멘트작성 -->
+	<select id="insertPrcsCn" parameterType="map" resultType="egovMap">
+		update szms.pt_sys_dsbltv_sr_m 
+		set sys_srvc_prcs_cn = #{sysSrvcPrcsCn}
+			, last_mdfr_id = #{lastMdfrId}
+			, last_mdfcn_dt  = current_timestamp
+		where sys_srvc_dmnd_sn = cast(#{sysSrvcDmndSn} as numeric)
+		RETURNING to_char(last_mdfcn_dt, 'YYYY-MM-DD') as last_mdfcn_dt
+			, sys_srvc_prcs_cn
+	</select>
+	
+	<update id="updateInqCnt"  parameterType="map">
+		update szms.pt_sys_dsbltv_sr_m
+		set inq_cnt = inq_cnt + 1
+			, last_mdfr_id = #{lastMdfrId}
+			, last_mdfcn_dt  = current_timestamp
+		where sys_srvc_dmnd_sn = cast(#{sysSrvcDmndSn} as numeric)
+	</update>
+	
+	<!-- 게시글 삭제 -->
+	<update id="deleteSysDsbltvPst" parameterType="map">
+		update szms.pt_sys_dsbltv_sr_m
+		set del_yn = 'Y'
+			, last_mdfr_id = #{userId}
+			, last_mdfcn_dt  = current_timestamp
+		where sys_srvc_dmnd_sn = cast(#{sysSrvcDmndSn} as numeric)
+	</update>
+</mapper>

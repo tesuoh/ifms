@@ -1,0 +1,99 @@
+package ${package}.controller;
+
+import ${package}.service.${entityName}Service;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * ${comment} Controller
+ */
+@Controller
+@RequestMapping("/${lowerEntity}")
+public class ${entityName}Controller {
+
+    private final ${entityName}Service ${lowerEntity}Service;
+
+    public ${entityName}Controller(${entityName}Service ${lowerEntity}Service) {
+        this.${lowerEntity}Service = ${lowerEntity}Service;
+    }
+
+    /**
+     * 화면조회 (.do)
+     * - 예: /${lowerEntity}/list.do
+     * 화면으로 이동만 하고, 데이터는 Ajax(JSON) 조회로 처리.
+     */
+    @GetMapping("/list.do")
+    public String listView() {
+        return "${lowerEntity}/${lowerEntity}List";
+    }
+
+    /**
+     * 리스트조회 (.json)
+     * - 예: /${lowerEntity}/list.json
+     * Ajax 요청으로 목록 데이터를 반환.
+     */
+    @GetMapping("/list.json")
+    @ResponseBody
+    public Map<String, Object> listJson(@RequestParam(required = false) String searchKeyword,
+                                        @RequestParam(defaultValue = "1") int pageNo,
+                                        @RequestParam(defaultValue = "10") int pageSize) {
+        Map<String, Object> result = new HashMap<>();
+        result.put("list", ${lowerEntity}Service.select${entityName}List(searchKeyword, pageNo, pageSize));
+        result.put("status", "success");
+        return result;
+    }
+
+    /**
+     * 상세조회 (.do)
+     * - 예: /${lowerEntity}/detail.do?id=123
+     * 특정 ID를 받아 상세정보를 JSP 화면에 모델로 전달.
+     */
+    @GetMapping("/detail.do")
+    public String detailView(@RequestParam("id") Long id, Model model) {
+        model.addAttribute("${lowerEntity}", ${lowerEntity}Service.select${entityName}Detail(id));
+        return "${lowerEntity}/${lowerEntity}Detail";
+    }
+
+    /**
+     * 등록 (.json)
+     * - 예: /${lowerEntity}/insert.json
+     * JSON 형태의 데이터({field1:"", field2:""...})를 받아 신규등록 처리.
+     */
+    @PostMapping("/insert.json")
+    @ResponseBody
+    public Map<String, Object> insertJson(@RequestBody Map<String, Object> paramMap) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            ${lowerEntity}Service.insert${entityName}(paramMap);
+            result.put("status", "success");
+        } catch(Exception e) {
+            result.put("status", "error");
+            result.put("message", e.getMessage());
+        }
+        return result;
+    }
+
+    /**
+     * 수정 (.json)
+     * - 예: /${lowerEntity}/update.json
+     * JSON 형태의 데이터({id:"...", field1:""...})를 받아 수정 처리.
+     */
+    @PostMapping("/update.json")
+    @ResponseBody
+    public Map<String, Object> updateJson(@RequestBody Map<String, Object> paramMap) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            ${lowerEntity}Service.update${entityName}(paramMap);
+            result.put("status", "success");
+        } catch(Exception e) {
+            result.put("status", "error");
+            result.put("message", e.getMessage());
+        }
+        return result;
+    }
+
+}

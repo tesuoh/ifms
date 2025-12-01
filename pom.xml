@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.ifms</groupId>
+  <artifactId>ifms</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>ifms</name>
+  <description>ifms project</description>
+  <modules>
+    <module>scm-core</module>
+    <module>scm-web</module>
+    
+    <module>bcm-core</module>
+    <module>bcm-web</module>
+    
+   	<module>fcl-biz</module>
+    <module>fcl-adm</module>
+    
+    <module>gis-biz</module>
+    <module>gis-adm</module>
+    
+    <module>nst-biz</module>
+    <module>nst-adm</module>
+  </modules>
+  
+</project>

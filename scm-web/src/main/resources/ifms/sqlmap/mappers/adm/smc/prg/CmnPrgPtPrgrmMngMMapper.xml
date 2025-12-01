@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ifms.adm.smc.prg.mapper.CmnPrgPtPrgrmMngMMapper">
+
+    <!-- 프로그램관리 목록 건수 조회 -->
+    <select id="selectCmnPrgPtPrgrmMngListCnt" resultType="int" parameterType="map">
+        /* CmnPrgPtPrgrmMngMMapper.selectCmnPrgPtPrgrmMngListCnt */
+        SELECT COUNT(*)
+          FROM ( SELECT ROW_NUMBER() OVER (ORDER BY rp.url_addr) AS rownum,
+                        b.rprs_url_addr,
+                        rp.url_addr,
+                        rp.prgrm_nm,
+                        b.site_clsf_cd,
+                        COUNT(a.url_addr) AS subprogram_count
+                   FROM szms.pt_rprs_prgrm_mng_m b LEFT JOIN szms.pt_prgrm_url_mpng_r a ON a.rprs_url_addr = b.rprs_url_addr
+                                                   LEFT JOIN szms.pt_url_mng_m rp ON b.rprs_url_addr = rp.url_addr
+                  WHERE 1=1
+                    and b.rprs_url_addr is not null
+                    and b.rprs_url_addr != '/'
+                    <if test="srchPrgrmNm != null">
+                        AND rp.prgrm_nm like CONCAT('%', #{srchPrgrmNm}, '%')
+                    </if>
+                    <if test="srchUrlAddr != null">
+                        AND rp.url_addr like CONCAT('%', #{srchUrlAddr}, '%')
+                    </if>
+                    <if test="siteClsfCd != null">
+                        AND b.site_clsf_cd = #{siteClsfCd}
+                    </if>
+                GROUP BY b.rprs_url_addr,rp.url_addr,rp.prgrm_nm,b.site_clsf_cd
+                ) T1
+    </select>
+
+    <!-- 프로그램관리 목록 조회 -->
+    <select id="selectCmnPrgPtPrgrmMngList" resultType="egovMap" parameterType="map">
+        /* CmnPrgPtPrgrmMngMMapper.selectCmnPrgPtPrgrmMngList */
+        SELECT ROW_NUMBER() OVER (ORDER BY rp.url_addr) AS rownum,
+                b.rprs_url_addr,
+                rp.url_addr,
+                rp.prgrm_nm,
+                b.site_clsf_cd,
+                b.frst_reg_dt,
+                COUNT(a.url_addr) AS subprogram_count
+           FROM szms.pt_rprs_prgrm_mng_m b LEFT JOIN szms.pt_prgrm_url_mpng_r a ON a.rprs_url_addr = b.rprs_url_addr
+                                           LEFT JOIN szms.pt_url_mng_m rp ON b.rprs_url_addr = rp.url_addr
+          WHERE 1=1
+            and b.rprs_url_addr is not null
+            and b.rprs_url_addr != '/'
+            <if test="srchPrgrmNm != null">
+                AND rp.prgrm_nm like CONCAT('%', #{srchPrgrmNm}, '%')
+            </if>
+            <if test="srchUrlAddr != null">
+                AND rp.url_addr like CONCAT('%', #{srchUrlAddr}, '%')
+            </if>
+            <if test="siteClsfCd != null">
+                AND b.site_clsf_cd = #{siteClsfCd}
+            </if>
+        GROUP BY b.rprs_url_addr,
+                 rp.url_addr,
+                 rp.prgrm_nm,
+                 b.site_clsf_cd,
+                 b.frst_reg_dt
+        ORDER BY b.rprs_url_addr
+        OFFSET #{startNo} ROWS FETCH NEXT #{listCount} ROWS ONLY
+    </select>
+
+    <!-- 프로그램관리 상세 조회 -->
+    <select id="selectCmnPrgPtPrgrmMngDtl" resultType="egovMap" parameterType="map">
+        /* CmnPrgPtPrgrmMngMMapper.selectCmnPrgPtPrgrmMngDtl */
+        SELECT
+            A.rprs_url_addr,
+            A.site_clsf_cd,
+            B.prgrm_nm,
+            B.url_addr,
+            B.rprs_prgrm_yn,
+            B.mdfcn_prgrm_yn
+        FROM szms.pt_rprs_prgrm_mng_m A INNER JOIN szms.pt_url_mng_m B
+            ON A.rprs_url_addr = B.url_addr
+        WHERE A.rprs_url_addr = #{rprsUrlAddr}
+          AND A.site_clsf_cd = #{siteClsfCd}
+          AND B.prgrm_nm = #{prgrmNm}
+    </select>
+
+    <select id="selectLinkedUrlsList" resultType="egovMap" parameterType="map">
+        /* CmnPrgPtPrgrmMngMMapper.selectLinkedUrlsList */
+        SELECT
+            b.rprs_url_addr,
+            b.site_clsf_cd,
+            t2.url_addr,
+            t2.prgrm_nm,
+            t2.rprs_prgrm_yn,
+            t2.prgrm_clsf_cd,
+            t2.mdfcn_prgrm_yn
+        FROM
+            szms.pt_rprs_prgrm_mng_m b
+                INNER JOIN
+            szms.pt_prgrm_url_mpng_r a
+            ON a.rprs_url_addr = b.rprs_url_addr
+                INNER JOIN
+            szms.pt_url_mng_m t2
+            ON a.url_addr = t2.url_addr
+        WHERE
+            b.rprs_url_addr = #{rprsUrlAddr}
+        AND b.site_clsf_cd = #{siteClsfCd}
+        ORDER BY b.rprs_url_addr, t2.url_addr
+    </select>
+
+    <select id="selectUrlListCount" resultType="int" parameterType="map">
+        /* CmnMnuPtMenuMngMMapper.selectUrlListCount */
+        SELECT COUNT(*)
+        FROM szms.pt_url_mng_m
+        WHERE 1=1
+        <if test="searchUrlId != null and searchUrlId != ''">
+            AND url_addr LIKE '%' || #{searchUrlId} || '%'
+        </if>
+        <if test="searchPrgNm != null and searchPrgNm != ''">
+            AND prgrm_nm LIKE '%' || #{searchPrgNm} || '%'
+        </if>
+    </select>
+
+    <select id="selectUrlList" resultType="egovMap" parameterType="map">
+        /* CmnMnuPtMenuMngMMapper.selectUrlList */
+        SELECT T2.url_addr,
+               T2.prgrm_nm,
+               T2.rprs_prgrm_yn,
+               T2.mdfcn_prgrm_yn,
+               T2.prgrm_clsf_cd
+          FROM SZMS.pt_url_mng_m T2
+        WHERE 1=1
+        <if test="searchUrlId != null and searchUrlId != ''">
+          AND T2.url_addr LIKE '%' || #{searchUrlId} || '%'
+        </if>
+        <if test="searchPrgNm != null and searchPrgNm != ''">
+          AND T2.prgrm_nm LIKE '%' || #{searchPrgNm} || '%'
+        </if>
+        ORDER BY T2.url_addr
+        OFFSET #{startNo} ROWS FETCH NEXT #{listCount} ROWS ONLY
+
+    </select>
+
+    <select id="selectUrlDetails" parameterType="map" resultType="map">
+        /* CmnMnuPtMenuMngMMapper.selectUrlDetails */
+        SELECT t2.url_addr,
+               t2.prgrm_nm,
+               t2.rprs_prgrm_yn,
+               t2.prgrm_rslt_type_nm,
+               t2.mdfcn_prgrm_yn,
+               t2.prgrm_clsf_cd
+          FROM szms.pt_url_mng_m t2
+         WHERE t2.url_addr = #{urlAddr}
+           AND t2.prgrm_nm = #{prgrmNm}
+    </select>
+
+    <update id="insertRprsProgram" >
+
+    </update>
+
+
+    <select id="countConnectedProgramByUrlMngNo" parameterType="string" resultType="int">
+        /* CmnMnuPtMenuMngMMapper.countConnectedProgramByUrlMngNo */
+        SELECT COUNT(*)
+        FROM szms.pt_prgrm_url_mpng_r
+        WHERE url_addr = #{urlAddr}
+          and rprs_url_addr = #{rprsUrlAddr}
+    </select>
+
+    <insert id="insertConnectProgram" parameterType="map">
+        /* CmnMnuPtMenuMngMMapper.insertConnectProgram */
+        insert into szms.pt_prgrm_url_mpng_r (
+            rprs_url_addr,
+            url_addr,
+            frst_rgtr_id,
+            frst_reg_dt
+        ) values ( #{rprsUrlAddr},
+                   #{urlAddr},
+                   #{frstRgtrId},
+                   now()
+                 )
+    </insert>
+
+    <update id="updateConnectProgram" parameterType="map">
+        /* CmnMnuPtMenuMngMMapper.updateConnectProgram */
+        UPDATE szms.pt_prgrm_url_mpng_r
+        SET
+            rprs_url_addr = #{rprsUrlAddr},
+            url_addr = #{urlAddr},
+            last_mdfr_id = #{lastMdfrId},
+            last_mdfcn_dt = now()
+        WHERE url_addr = #{urlAddr}
+          AND rprs_url_addr = #{rprsUrlAddr}
+    </update>
+
+    <update id="updateRprsUrlMng" parameterType="map">
+        /* CmnMnuPtMenuMngMMapper.updateRprsUrlMng */
+        UPDATE szms.pt_url_mng_m
+           SET rprs_prgrm_yn = #{rprsPrgrmYn},
+               last_mdfr_id = #{lastMdfrId},
+               last_mdfcn_dt = now()
+        where url_addr = #{urlAddr}
+    </update>
+
+
+    <!-- 중복 체크용 쿼리 -->
+    <select id="countRprsPrgrmMngByUrl" parameterType="map" resultType="int">
+        /* CmnMnuPtMenuMngMMapper.countRprsPrgrmMngByUrl */
+        SELECT COUNT(*)
+        FROM szms.pt_rprs_prgrm_mng_m
+        WHERE rprs_url_addr = #{rprsUrl}
+    </select>
+
+    <!-- 대표 URL INSERT 쿼리 -->
+    <insert id="insertRprsPrgrmMng" parameterType="map">
+        /* CmnMnuPtMenuMngMMapper.insertRprsPrgrmMng */
+        insert into szms.pt_rprs_prgrm_mng_m (
+            rprs_url_addr,
+            site_clsf_cd,
+            frst_rgtr_id,
+            frst_reg_dt
+        ) values ( #{rprsUrl},
+                   #{siteClsfCd},
+                   #{lastMdfrId},
+                   now()
+                 )
+    </insert>
+
+    <update id="updateRprsPrgrmMng" parameterType="map">
+        /* CmnMnuPtMenuMngMMapper.updateRprsPrgrmMng */
+        update szms.pt_rprs_prgrm_mng_m
+           set site_clsf_cd = #{siteClsfCd},
+            last_mdfr_id = #{lastMdfrId},
+            last_mdfcn_dt = now()
+        where rprs_url_addr = #{rprsUrl}
+    </update>
+
+
+</mapper>

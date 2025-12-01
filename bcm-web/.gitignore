@@ -1,0 +1,9 @@
+target/**/*
+src/main/**/*.geninfo
+src/main/**/*.*_
+.settings/**/*
+.classpath
+.springBeans
+**/*.zip*
+/bin/
+/.project

@@ -1,0 +1,72 @@
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="ui"     uri="http://egovframework.gov/ctl/ui"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="double-submit" uri="http://www.egovframe.go.kr/tags/double-submit/jsp" %>
+<!-- JSP file명 : selectyyyyyyyyList -->
+
+<h1>xxxxxxxx 목록조회</h1>
+
+<form:form modelAttribute="uuuuuuuVO" name="uuuuuuuVO" method="post">	
+	<div>
+		<!-- [체크] 검색용 파라메터 직접 추가 -->
+		<a href="javascript:fn_selectyyyyyyyyList(1);" data-role="button" data-corners="false">목록조회</a>
+	</div>		
+		
+	<!-- 상세화면 이동에 사용될 PK -->
+tttttttt
+
+	<c:if test="${not empty selectyyyyyyyyList}">
+		<div class="countList"><p>총 <c:out value="${selectyyyyyyyyList[0].totalCnt}"/>건</p></div>
+	</c:if>
+	<div class="">
+	    <table class="">
+			<caption>xxxxxxxx 목록조회</caption>
+	        <thead>
+				<tr>
+					<th scope="col">No.</th>
+					bbbbbbbb
+					<th scope="col">상세</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach items="${selectyyyyyyyyList}" var="uuuuuuuVO">
+				<tr ondblclick="fn_selectyyyyyyyyDetail('[체크] PK값 값세팅');">
+					<th scope="row"><c:out value="${uuuuuuuVO.rnum}"/></th>
+					ffffffff
+					<td><button onclick="fn_selectyyyyyyyyDetail('[체크] PK값 값세팅');" data-mini="true">상세</button></td>
+				</tr>
+				</c:forEach>
+			</tbody>
+		</table> 
+		
+		<div id="paging" class="center">
+			<ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="fn_selectyyyyyyyyList" />
+			<form:hidden path="pageIndex" />
+		</div>			
+	</div>
+</form:form>	
+							
+<script type="text/javaScript" defer="defer">
+	//서버 처리 메세지
+	$(document).ready(function() {
+		if(!!"<c:out value="${uuuuuuuVO.returnMessage}"/>"){
+			alert("<c:out value="${uuuuuuuVO.returnMessage}"/>");	
+		}
+	});
+
+	//xxxxxxxx 목록 조회 function 
+	function fn_selectyyyyyyyyList(pageNo) {
+		document.uuuuuuuVO.pageIndex.value = pageNo;
+		document.uuuuuuuVO.action = "<c:url value='/oooooooo/selectyyyyyyyyList.do'/>";
+		document.uuuuuuuVO.submit();
+	}  
+        
+	//xxxxxxxx 상세 조회 function 
+	function fn_selectyyyyyyyyDetail(val) {
+		alert(val);
+		document.uuuuuuuVO.action = "<c:url value='/oooooooo/selectyyyyyyyyDetail.do'/>";
+		document.uuuuuuuVO.submit();
+	}        
+</script>

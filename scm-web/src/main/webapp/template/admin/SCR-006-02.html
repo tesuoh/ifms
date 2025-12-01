@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<!-- CSS & javascript (JSP 파일 include) 시작 -->
+	<head>
+		<title>보호구역 통합관리시스템</title>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name = "viewport" content = "user-scalable=no, width=device-width">
+		<meta name="author" content="보호구역 통합관리시스템">
+		<!-- description -->
+		<meta name="description" content="보호구역 통합관리시스템 프로젝트">
+		<!-- keywords -->
+		<meta name="keywords" content="">
+		<!-- favicon -->
+		<link rel="shortcut icon" href="../../com/img/common/icon/favicon.ico">
+		<link rel="apple-touch-icon" href="../../com/img/common/icon/favicon.ico">
+
+		<!-- ==============================================================
+			플러그인
+		============================================================== -->
+		<!-- 공통 -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/font-awesome/css/font-awesome.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/simple-line-icons/simple-line-icons.css" />
+		<script type="text/javascript" src="../../com/plugins/jquery.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/js.cookie.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+
+		<!-- bootstrap -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap/css/bootstrap.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+		<!-- bootstrap-datepicker -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-timepicker/css/bootstrap-timepicker.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.kr.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.kr.js"></script>
+		<script type="text/javascript" src="../../com/js/bootstrap-datepicker.kr.js"></script>
+		<script type="text/javascript" src="../../com/js/components-date-time-pickers.js"></script>
+
+		<!-- bootstrap-fileinput -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-fileinput/bootstrap-fileinput.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
+
+		<!-- bootstrap-tabdrop -->
+		<script type="text/javascript" src="../../com/plugins/bootstrap-tabdrop/js/bootstrap-tabdrop.js"></script>
+
+		<!-- jstree -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/jstree/dist/themes/default/style.css" />
+		<script type="text/javascript" src="../../com/plugins/jstree/dist/jstree.js"></script>
+		<script type="text/javascript" src="../../com/js/ui-tree.js"></script>
+
+		<!-- div 크기 변경 감지 https://marcj.github.io/css-element-queries/ -->
+		<script type="text/javascript" src="../../com/plugins/css-element-queries/ResizeSensor.js"></script>
+		<script type="text/javascript" src="../../com/plugins/css-element-queries/ElementQueries.js"></script>
+		
+		<!-- 전체 레이어 모달 팝업 -->
+		<link type="text/css" rel="stylesheet" href="../../com/plugins/magnific-popup/magnific-popup.css">
+		<script type="text/javascript" src="../../com/plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+		<!-- 컨텐츠 셀렉트 -->
+		<script type="text/javascript" src="../../com/plugins/slideNav/slideNav.js"></script>
+
+		<!-- 상단메뉴 -->
+		<link type="text/css" rel="stylesheet" href="../../com/plugins/menu/css/menu.css">
+		<script type="text/javascript" src="../../com/plugins/menu/js/custom.js"></script>
+
+		<!-- ==============================================================
+			공통 커스텀
+		============================================================== -->	
+		<!-- 스타일 css -->
+		<link rel="stylesheet" type="text/css" href="../../com/css/components.css" />
+		<link type="text/css" rel="stylesheet" href="../../com/css/style.css">
+
+		<!-- 전체 조합 css -->
+		<link type="text/css" rel="stylesheet" href="../../com/css/common.css">
+		<link type="text/css" rel="stylesheet" href="../../com/css/common-ie.css">
+
+		<!-- 공통 script -->
+		<script type="text/javascript" src="../../com/js/app.js"></script>
+		<script type="text/javascript" src="../../com/js/common.js"></script>
+
+		<!-- KRDS 스크립트 : 패턴 페이지 -->
+		<script type="text/javascript" src="../../com/js/ui-pattern-script.js"></script>
+
+		<!-- ==============================================================
+			프론트
+		============================================================== -->
+		<!-- 레이아웃 CSS -->
+		<link type="text/css" rel="stylesheet" href="../../com/css/front.css">
+		<link type="text/css" rel="stylesheet" href="../../com/css/admin.css"><!-- !!! 필독 : 행정화면들은 "admin.css"를 추가 -->
+
+		<!-- !!! 필독 : JSP 상하단 include 예시 완료 후 삭제 !!!!!!! -->
+		<script type="text/javascript" src="../../com/include/include.js"></script>
+
+	</head>
+	<!-- CSS & javascript (JSP 파일 include) 끝 -->
+
+	<body class="page-front page-sub page-admin"><!-- !!! 필독 : 행정에서는 class="page-admin" 추가 !!!!!!! -->
+		
+		<!-- 헤더 (JSP 파일 include) 시작 -->
+		<header id="header">
+		</header>
+		<!-- 헤더 (JSP 파일 include) 끝 -->
+
+		<!-- 페이지 컨테이너 시작 -->
+		<section id="container" class="page-container">
+
+			<div class="page-content-wrapper">
+
+				<!-- 서브메뉴 (JSP 파일 include) 시작 -->
+				<div id="sidebar" class="page-sidebar-wrapper">
+				</div>
+				<!-- 서브메뉴 (JSP 파일 include) 끝 -->
+
+				<!-- 컨텐츠 시작 -->
+				<div id="contents" class="page-content"><!-- !!! 필독 : [웹 접근성] 본문 바로가기 id="contents", 주메뉴 바로가기  id="navbar" -->
+
+					<div class="page-content-inner">
+
+						<!-- 카테고리 시작 -->
+						<div class="category-wrapper">
+							<ul class="page-category">
+								<li class="category-item"><a href="#">실태조사 진행관리</a></li>
+								<li class="category-item"><a href="#">실태조사 현황자료 등록</a></li>
+							</ul>
+						</div>
+						<!-- 카테고리 끝 -->
+
+						<!-- 페이지 타이틀 시작 -->
+						<h1 class="page-title-1depth"><span>실태조사 현황자료 등록</span></h1>
+						<!-- 페이지 타이틀 끝 -->
+
+						<!-- 내용 시작 -->
+						<div class="content-wrapper">
+
+							<!-- 컨텐츠 행 시작 -->
+							<div class="contents-row">
+
+								<a href="#popup_01_lg" data-toggle="modal" class="btn btn-default"><span>실태조사 현황자료 등록 팝업 띄우기</span></a>
+
+							</div>
+							<!-- 컨텐츠 행 끝 -->
+
+						</div>
+						<!-- 내용 끝 -->
+						
+					</div>
+
+				</div>
+				<!-- 컨텐츠 끝 -->
+
+			</div>
+
+		</section>
+		<!-- 페이지 컨테이너 끝 -->
+
+		<!-- footer (JSP 파일 include) 시작 -->
+		<footer id="footer" class="page-footer">
+		</footer>
+		<!-- footer (JSP 파일 include) 끝 -->
+
+		<!-- 모달팝업 시작 -->
+		<div class="modal fade bs-modal-lg" id="popup_01_lg" tabindex="-1" role="popup_01_lg">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"></button>
+						<h4 class="modal-title">실태조사 현황자료 등록</h4>
+					</div>
+					<div class="modal-body">
+						<!-- 내용 시작 -->
+						<div class="contents-row">
+							<!-- 테이블 시작 -->
+							<div class="table-scrollable">
+								<table class="table table-bordered">
+									<caption>테이블 요약</caption>
+									<colgroup>
+										<col style="width:140px;" />
+										<col style="width:auto;" />
+									</colgroup>
+									<tbody>
+										<tr>
+											<td class="td-head" scope="row">지자체</td>
+											<td class="t-left" colspan="3">
+												<div class="form-inline">
+													<div class="form-group">
+														<!--input id명칭과 for가 동일해야함 (웹접근성)-->
+														<label class="input-label-none" for="labelEx">지자체 시도 선택</label>
+														<select id="labelEx" class="bs-select form-control">
+															<option>서울특별시</option>
+														</select>
+													</div>
+													<div class="form-group">
+														<!--input id명칭과 for가 동일해야함 (웹접근성)-->
+														<label class="input-label-none" for="labelEx">지자체 군구 선택</label>
+														<select id="labelEx" class="bs-select form-control">
+															<option>종로구</option>
+														</select>
+													</div>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<td class="td-head" scope="row">시설명</td>
+											<td>
+												<!--input id명칭과 for가 동일해야함 (웹접근성)-->
+												<label class="input-label-none" for="labelEx">시설명 입력</label>
+												<input type="text" id="labelEx" class="form-control" placeholder="시설명 입력" style="width: 100%;">
+											</td>
+										</tr>
+										<tr>
+											<td class="td-head" scope="row">조사 일자</td>
+											<td>
+												<!--input id명칭과 for가 동일해야함 (웹접근성)-->
+												<label class="input-label-none" for="due_ymd">조사 일자 입력</label>
+												<div id="date-picker-1" class="input-group date date-picker" data-date="2022-08-31" data-date-format="yyyy-mm-dd" data-date-viewmode="years">
+													<input type="text" id="due_ymd" name="due_ymd" value="2022-08-31" title="조사 일자 입력" class="form-control">
+													<span class="input-group-btn">
+														<button class="btn btn-default" type="button">
+															<i class="fa fa-calendar"></i>
+														</button>
+													</span>
+												</div>
+												<script>
+													// 참고 사이트 - https://bootstrap-datepicker.readthedocs.io/en/latest/options.html#orientation
+													$('#date-picker-1').datepicker({
+														orientation: 'right bottom'
+													});
+												</script>
+											</td>
+										</tr>
+										<tr>
+											<td class="td-head" scope="row">보고서 등록</td>
+											<td>
+												<!--input id명칭과 for가 동일해야함 (웹접근성)-->
+												<label class="input-label-none" for="labelEx">보고서 등록 첨부</label>
+												<div class="fileinput fileinput-new input-group" data-provides="fileinput" tabindex="0" style="width: 100%;">
+													<div class="input-group">
+														<div class="form-control input-fixed" data-trigger="fileinput">
+															<i class="fa fa-file fileinput-exists"></i>&nbsp;
+															<span class="fileinput-filename"> </span>
+														</div>
+														<span class="input-group-addon btn btn-default btn-file">
+															<span class="fileinput-new"> 파일선택 </span>
+															<span class="fileinput-exists"> 파일교체 </span>
+															<input type="file" id="labelEx" name="labelEx">
+														</span>
+														<a href="javascript:;" class="input-group-addon btn btn-default btn-red fileinput-exists" data-dismiss="fileinput"> 파일삭제 </a>
+													</div>
+												</div>
+												<p class="input-explanation">※ 0mb 이하로 첨부</p>
+											</td>
+										</tr>
+										<tr>
+											<td class="td-head" scope="row">도면 등록</td>
+											<td>
+												<!--input id명칭과 for가 동일해야함 (웹접근성)-->
+												<label class="input-label-none" for="labelEx">도면 등록 첨부</label>
+												<div class="fileinput fileinput-new input-group" data-provides="fileinput" tabindex="0" style="width: 100%;">
+													<div class="input-group">
+														<div class="form-control input-fixed" data-trigger="fileinput">
+															<i class="fa fa-file fileinput-exists"></i>&nbsp;
+															<span class="fileinput-filename"> </span>
+														</div>
+														<span class="input-group-addon btn btn-default btn-file">
+															<span class="fileinput-new"> 파일선택 </span>
+															<span class="fileinput-exists"> 파일교체 </span>
+															<input type="file" id="labelEx" name="labelEx">
+														</span>
+														<a href="javascript:;" class="input-group-addon btn btn-default btn-red fileinput-exists" data-dismiss="fileinput"> 파일삭제 </a>
+													</div>
+												</div>
+												<p class="input-explanation">※ 0mb 이하로 첨부</p>
+											</td>
+										</tr>
+										<tr>
+											<td class="td-head" scope="row">조사표 등록</td>
+											<td>
+												<!--input id명칭과 for가 동일해야함 (웹접근성)-->
+												<label class="input-label-none" for="labelEx">조사표 등록 첨부</label>
+												<div class="fileinput fileinput-new input-group" data-provides="fileinput" tabindex="0" style="width: 100%;">
+													<div class="input-group">
+														<div class="form-control input-fixed" data-trigger="fileinput">
+															<i class="fa fa-file fileinput-exists"></i>&nbsp;
+															<span class="fileinput-filename"> </span>
+														</div>
+														<span class="input-group-addon btn btn-default btn-file">
+															<span class="fileinput-new"> 파일선택 </span>
+															<span class="fileinput-exists"> 파일교체 </span>
+															<input type="file" id="labelEx" name="labelEx">
+														</span>
+														<a href="javascript:;" class="input-group-addon btn btn-default btn-red fileinput-exists" data-dismiss="fileinput"> 파일삭제 </a>
+													</div>
+												</div>
+												<p class="input-explanation">※ 0mb 이하로 첨부</p>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!-- 테이블 끝 -->
+						</div>
+						<!-- 내용 끝 -->
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+						<button type="button" class="btn btn-primary">등록</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 모달팝업 끝 -->
+
+	</body>
+
+	<!-- 필독 !!!!!! JSP 상하단 include 예시 완료 후 삭제 !!!!!!! 시작 -->
+	<script>
+		//상단메뉴
+		header(0);
+		function header(index) {
+			$include_pageHeader_admin.prependTo("header");
+			$include_pageHeader_admin.find(".navbar-nav > li").removeClass("active"); // 상단 메뉴의 활성화를 모두 삭제
+			$include_pageHeader_admin.find(".navbar-nav > li").eq(1).addClass("active"); // 현재 페이지의 상단 메뉴의 활성화
+		}
+
+		//왼쪽메뉴
+		sidebar(0);
+		function sidebar(index) {
+			$include_sidebar.prependTo("#sidebar");
+			$include_sidebar.find(".page-sidebar-menu > li").removeClass("active"); // 상단 메뉴의 활성화를 모두 삭제
+			$include_sidebar.find(".page-sidebar-menu > li").eq(2).addClass("active"); // 현재 페이지의 상단 메뉴의 활성화
+			$include_sidebar.find(".page-sidebar-menu > li").eq(2).addClass("active").find(".sub-menu > li").removeClass("active");
+			$include_sidebar.find(".page-sidebar-menu > li").eq(2).addClass("active").find(".sub-menu > li").eq(0).addClass("active");
+			$include_sidebar.find(".page-sidebar-menu > li").eq(2).addClass("active").find(".sub-menu > li").eq(0).find(".sub-menu > li").removeClass("active");
+			$include_sidebar.find(".page-sidebar-menu > li").eq(2).addClass("active").find(".sub-menu > li").eq(0).find(".sub-menu > li").eq(0).addClass("active");
+		}
+
+		//풋터
+		footer();
+		function footer() {
+		 	$include_footer.prependTo("footer");
+		}
+	</script>
+	<!-- 필독 !!!!!! JSP 상하단 include 예시 완료 후 삭제 !!!!!!! 끝 -->
+
+</html>

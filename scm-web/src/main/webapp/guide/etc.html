@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="ko" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="ko" class="ie9 no-js"> <![endif]-->
+<html lang="ko">
+	<head>
+		<title>Markup Guide</title>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name = "viewport" content = "user-scalable=no, width=device-width">
+		<meta name="author" content="Markup Guide">
+		<!-- description -->
+		<meta name="description" content="HTML, CSS, JS, 컴포넌트, 모듈등의 가이드">
+		<!-- keywords -->
+		<meta name="keywords" content="">
+		<!-- favicon -->
+		<link rel="shortcut icon" href="../com/img/common/icon/favicon.ico">
+
+		<!-- ==============================================================
+			플러그인
+		============================================================== -->
+		<!-- 공통 -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/font-awesome/css/font-awesome.css" />
+		<link rel="stylesheet" type="text/css" href="../com/plugins/simple-line-icons/simple-line-icons.css" />
+		<script type="text/javascript" src="../com/plugins/jquery.min.js"></script>
+		<script type="text/javascript" src="../com/plugins/js.cookie.min.js"></script>
+		<script type="text/javascript" src="../com/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+		
+		<!-- bootstrap -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/bootstrap/css/bootstrap.css" />
+		<script type="text/javascript" src="../com/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+		<!-- bootstrap-datepicker -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css" />
+		<link rel="stylesheet" type="text/css" href="../com/plugins/bootstrap-timepicker/css/bootstrap-timepicker.css" />
+		<link rel="stylesheet" type="text/css" href="../com/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" />
+		<script type="text/javascript" src="../com/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+		<script type="text/javascript" src="../com/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.kr.min.js"></script>
+		<script type="text/javascript" src="../com/plugins/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+		<script type="text/javascript" src="../com/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+		<script type="text/javascript" src="../com/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.kr.js"></script>
+		<script type="text/javascript" src="../com/js/bootstrap-datepicker.kr.js"></script>
+		<script type="text/javascript" src="../com/js/components-date-time-pickers.js"></script>
+
+		<!-- bootstrap-fileinput -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/bootstrap-fileinput/bootstrap-fileinput.css" />
+		<script type="text/javascript" src="../com/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
+
+		<!-- bootstrap-tabdrop -->
+		<script type="text/javascript" src="../com/plugins/bootstrap-tabdrop/js/bootstrap-tabdrop.js"></script>
+
+		<!-- jstree -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/jstree/dist/themes/default/style.css" />
+		<script type="text/javascript" src="../com/plugins/jstree/dist/jstree.js"></script>
+		<script type="text/javascript" src="../com/js/ui-tree.js"></script>
+
+		<!-- bootstrap-switch -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/bootstrap-switch/css/bootstrap-switch.min.css" />
+		<script type="text/javascript" src="../com/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+
+		<!-- splitter -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/jquery-touch-splitter/css/touchsplitter.css" />
+		<script type="text/javascript" src="../com/plugins/jquery-touch-splitter/js/jquery.touchsplitter.js"></script>
+
+		<!-- Select Splitter -->
+		<script type="text/javascript" src="../com/plugins/bootstrap-selectsplitter/bootstrap-selectsplitter.min.js"></script>
+
+		<!-- Multiple Select -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/bootstrap-select/css/bootstrap-select.css">
+		<script type="text/javascript" src="../com/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+		<!-- Multiple Select Group -->
+		<link rel="stylesheet" type="text/css" href="../com/plugins/jquery-multi-select/css/multi-select.css" />
+        <script type="text/javascript" src="../com/plugins/jquery-multi-select/js/jquery.multi-select.js"></script>
+
+		<!-- div 크기 변경 감지 https://marcj.github.io/css-element-queries/ -->
+		<script type="text/javascript" src="../com/plugins/css-element-queries/ResizeSensor.js"></script>
+		<script type="text/javascript" src="../com/plugins/css-element-queries/ElementQueries.js"></script>
+		
+		<!-- 레이어 모달 팝업 -->
+		<link type="text/css" rel="stylesheet" href="../com/plugins/magnific-popup/magnific-popup.css">
+		<script type="text/javascript" src="../com/plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+		<!-- ==============================================================
+			amcharts script 영역
+		============================================================== -->
+		<script type="text/javascript" src="../com/plugins/amcharts4/core.js"></script>
+		<script type="text/javascript" src="../com/plugins/amcharts4/charts.js"></script>
+		<script type="text/javascript" src="../com/plugins/amcharts4/maps.js"></script>
+		<script type="text/javascript" src="../com/plugins/amcharts4/themes/animated.js"></script>
+		<script>
+			am4core.addLicense("ch-custom-attribution"); // 라이센스 인증 (amcharts 로고 없어짐)
+		</script>
+
+        <!-- ==============================================================
+			공통 커스텀
+		============================================================== -->	
+		<!-- 스타일 css -->
+		<link rel="stylesheet" type="text/css" href="../com/css/components.css" />
+		<link type="text/css" rel="stylesheet" href="../com/css/style.css">
+
+		<!-- 전체 조합 css -->
+		<link type="text/css" rel="stylesheet" href="../com/css/common.css">
+		<link type="text/css" rel="stylesheet" href="../com/css/common-ie.css">
+
+		<!-- 공통 script -->
+		<script type="text/javascript" src="../com/js/app.js"></script>
+		<script type="text/javascript" src="../com/js/common.js"></script>
+
+		<!-- ==============================================================
+			가이드
+		============================================================== -->
+		<link type="text/css" rel="stylesheet" href="com/css/guide.css">
+		<script type="text/javascript" src="com/js/include.js"></script>
+	</head>
+	<body class="page-guide">
+
+		<!-- 글로벌 시작 -->
+		<header class="page-header navbar navbar-fixed-top">
+			<div class="page-header-inner">
+				<div class="page-logo">
+					<a href="index.html">
+						<span class="logo-default">Markup Guide</span>
+					</a>
+				</div>
+			</div>
+		</header>
+		<!-- 글로벌 끝 -->
+
+		<!-- 페이지 컨테이너 시작 -->
+		<section class="page-container">
+
+			<div class="page-content-wrapper">
+
+				<!-- 왼쪽메뉴 시작 -->
+				<div class="page-sidebar-wrapper"></div>
+				<!-- 왼쪽메뉴 끝 -->
+
+				<!-- 컨텐츠 시작 -->
+				<div class="page-content">
+
+					<div class="page-content-inner">
+
+						<h1 class="page-title-1depth"><span>Etc</span></h1>
+						
+						<!-- 내용 시작 -->
+						<div class="content-wrapper">
+
+							<!-- TreeView (기본) 시작 -->
+							<div class="portlet">
+								<div class="portlet-body">
+									<div class="portlet-body-hr">
+										<h3 class="portlet-body-title">Tree Views (기본)</h3>
+										<hr class="portlet-body-title-hr">
+
+										<ul class="guideUL font-dark">
+											<li class="ms-hover">jstree 참고 - <a href="https://www.jstree.com/" target="_blank">https://www.jstree.com/</a></li>
+										</ul>
+
+										<!-- 트리메뉴 시작 -->
+										<div id="tree_1" class="tree-demo">
+											<ul>
+												<li>1 depth - 01
+													<ul>
+														<li data-jstree='{ "selected" : true }'>
+															<a href="javascript:;">2 depth - 01</a>
+														</li>
+														<li data-jstree='{ "opened" : true }'>2 depth - 02
+															<ul>
+																<li data-jstree='{ "disabled" : true }'>3 depth - 01</li>
+																<li data-jstree='{ "type" : "file" }'>3 depth - 02</li>
+															</ul>
+														</li>
+														<li data-jstree='{ "icon" : "fa fa-file icon-state-warning" }'>2 depth - 03</li>
+													</ul>
+												</li>
+												<li data-jstree='{ "type" : "file" }'>
+													<a href="javascript:;">1 depth - 02</a>
+												</li>
+											</ul>
+										</div>
+										<!-- 트리메뉴 끝 -->
+
+									</div>
+								</div>
+							</div>
+							<!-- TreeView (기본) 끝 -->
+
+							<!-- TreeView (체크박스) 시작 -->
+							<div class="portlet">
+								<div class="portlet-body">
+									<div class="portlet-body-hr">
+										<h3 class="portlet-body-title">Tree Views (체크박스)</h3>
+										<hr class="portlet-body-title-hr">
+
+										<ul class="guideUL font-dark">
+											<li class="ms-hover">jstree 참고 - <a href="https://www.jstree.com/" target="_blank">https://www.jstree.com/</a></li>
+										</ul>
+
+										<!-- 트리메뉴 시작 -->
+										<div id="tree_2" class="tree-demo">
+											<ul>
+												<li>1 depth - 01
+													<ul>
+														<li data-jstree='{ "selected" : true }'>
+															<a href="javascript:;">2 depth - 01</a>
+														</li>
+														<li data-jstree='{ "opened" : true }'>2 depth - 02
+															<ul>
+																<li data-jstree='{ "disabled" : true }'>3 depth - 01</li>
+																<li data-jstree='{ "type" : "file" }'>3 depth - 02</li>
+															</ul>
+														</li>
+														<li data-jstree='{ "icon" : "fa fa-file icon-state-warning" }'>2 depth - 03</li>
+													</ul>
+												</li>
+												<li data-jstree='{ "type" : "file" }'>
+													<a href="javascript:;">1 depth - 02</a>
+												</li>
+											</ul>
+										</div>
+										<script>
+                                            $('#tree_2').jstree({
+                                                "core" : {
+                                                    "themes" : {
+                                                        "responsive": false
+                                                    }            
+                                                },
+                                                "types" : {
+                                                    "default" : {
+                                                        "icon" : "fa fa-folder icon-state-warning icon-lg"
+                                                    },
+                                                    "file" : {
+                                                        "icon" : "fa fa-file icon-state-warning icon-lg"
+                                                    }
+                                                },
+                                                "plugins": ["checkbox", "types"]
+                                            });
+
+                                            $('#tree_2').on('select_node.jstree', function(e,data) { 
+                                                var link = $('#' + data.selected).find('a');
+                                                if (link.attr("href") != "#" && link.attr("href") != "javascript:;" && link.attr("href") != "") {
+                                                    if (link.attr("target") == "_blank") {
+                                                        link.attr("href").target = "_blank";
+                                                    }
+                                                    document.location.href = link.attr("href");
+                                                    return false;
+                                                }
+                                            });
+                                        </script>
+										<!-- 트리메뉴 끝 -->
+
+									</div>
+								</div>
+							</div>
+							<!-- TreeView (체크박스) 끝 -->
+
+							<!-- Accordions 시작 -->
+							<div class="portlet">
+								<div class="portlet-body">
+									<div class="portlet-body-hr">
+										<h3 class="portlet-body-title">Accordions</h3>
+										<hr class="portlet-body-title-hr">
+
+										<ul class="guideUL font-dark">
+											<li class="ms-hover">Accordions 참고 - <a href="https://getbootstrap.com/docs/4.3/components/collapse/" target="_blank">https://getbootstrap.com/docs/4.3/components/collapse/</a></li>
+										</ul>
+
+										<!-- Accordions 시작 -->
+										<div class="panel-group accordion accordion-custom">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse_1"> Collapsible Group Item #1 </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapse_1" class="panel-collapse in">
+                                                    <div class="panel-body">
+                                                        <p> Duis autem vel eum iriure dolor in hendrerit in vulputate. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut. </p>
+                                                        <p> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum
+                                                            eiusmod. </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse_2"> Collapsible Group Item #2 </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapse_2" class="panel-collapse collapse">
+                                                    <div class="panel-body" style="height:200px; overflow-y:auto;">
+                                                        <p> 111111Duis autem vel eum iriure dolor in hendrerit in vulputate. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut. </p>
+                                                        <p> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum
+                                                            eiusmod. </p>
+                                                        <p> Duis autem vel eum iriure dolor in hendrerit in vulputate. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut. </p>
+                                                        <p>
+                                                            <a class="btn blue" href="ui_tabs_accordions_navs.html#collapse_2" target="_blank"> Activate this section via URL </a>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse_3"> Collapsible Group Item #3 </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapse_3" class="panel-collapse collapse">
+                                                    <div class="panel-body">
+                                                        <p> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum
+                                                            eiusmod. Brunch 3 wolf moon tempor. </p>
+                                                        <p> Duis autem vel eum iriure dolor in hendrerit in vulputate. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut. </p>
+                                                        <p>
+                                                            <a class="btn green" href="ui_tabs_accordions_navs.html#collapse_3" target="_blank"> Activate this section via URL </a>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">
+                                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse_4"> Collapsible Group Item #4 </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="collapse_4" class="panel-collapse collapse">
+                                                    <div class="panel-body">
+                                                        <p> Duis autem vel eum iriure dolor in hendrerit in vulputate. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut. </p>
+                                                        <p> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum
+                                                            eiusmod. Brunch 3 wolf moon tempor. </p>
+                                                        <p> Duis autem vel eum iriure dolor in hendrerit in vulputate. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut. </p>
+                                                        <p>
+                                                            <a class="btn red" href="ui_tabs_accordions_navs.html#collapse_4" target="_blank"> Activate this section via URL </a>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+										<!-- Accordions 끝 -->
+
+									</div>
+								</div>
+							</div>
+							<!-- Accordions 끝 -->
+
+							<!-- 폰트 스타일 시작 -->
+							<div class="portlet">
+								<div class="portlet-body">
+									<div class="portlet-body-hr">
+										<h3 class="portlet-body-title">폰트 스타일</h3>
+										<hr class="portlet-body-title-hr">
+										<div class="table-scrollable">
+											<table class="table table-bordered table-t-left">
+												<colgroup>
+													<col style="width:12%;">
+													<col style="width:auto;">
+												</colgroup>
+												<tbody>
+													<tr>
+														<td class="td-head">폰트볼드</td>
+														<td><span class="font-bold">가나다라마</span></td>
+													</tr>
+													<tr>
+														<td class="td-head">폰트사이즈</td>
+														<td>
+															<p class="f10">폰트 10픽셀</p>
+															<p class="f11">폰트 11픽셀</p>
+															<p class="f12">폰트 12픽셀</p>
+															<p class="f13">폰트 13픽셀</p>
+															<p class="f14">폰트 14픽셀</p>
+															<p class="f15">폰트 15픽셀</p>
+															<p class="f16">폰트 16픽셀</p>
+															<p class="f17">폰트 17픽셀</p>
+															<p class="f18">폰트 18픽셀</p>
+															<p class="f19">폰트 19픽셀</p>
+															<p class="f20">폰트 20픽셀</p>
+														</td>
+													</tr>
+													<tr>
+														<td class="td-head">폰트밑줄</td>
+														<td><span class="t-underline">가나다라마</span></td>
+													</tr>
+													<tr>
+														<td class="td-head">폰트정렬</td>
+														<td>
+															<p class="t-left">가나다라마</p>
+															<p class="t-center">가나다라마</p>
+															<p class="t-right">가나다라마</p>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- 폰트 스타일 끝 -->
+
+							<!-- 페이지 설명 시작 -->
+							<div class="portlet">
+								<div class="portlet-body">
+									<div class="portlet-body-hr">
+										<h3 class="portlet-body-title">페이지 설명</h3>
+										<hr class="portlet-body-title-hr">
+										
+										<!-- 페이지 설명 시작 -->
+										<div class="page-explanation">
+											<div class="page-explanation-inner">
+												<div class="numberic-contents-text">
+													<h4 class="numberic-contents-title">개략조사</h4>
+													<ul class="content-ul-list">
+														<li>
+															예비조사에서 구한 결과를 토대로 현지답사를 주로 하며, 시추(boring)와 시료채취 실시키도 함
+														</li>
+														<li>
+															<div class="list-2depth-title">
+																<span class="list-2depth-title-text bg-sky-blue">현장답사</span>
+															</div>
+															<ul class="list-2depth-ul">
+																<li>
+																	현장의 개괄적인 지형, 지질상태, 현장작업조건 등 조사
+																</li>
+															</ul>
+														</li>
+														<li>
+															<div class="list-2depth-title">
+																<span class="list-2depth-title-text">획득정보</span>
+															</div>
+															<ul class="list-2depth-ul">
+																<li>
+																	- 현장의 전반적인 지형, 지질상태 및 배수로의 존재 여부
+																</li>
+																<li>
+																	- 인근 기존 공사시 만들어진 굴착부에서의 토질 성층 및 적용 공법
+																</li>
+																<li>
+																	- 현장 식생
+																</li>
+																<li>
+																	- 건물이나 교대, 제방 등에 있는 수위의 흔적
+																</li>
+																<li>
+																	- 지하수위(부근 우물의 관측)
+																</li>
+															</ul>
+														</li>
+													</ul>
+												</div>
+												
+											</div>
+										</div>
+										<!-- 페이지 설명 끝 -->
+
+										<!-- 페이지 설명 시작 -->
+										<div class="page-explanation">
+											<div class="page-explanation-inner">
+												<div class="numberic-contents-text">
+													<ul class="content-ul-list">
+														<li>
+															필수첨부서류를 제외한 나머지 첨부서류들은 우편으로 제출하실 수 있습니다.
+														</li>
+														<li>
+															공동명의인 경우 신청인이 아닌 소유자의 위임장 및 인감증명서를 반드시 첨부하여야 합니다.
+														</li>
+													</ul>
+												</div>
+												
+											</div>
+										</div>
+										<!-- 페이지 설명 끝 -->
+
+										<!-- 페이지 설명 시작 -->
+										<div class="page-explanation page-ex-sm">
+											<div class="page-explanation-inner">
+												<div class="numberic-contents-text">
+													<ul class="content-ul-list">
+														<li>
+															신청서를 작성하기 전에 대상건축물 및 신청자격 등을 반드시 확인하시기 바랍니다. (제도소개 참조)
+														</li>
+													</ul>
+												</div>
+												
+											</div>
+										</div>
+										<!-- 페이지 설명 끝 -->
+
+										<!-- 컨텐츠 설명 시작 -->
+										<div class="contents-explanation">
+											<div class="contents-explanation-inner">
+												<div class="contents-explanation-text">
+													사무국 조직도의 <span class="icon icon-link">담당자 연락처 링크</span>아이콘이 있는 박스를 클릭하면 주요업무별 담당자의 연락처를 검색할 수 있습니다.
+												</div>
+											</div>
+										</div>
+										<!-- 컨텐츠 설명 끝 -->
+
+									</div>
+								</div>
+							</div>
+							<!-- 페이지 설명 끝 -->
+
+							<!-- UL 리스트 테그 시작 -->
+							<div class="portlet">
+								<div class="portlet-body">
+									<div class="portlet-body-hr">
+										<h3 class="portlet-body-title">UL 리스트 테그</h3>
+										<hr class="portlet-body-title-hr">
+
+										<div class="table-scrollable">
+											<table class="table table-bordered table-t-left">
+												<colgroup>
+													<col style="width:12%;">
+													<col style="width:auto;">
+												</colgroup>
+												<tbody>
+													<tr>
+														<td class="td-head">기본</td>
+														<td>
+															<ul class="content-ul-list">
+																<li>
+																	국토교통부 하자심사·분쟁조정위원회는 법령에 따른 개인정보 보유·이용기간 또는 정보주체 로부터 개인정보를 수집 시에 동의받은 개인정보 보유, 이용기간 내에서 개인정보를 처리, 보유합니다.
+																</li>
+																<li class="textR">
+																	하자심사·분쟁조정위원회 의사·운영에 관한 규칙 제52조에 따라 사건의 종결을 통보한 날로 부터 5년간 보관합니다.
+																</li>
+															</ul>
+														</td>
+													</tr>
+													<tr>
+														<td class="td-head">글머리 기호 없는 것</td>
+														<td>
+															<ul class="contents-ul">
+																<li>
+																	신청요건의 흠결이 있는 등 형식적인 요건을 갖추지 아니한 경우
+																</li>
+																<li>
+																	법원에 소송을 제기하는 경우와 같음
+																</li>
+																<li>
+																	<span class="textO font-bold">※ 다만, 신청취하 시 소멸시효 중단효력 없음</span>
+																</li>
+															</ul>
+														</td>
+													</tr>
+													<tr>
+														<td class="td-head">글머리 기호 숫자</td>
+														<td>
+															<ul class="list-solo-ul ulli-decimal">
+																<li>
+																	<span class="list-point-text">하자심사 거부</span> 위원회는 분쟁의 성질상 하자심사를 하는 것이 맞지 아니하다고 인정(소송 중이거나 개인이 공용부분의 하자심사를 신청한 사건 등)하거나 사실조사에 불응 및 협조하지 아니하거나 부정한 목적으로 신청되었다고 인정되면 하자심사를 각하할 수 있습니다.
+																</li>
+																<li>
+																	<span class="list-point-text">과태료 처분</span> 하자로 판정한 시설물 등에 대하여 하자 여부 판정서 또는 재심결정서에 기재된 날까지 하자보수를 이행하지 아니한 사업주체에 대하여는 법 제102조제2항제5호에 따라 1천만원의 과태료가 부과될 수 있습니다.
+																</li>
+																<li>
+																	<span class="list-point-text">분쟁조정 회부</span> 하자의 정도에 비하여 그 보수의 비용이 과다하게 소요된다고 판단되는 사건은 분쟁조정에 회부할 수 있습니다.
+																</li>
+																<li>
+																	<span class="list-point-text">분쟁조정 후 하자심사 신청</span> 분쟁조정 사건이 각하되거나 입주자대표회의등 또는 임차인등이 조정안을 거부하여 조정이 불성립된 사건은 하자심사를 신청할 수 없습니다. 다만, 사업주체가 조정안을 거부하여 조정이 불성립된 사건은 하자심사를 신청할 수 있습니다.
+																</li>
+															</ul>
+														</td>
+													</tr>
+													<tr>
+														<td class="td-head">글머리 제일 상위</td>
+														<td>
+															<ul class="title-ul-list">
+																<li>
+																	분쟁재정이란
+																</li>
+																<li>
+																	재정효력
+																</li>
+															</ul>
+														</td>
+													</tr>
+													<tr>
+														<td class="td-head">글머리 기호 (-)</td>
+														<td>
+															<ul class="contents-ul-list-2dep">
+																<li>
+																	재정문서를 송달 받은 후 60일 이내에 당사자 양쪽 또는 어느 한쪽이 소송을 제기하지 아니하거나 그 소송을 취하한 경우 재판상 화해(확정판결)와 동일한 효력
+																</li>
+																<li>
+																	불이행시 강제집행 가능
+																</li>
+																<li>
+																	이행 후 하자관리정보시스템에 등록
+																</li>
+															</ul>
+														</td>
+													</tr>
+													<tr>
+														<td class="td-head">글머리 기호 공지</td>
+														<td>
+															<ul class="title-ul-list-reference">
+																<li>
+																	소멸시효 중단
+																	<ul class="contents-ul">
+																		<li>
+																			건축물의 하자와 관련된 민사에 관한 분쟁을 위원회가 재판에 준하는 절차에 따라 인과관계의 유무 및 피해액 등에 대한 법률적 판단을 내려 분쟁을 해결하는 것을 말함
+																		</li>
+																	</ul>
+																</li>
+															</ul>
+														</td>
+													</tr>
+													<tr>
+														<td class="td-head">UL 조합 예시</td>
+														<td>
+															<ul class="title-ul-list">
+																<li>
+																	분쟁재정이란
+																	<ul class="contents-ul">
+																		<li>
+																			건축물의 하자와 관련된 민사에 관한 분쟁을 위원회가 재판에 준하는 절차에 따라 인과관계의 유무 및 피해액 등에 대한 법률적 판단을 내려 분쟁을 해결하는 것을 말함
+																		</li>
+																	</ul>
+																</li>
+																<li>
+																	재정효력
+																	<ul class="contents-ul-list-2dep">
+																		<li>
+																			재정문서를 송달 받은 후 60일 이내에 당사자 양쪽 또는 어느 한쪽이 소송을 제기하지 아니하거나 그 소송을 취하한 경우 재판상 화해(확정판결)와 동일한 효력
+																		</li>
+																		<li>
+																			불이행시 강제집행 가능
+																		</li>
+																		<li>
+																			이행 후 하자관리정보시스템에 등록
+																		</li>
+																	</ul>
+																</li>
+															</ul>
+
+															<ul class="title-ul-list-reference">
+																<li>
+																	소멸시효 중단
+																	
+																	<ul class="contents-ul-list-2dep">
+																		<li>
+																			<span class="textG font-bold">전유부분 : </span>하나의 세대를 기준으로 하자보수, 손해배상 또는 하자보수와 함께 손해배상을 청구하는 사건
+																		</li>
+																		<li>
+																			<span class="textG font-bold">공용부분 : </span>하나의 공동주택단지를 기준으로 하나의 시설공사, 지반공사 또는 내력구조부에 대한 하자보수, 손해배상 또는 하자보수와 함께 손해배상을 청구하는 사건
+																		</li>
+																		<li>
+																			<span class="textG font-bold">하자보수보증금 : </span>하자보수보증금의 보증서별로 보증금을 청구하는 사건
+																		</li>
+																	</ul>
+																	
+																	<ul class="contents-ul">
+																		<li>
+																			신청요건의 흠결이 있는 등 형식적인 요건을 갖추지 아니한 경우
+																		</li>
+																		<li>
+																			법원에 소송을 제기하는 경우와 같음
+																			<ul class="list-solo-ul ulli-decimal marL40">
+																				<li>
+																					<span class="list-point-text">하자심사 거부</span> 위원회는 분쟁의 성질상 하자심사를 하는 것이 맞지 아니하다고 인정(소송 중이거나 개인이 공용부분의 하자심사를 신청한 사건 등)하거나 사실조사에 불응 및 협조하지 아니하거나 부정한 목적으로 신청되었다고 인정되면 하자심사를 각하할 수 있습니다.
+																				</li>
+																				<li>
+																					<span class="list-point-text">과태료 처분</span> 하자로 판정한 시설물 등에 대하여 하자 여부 판정서 또는 재심결정서에 기재된 날까지 하자보수를 이행하지 아니한 사업주체에 대하여는 법 제102조제2항제5호에 따라 1천만원의 과태료가 부과될 수 있습니다.
+																				</li>
+																				<li>
+																					<span class="list-point-text">분쟁조정 회부</span> 하자의 정도에 비하여 그 보수의 비용이 과다하게 소요된다고 판단되는 사건은 분쟁조정에 회부할 수 있습니다.
+																				</li>
+																				<li>
+																					<span class="list-point-text">분쟁조정 후 하자심사 신청</span> 분쟁조정 사건이 각하되거나 입주자대표회의등 또는 임차인등이 조정안을 거부하여 조정이 불성립된 사건은 하자심사를 신청할 수 없습니다. 다만, 사업주체가 조정안을 거부하여 조정이 불성립된 사건은 하자심사를 신청할 수 있습니다.
+																				</li>
+																			</ul>
+																		</li>
+																		<li>
+																			<span class="textO font-bold">※ 다만, 신청취하 시 소멸시효 중단효력 없음</span>
+																		</li>
+																	</ul>
+
+																</li>
+															</ul>
+
+															<ul class="content-ul-list">
+																<li>
+																	국토교통부 하자심사·분쟁조정위원회는 법령에 따른 개인정보 보유·이용기간 또는 정보주체 로부터 개인정보를 수집 시에 동의받은 개인정보 보유, 이용기간 내에서 개인정보를 처리, 보유합니다.
+																</li>
+																<li class="textR">
+																	하자심사·분쟁조정위원회 의사·운영에 관한 규칙 제52조에 따라 사건의 종결을 통보한 날로 부터 5년간 보관합니다.
+																</li>
+															</ul>
+
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+
+									</div>
+								</div>
+							</div>
+							<!-- UL 리스트 테그 끝 -->
+
+							<!-- 썸네일 테이블 시작 -->
+							<div class="portlet">
+								<div class="portlet-body">
+									<div class="portlet-body-hr">
+										<h3 class="portlet-body-title">썸네일 테이블</h3>
+										<hr class="portlet-body-title-hr">
+
+										<div class="table-scrollable table-library form-table">
+											<table class="table table-bordered">
+												<caption>테이블 요약</caption>
+												<colgroup>
+													<col style="width:160px;">
+													<col style="width:auto;">
+													<col style="width:160px;">
+													<col style="width:auto;">
+												</colgroup>
+												<tbody>
+													<tr>
+														<td class="td-head" scope="row">미디어명</td>
+														<td class="t-left" colspan="3">건설안전 지킴이 캠페인</td>
+													</tr>
+													<tr>
+														<td class="td-head" scope="row">등록자</td>
+														<td>홍길동</td>
+														<td class="td-head" scope="row">등록일</td>
+														<td>2021-07-20</td>
+													</tr>
+													<tr>
+														<td colspan="4">
+															<div class="library-view-wrapper">
+		
+																<div class="library-view-img" style="width: 300px;"> <!-- 기본사이즈 지정은 700px -->
+																	<div class="library-thumbnail">
+																		<img src="../com/img/common/bg/library_thumbnail_img_none.png" class="library-thumbnail-img" alt="썸네일이미지" />
+																	</div>
+																	<div class="library-thumbnail-contents">
+																		<div class="library-btn-group">
+																			<div class="f-left">
+																				<p class="library-lookup-count">용량 : <span class="lookup-count-value">176</span>kb</p>
+																			</div>
+																			<div class="f-right">
+																				<button type="button" class="btn btn-default"><span>사진올리기</span></button>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+		
+																<div class="library-view-cont" style="width: calc(100% - 320px);"> <!-- 이미지 사이즈(700px) + 이미자와 간격(20px) = 720px 만큼 뺀 나머지 사이즈 -->
+																	<dl class="library-view-cont-det">
+																		<dt>제목</dt>
+																		<dd>
+																			<label class="input-label-none" for="labelEx">label명</label>
+																			<input type="text" id="labelEx" class="form-control" placeholder="입력">
+																		</dd>
+																	</dl>
+																	<dl class="library-view-cont-det">
+																		<dt>제목</dt>
+																		<dd>
+																			<label class="input-label-none" for="labelEx">label명</label>
+																			<select id="labelEx" class="bs-select form-control">
+																				<option>전체</option>
+																				<option>선택1</option>
+																				<option>선택2</option>
+																			</select>
+																		</dd>
+																	</dl>
+																	<dl class="library-view-cont-det">
+																		<dt>제목</dt>
+																		<dd>
+																			<label class="input-label-none" for="due_ymd">label명</label><!--input id명칭과 for가 동일해야함 (웹접근성)-->
+																			<div class="input-group date date-picker" data-date="2022-08-31" data-date-format="yyyy-mm-dd" data-date-viewmode="years">
+																				<input type="text" id="due_ymd" name="due_ymd" value="2022-08-31" title="공지기한" class="form-control">
+																				<span class="input-group-btn">
+																					<button class="btn btn-default" type="button">
+																						<i class="fa fa-calendar"></i>
+																					</button>
+																				</span>
+																			</div>
+																		</dd>
+																	</dl>
+																	<dl class="library-view-cont-det">
+																		<dt>제목</dt>
+																		<dd>
+																			<label class="input-label-none" for="labelEx">label명</label>
+																			<input type="text" id="labelEx" class="form-control" placeholder="입력">
+																		</dd>
+																	</dl>
+																	<dl class="library-view-cont-det">
+																		<dt>제목</dt>
+																		<dd>
+																			<label class="input-label-none" for="labelEx">label명</label>
+																			<input type="text" id="labelEx" class="form-control" placeholder="입력">
+																		</dd>
+																	</dl>
+																	<dl class="library-view-cont-det">
+																		<dt>제목</dt>
+																		<dd>
+																			<label class="input-label-none" for="labelEx">label명</label>
+																			<input type="text" id="labelEx" class="form-control" placeholder="입력">
+																		</dd>
+																	</dl>
+																	<dl class="library-view-cont-det">
+																		<dt>제목</dt>
+																		<dd>
+																			<label class="input-label-none" for="labelEx">label명</label>
+																			<input type="text" id="labelEx" class="form-control" placeholder="입력">
+																		</dd>
+																	</dl>
+																	<dl class="library-view-cont-det" style="height: 70px;"> <!-- textarea 기본사이즈 지정은 32px -->
+																		<dt>설명</dt>
+																		<dd>
+																			<label class="input-label-none" for="textarea1">label명</label>
+																			<textarea id="labelEx" class="form-control" style="height: 70px;"></textarea>
+																		</dd>
+																	</dl>
+																</div>
+		
+															</div>
+														</td>
+													</tr>
+													<tr>
+														<td class="td-head" scope="row">등록자</td>
+														<td>
+															<label class="input-label-none" for="labelEx">label명</label>
+															<input type="text" id="labelEx" class="form-control" placeholder="입력">
+														</td>
+														<td class="td-head" scope="row">등록일</td>
+														<td>
+															<label class="input-label-none" for="due_ymd">label명</label><!--input id명칭과 for가 동일해야함 (웹접근성)-->
+															<div class="input-group date date-picker" data-date="2022-08-31" data-date-format="yyyy-mm-dd" data-date-viewmode="years">
+																<input type="text" id="due_ymd" name="due_ymd" value="2022-08-31" title="공지기한" class="form-control">
+																<span class="input-group-btn">
+																	<button class="btn btn-default" type="button">
+																		<i class="fa fa-calendar"></i>
+																	</button>
+																</span>
+															</div>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+
+									</div>
+								</div>
+							</div>
+							<!-- 썸네일 테이블 끝 -->
+
+						</div>
+						<!-- 내용 끝 -->
+						
+					</div>
+
+				</div>
+				<!-- 컨텐츠 끝 -->
+
+			</div>
+
+		</section>
+		<!-- 페이지 컨테이너 끝 -->
+
+		<!-- footer 시작 -->
+		<footer class="page-footer"></footer>
+		<!-- footer 끝 -->
+
+	</body>
+	<script>
+		//왼쪽메뉴
+		menu(0);
+		footer();
+		function menu(index) {
+			$include_pageSlider[index].prependTo(".page-sidebar-wrapper").find(".page-sidebar-menu >.nav-item").removeClass("active").find("a .arrow.open").removeClass("open");
+			$include_pageSlider[index].find(".page-sidebar-menu >.nav-item").eq(2).addClass("active").find(">a .arrow").addClass("open");
+			$include_pageSlider[index].find(".page-sidebar-menu >.nav-item").eq(2).find(".sub-menu li").eq(7).addClass("active");
+		}
+		function footer() {
+			$include_footer.prependTo(".page-footer");
+		}
+	</script>
+</html>

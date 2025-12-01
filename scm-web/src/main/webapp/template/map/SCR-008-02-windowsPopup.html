@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+		<title>보호구역 통합관리시스템</title>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name = "viewport" content = "user-scalable=no, width=device-width">
+		<meta name="author" content="보호구역 통합관리시스템">
+		<!-- description -->
+		<meta name="description" content="보호구역 통합관리시스템 프로젝트">
+		<!-- keywords -->
+		<meta name="keywords" content="">
+		<!-- favicon -->
+		<link rel="shortcut icon" href="../../com/img/common/icon/favicon.ico">
+		<link rel="apple-touch-icon" href="../../com/img/common/icon/favicon.ico">
+
+		<!-- ==============================================================
+			플러그인
+		============================================================== -->
+		<!-- 공통 -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/font-awesome/css/font-awesome.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/simple-line-icons/simple-line-icons.css" />
+		<script type="text/javascript" src="../../com/plugins/jquery.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/js.cookie.min.js"></script>
+        <script type="text/javascript" src="../../com/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+		
+		<!-- bootstrap -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap/css/bootstrap.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+		<!-- bootstrap-datepicker -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-timepicker/css/bootstrap-timepicker.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.kr.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.kr.js"></script>
+		<script type="text/javascript" src="../../com/js/bootstrap-datepicker.kr.js"></script>
+		<script type="text/javascript" src="../../com/js/components-date-time-pickers.js"></script>
+
+		<!-- bootstrap-fileinput -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-fileinput/bootstrap-fileinput.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
+
+		<!-- bootstrap-tabdrop -->
+		<script type="text/javascript" src="../../com/plugins/bootstrap-tabdrop/js/bootstrap-tabdrop.js"></script>
+
+		<!-- jstree -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/jstree/dist/themes/default/style.css" />
+		<script type="text/javascript" src="../../com/plugins/jstree/dist/jstree.js"></script>
+		<script type="text/javascript" src="../../com/js/ui-tree.js"></script>
+
+		<!-- bootstrap-switch -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-switch/css/bootstrap-switch.min.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+
+		<!-- splitter -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/jquery-touch-splitter/css/touchsplitter.css" />
+		<script type="text/javascript" src="../../com/plugins/jquery-touch-splitter/js/jquery.touchsplitter.js"></script>
+
+		<!-- Select Splitter -->
+		<script type="text/javascript" src="../../com/plugins/bootstrap-selectsplitter/bootstrap-selectsplitter.min.js"></script>
+
+		<!-- Multiple Select -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-select/css/bootstrap-select.css">
+		<script type="text/javascript" src="../../com/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+		<!-- Multiple Select Group -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/jquery-multi-select/css/multi-select.css" />
+        <script type="text/javascript" src="../../com/plugins/jquery-multi-select/js/jquery.multi-select.js"></script>
+
+		<!-- div 크기 변경 감지 https://marcj.github.io/css-element-queries/ -->
+		<script type="text/javascript" src="../../com/plugins/css-element-queries/ResizeSensor.js"></script>
+		<script type="text/javascript" src="../../com/plugins/css-element-queries/ElementQueries.js"></script>
+		
+		<!-- 레이어 모달 팝업 -->
+		<link type="text/css" rel="stylesheet" href="../../com/plugins/magnific-popup/magnific-popup.css">
+		<script type="text/javascript" src="../../com/plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+		<!-- ==============================================================
+			amcharts script 영역
+		============================================================== -->
+		<script type="text/javascript" src="../../com/plugins/amcharts4/core.js"></script>
+		<script type="text/javascript" src="../../com/plugins/amcharts4/charts.js"></script>
+		<script type="text/javascript" src="../../com/plugins/amcharts4/maps.js"></script>
+		<script type="text/javascript" src="../../com/plugins/amcharts4/themes/animated.js"></script>
+		<script>
+			am4core.addLicense("ch-custom-attribution"); // 라이센스 인증 (amcharts 로고 없어짐)
+		</script>
+
+        <!-- ==============================================================
+			공통 커스텀
+		============================================================== -->	
+		<!-- 스타일 css -->
+		<link rel="stylesheet" type="text/css" href="../../com/css/components.css" />
+		<link type="text/css" rel="stylesheet" href="../../com/css/style.css">
+
+		<!-- 전체 조합 css -->
+		<link type="text/css" rel="stylesheet" href="../../com/css/common.css">
+		<link type="text/css" rel="stylesheet" href="../../com/css/common-ie.css">
+
+		<!-- ==============================================================
+			윈도우팝업
+		============================================================== -->
+        <!-- 레이아웃 CSS -->
+        <link type="text/css" rel="stylesheet" href="../../com/css/window-popup.css">
+
+		<!-- 구글 맵 시작 (작업시 삭제할것) -->
+		<script src="http://maps.googleapis.com/maps/api/js"></script>
+		<script>
+			function initialize() {
+			  var mapProp = {
+				center: new google.maps.LatLng(37.250943, 127.028344),
+				zoom:15,
+				zoomControl:true,
+				zoomControlOptions: {
+				  style:google.maps.ZoomControlStyle.SMALL
+				},
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			  };
+			  var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+			}
+			google.maps.event.addDomListener(window, 'load', initialize);
+		</script>
+		<!-- 구글 맵 끝 (작업시 삭제할것) -->
+
+	</head>
+
+    <body class="page-window-popup">
+		<!-- 헤더(때에 따라서 삭제해도 됨) 시작 -->
+		<header>
+			<!-- 팝업제목 시작 -->
+			<nav class="navbar navbar-default">
+				<span class="page-header-text">압구정 아람어린이집 사고정보</span>
+			</nav>
+			<!-- 팝업제목 끝 -->
+		</header>
+		<!-- 헤더(때에 따라서 삭제해도 됨) 끝 -->
+
+		<!-- 페이지 컨테이너 시작 -->
+		<section class="page-container">
+
+			<div class="page-content-wrapper">
+
+				<!-- 컨텐츠 시작 -->
+				<div class="page-content no-blank">
+
+					<div class="page-content-inner">
+
+						<!-- 내용 시작 -->
+						<div class="content-wrapper">
+
+							<!-- 지도 시작 -->
+							<div class="map-wrapper">
+								<div id="googleMap" class="map-area" style="height: 400px;"></div>
+							</div>
+							<!-- 지도 끝 -->
+
+							<!-- 컨텐츠 행 시작 -->
+							<div class="contents-row row-blank marT20">
+
+								<div class="portlet light bordered">
+									<div class="portlet-title">
+										<span class="form-title">교통사고 현황</span>
+									</div>
+									<div class="portlet-body">
+										<!-- 테이블 시작 -->
+										<div class="table-scrollable">
+											<table class="table table-bordered">
+												<caption>교통사고 현황 테이블 요약</caption>
+												<colgroup>
+													<col style="width:10%;">
+													<col style="width:10%;">
+													<col style="width:auto;">
+													<col style="width:auto;">
+													<col style="width:auto;">
+													<col style="width:auto;">
+													<col style="width:auto;">
+													<col style="width:auto;">
+													<col style="width:auto;">
+													<col style="width:auto;">
+													<col style="width:auto;">
+												</colgroup>
+												<thead>
+													<tr>
+														<th scope="colgroup">년도</th>
+														<th scope="colgroup" colspan="4">2024</th>
+														<th scope="colgroup" colspan="3">2023</th>
+														<th scope="colgroup" colspan="3">2022</th>
+													</tr>
+													<tr>
+														<th scope="col" colspan="2">구분</th>
+														<th scope="col">사망</th>
+														<th scope="col">중상</th>
+														<th scope="col">경상</th>
+														<th scope="col">사망</th>
+														<th scope="col">중상</th>
+														<th scope="col">경상</th>
+														<th scope="col">사망</th>
+														<th scope="col">중상</th>
+														<th scope="col">경상</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<th class="td-head" scope="rowgroup" rowspan="2">교통사고</th>
+														<th class="td-head" scope="row">전체</th>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+													</tr>
+													<tr>
+														<th class="td-head" scope="row">교통약자</th>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<!-- 테이블 끝 -->
+									</div>
+								</div>
+
+							</div>
+							<!-- 컨텐츠 행 끝 -->
+
+							<!-- 컨텐츠 행 시작 -->
+							<div class="contents-row row-blank marT20">
+
+								<div class="portlet light bordered">
+									<div class="portlet-title">
+										<span class="form-title">보행자 사고 현황</span>
+									</div>
+									<div class="portlet-body">
+										<!-- 테이블 시작 -->
+										<div class="table-scrollable">
+											<table class="table table-bordered">
+												<caption>보행자 사고 현황 테이블 요약</caption>
+												<colgroup>
+													<col style="width:10%;">
+													<col style="width:10%;">
+													<col style="width:auto;">
+													<col style="width:auto;">
+													<col style="width:auto;">
+													<col style="width:auto;">
+													<col style="width:auto;">
+													<col style="width:auto;">
+													<col style="width:auto;">
+													<col style="width:auto;">
+													<col style="width:auto;">
+												</colgroup>
+												<thead>
+													<tr>
+														<th scope="colgroup">년도</th>
+														<th scope="colgroup" colspan="4">2024</th>
+														<th scope="colgroup" colspan="3">2023</th>
+														<th scope="colgroup" colspan="3">2022</th>
+													</tr>
+													<tr>
+														<th scope="col" colspan="2">구분</th>
+														<th scope="col">사망</th>
+														<th scope="col">중상</th>
+														<th scope="col">경상</th>
+														<th scope="col">사망</th>
+														<th scope="col">중상</th>
+														<th scope="col">경상</th>
+														<th scope="col">사망</th>
+														<th scope="col">중상</th>
+														<th scope="col">경상</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<th class="td-head" scope="rowgroup" rowspan="2">교통사고</th>
+														<th class="td-head" scope="row">전체</th>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+													</tr>
+													<tr>
+														<th class="td-head" scope="row">교통약자</th>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+														<td class="t-center">-</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<!-- 테이블 끝 -->
+									</div>
+								</div>
+
+							</div>
+							<!-- 컨텐츠 행 끝 -->
+
+							<!-- 컨텐츠 행 시작 -->
+							<div class="contents-row row-blank marB20">
+
+								<div class="portlet-inline">
+
+									<div class="portlet light bordered">
+										<div class="portlet-title">
+											<span class="form-title">보호구역 상세정보</span>
+										</div>
+										<div class="portlet-body">
+											<!-- 테이블 시작 -->
+											<div class="table-scrollable">
+												<table class="table table-bordered">
+													<caption>보호구역 상세정보 테이블 요약</caption>
+													<colgroup>
+														<col style="width:20%;">
+														<col style="width:auto;">
+													</colgroup>
+													<tbody>
+														<tr>
+															<th class="td-head" scope="row">주소</th>
+															<td>내용</td>
+														</tr>
+														<tr>
+															<th class="td-head" scope="row">시설물종류</th>
+															<td>내용</td>
+														</tr>
+														<tr>
+															<th class="td-head" scope="row">시설명</th>
+															<td>내용</td>
+														</tr>
+														<tr>
+															<th class="td-head" scope="row">지정일자</th>
+															<td>내용</td>
+														</tr>
+														<tr>
+															<th class="td-head" scope="row">구역지 정수</th>
+															<td>내용</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<!-- 테이블 끝 -->
+											<!-- 테이블 시작 -->
+											<div class="table-scrollable">
+												<table class="table table-bordered">
+													<caption>보호구역 상세정보 시설물 수 테이블 요약</caption>
+													<colgroup>
+														<col style="width:auto;">
+														<col style="width:auto;">
+														<col style="width:auto;">
+													</colgroup>
+													<thead>
+														<tr>
+															<th scope="colgroup" colspan="3">시설물 수</th>
+														</tr>
+														<tr>
+															<th scope="col">CCTV</th>
+															<th scope="col">표지판</th>
+															<th scope="col">방지턱</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td class="t-center">2</td>
+															<td class="t-center">8</td>
+															<td class="t-center">0</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<!-- 테이블 끝 -->
+										</div>
+									</div>
+
+									<div class="portlet light bordered">
+										<div class="portlet-title">
+											<span class="form-title">사고현황 추이 차트</span>
+											<div class="form-inline">
+												<div class="input-group">
+													<div class="input-group-btn input-group-last">
+														<button type="button" class="btn btn-default">차트 다운로드</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="portlet-body">
+											<h3 class="page-title-3depth"><span>ㅇㅇ보호구역 추이 차트</span></h3>
+											<!-- 차트 시작 -->
+											<div id="chartdiv_lineChart" class="ac-chart ac-chart-lineChart" style="width:100%; height:300px;"></div>
+											<script>
+												am4core.ready(function() {
+													let chart = am4core.createFromConfig({
+															"type": "XYChart",
+															"legend": {
+																"position": "right",
+															},
+															"data": [{
+																"category": "1월",
+																"value1": 866,
+																"value2": 4319
+															}, {
+																"category": "2월",
+																"value1": 1898,
+																"value2": 1492
+															}, {
+																"category": "3월",
+																"value1": 2676,
+																"value2": 3649
+															}, {
+																"category": "4월",
+																"value1": 4663,
+																"value2": 3578
+															}, {
+																"category": "5월",
+																"value1": 4663,
+																"value2": 3578
+															}, {
+																"category": "6월",
+																"value1": 4663,
+																"value2": 3578
+															}, {
+																"category": "7월",
+																"value1": 4663,
+																"value2": 3578
+															}, {
+																"category": "8월",
+																"value1": 4663,
+																"value2": 3578
+															}, {
+																"category": "9월",
+																"value1": 4663,
+																"value2": 3578
+															}, {
+																"category": "10월",
+																"value1": 4663,
+																"value2": 3578
+															}, {
+																"category": "11월",
+																"value1": 4663,
+																"value2": 3578
+															}, {
+																"category": "12월",
+																"value1": 4663,
+																"value2": 3578
+															}],
+															"xAxes": [{
+																"type": "CategoryAxis",
+																"dataFields": {
+																	"category": "category"
+																},
+																"renderer": {
+																	"grid": {
+																		"template": {
+																			"type": "Grid",
+																			"location": 0
+																		}
+																	},
+																	"minGridDistance": 20
+																}
+															}],
+															"yAxes": [{
+																"type": "ValueAxis",
+																"renderer": {
+																	"maxLabelPosition": 0.98
+																}
+															}],
+															"series": [{
+																"type": "LineSeries",
+																"name": "2023년",
+																"bullets": {
+																	"values": [{
+																		"type": "CircleBullet",
+																		"tooltipText": "{name}\n{categoryX}: {valueY}"
+																	}],
+																	"template": {
+																		"type": "Bullet"
+																	}
+																},
+																"dataFields": {
+																	"valueY": "value1",
+																	"categoryX": "category"
+																},
+																"sequencedInterpolation": true,
+																"sequencedInterpolationDelay": 100
+															}, {
+																"type": "LineSeries",
+																"name": "2024년",
+																"bullets": {
+																	"values": [{
+																		"type": "Bullet",
+																		"children": [{
+																			"type": "Rectangle",
+																			"width": 10,
+																			"height": 10,
+																			"horizontalCenter": "middle",
+																			"verticalCenter": "middle"
+																		}],
+																		"tooltipText": "{name}\n{categoryX}: {valueY}"
+																	}],
+																	"template": {
+																		"type": "Bullet"
+																	}
+																},
+																"dataFields": {
+																	"valueY": "value2",
+																	"categoryX": "category"
+																},
+																"sequencedInterpolation": true,
+																"sequencedInterpolationDelay": 100
+															}],
+															"legend": {
+																"type": "Legend",
+																"position": "top"
+															},
+														},
+														document.getElementById('chartdiv_lineChart')
+													);
+												});
+											</script>
+											<!-- 차트 끝 -->
+										</div>
+									</div>
+
+								</div>
+
+							</div>
+							<!-- 컨텐츠 행 끝 -->
+
+						</div>
+						<!-- 내용 끝 -->
+						
+					</div>
+
+				</div>
+				<!-- 컨텐츠 끝 -->
+
+			</div>
+
+		</section>
+		<!-- 페이지 컨테이너 끝 -->
+
+	</body>
+
+</html>

@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<!-- CSS & javascript (JSP 파일 include) 시작 -->
+	<head>
+		<title>보호구역 통합관리시스템 > 쓰기페이지</title>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name = "viewport" content = "user-scalable=no, width=device-width">
+		<meta name="author" content="보호구역 통합관리시스템">
+		<!-- description -->
+		<meta name="description" content="보호구역 통합관리시스템 프로젝트">
+		<!-- keywords -->
+		<meta name="keywords" content="">
+		<!-- favicon -->
+		<link rel="shortcut icon" href="../../com/img/common/icon/favicon.ico">
+		<link rel="apple-touch-icon" href="../../com/img/common/icon/favicon.ico">
+
+		<!-- ==============================================================
+			플러그인
+		============================================================== -->
+		<!-- 공통 -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/font-awesome/css/font-awesome.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/simple-line-icons/simple-line-icons.css" />
+		<script type="text/javascript" src="../../com/plugins/jquery.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/js.cookie.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+
+		<!-- bootstrap -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap/css/bootstrap.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+		<!-- bootstrap-datepicker -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-timepicker/css/bootstrap-timepicker.css" />
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datepicker/locales/bootstrap-datepicker.kr.min.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+		<script type="text/javascript" src="../../com/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.kr.js"></script>
+		<script type="text/javascript" src="../../com/js/bootstrap-datepicker.kr.js"></script>
+		<script type="text/javascript" src="../../com/js/components-date-time-pickers.js"></script>
+
+		<!-- bootstrap-fileinput -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/bootstrap-fileinput/bootstrap-fileinput.css" />
+		<script type="text/javascript" src="../../com/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
+
+		<!-- bootstrap-tabdrop -->
+		<script type="text/javascript" src="../../com/plugins/bootstrap-tabdrop/js/bootstrap-tabdrop.js"></script>
+
+		<!-- jstree -->
+		<link rel="stylesheet" type="text/css" href="../../com/plugins/jstree/dist/themes/default/style.css" />
+		<script type="text/javascript" src="../../com/plugins/jstree/dist/jstree.js"></script>
+		<script type="text/javascript" src="../../com/js/ui-tree.js"></script>
+
+		<!-- div 크기 변경 감지 https://marcj.github.io/css-element-queries/ -->
+		<script type="text/javascript" src="../../com/plugins/css-element-queries/ResizeSensor.js"></script>
+		<script type="text/javascript" src="../../com/plugins/css-element-queries/ElementQueries.js"></script>
+		
+		<!-- 전체 레이어 모달 팝업 -->
+		<link type="text/css" rel="stylesheet" href="../../com/plugins/magnific-popup/magnific-popup.css">
+		<script type="text/javascript" src="../../com/plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+		<!-- 컨텐츠 셀렉트 -->
+		<script type="text/javascript" src="../../com/plugins/slideNav/slideNav.js"></script>
+
+		<!-- 상단메뉴 -->
+		<link type="text/css" rel="stylesheet" href="../../com/plugins/menu/css/menu.css">
+		<script type="text/javascript" src="../../com/plugins/menu/js/custom.js"></script>
+
+		<!-- ==============================================================
+			공통 커스텀
+		============================================================== -->	
+		<!-- 스타일 css -->
+		<link rel="stylesheet" type="text/css" href="../../com/css/components.css" />
+		<link type="text/css" rel="stylesheet" href="../../com/css/style.css">
+
+		<!-- 전체 조합 css -->
+		<link type="text/css" rel="stylesheet" href="../../com/css/common.css">
+		<link type="text/css" rel="stylesheet" href="../../com/css/common-ie.css">
+
+		<!-- 공통 script -->
+		<script type="text/javascript" src="../../com/js/app.js"></script>
+		<script type="text/javascript" src="../../com/js/common.js"></script>
+
+		<!-- KRDS 스크립트 : 패턴 페이지 -->
+		<script type="text/javascript" src="../../com/js/ui-pattern-script.js"></script>
+
+		<!-- ==============================================================
+			프론트
+		============================================================== -->
+		<!-- 레이아웃 CSS -->
+		<link type="text/css" rel="stylesheet" href="../../com/css/front.css">
+		<link type="text/css" rel="stylesheet" href="../../com/css/management.css"><!-- !!! 필독 : 관리자화면들은 "management.css"를 추가 -->
+
+		<!-- !!! 필독 : JSP 상하단 include 예시 완료 후 삭제 !!!!!!! -->
+		<script type="text/javascript" src="../../com/include/include.js"></script>
+
+	</head>
+	<!-- CSS & javascript (JSP 파일 include) 끝 -->
+
+    <body class="page-front page-sub page-management"><!-- !!! 필독 : 관리자에서는 class="page-management" 추가 !!!!!!! -->
+
+		<!-- 헤더 (JSP 파일 include) 시작 -->
+		<header id="header">
+		</header>
+		<!-- 헤더 (JSP 파일 include) 끝 -->
+
+		<!-- 페이지 컨테이너 시작 -->
+		<section id="container" class="page-container">
+
+			<div class="page-content-wrapper">
+
+				<!-- 서브메뉴 (JSP 파일 include) 시작 -->
+				<div id="sidebar" class="page-sidebar-wrapper">
+				</div>
+				<!-- 서브메뉴 (JSP 파일 include) 끝 -->
+
+				<!-- 컨텐츠 시작 -->
+				<div id="contents" class="page-content"><!-- !!! 필독 : [웹 접근성] 본문 바로가기 id="contents", 주메뉴 바로가기  id="navbar" -->
+
+					<div class="page-content-inner">
+
+						<!-- 카테고리 시작 -->
+						<div class="category-wrapper">
+							<ul class="page-category">
+								<li class="category-item"><a href="#">권한 관리</a></li>
+								<li class="category-item"><a href="#">권한 상세조회</a></li>
+							</ul>
+						</div>
+						<!-- 카테고리 끝 -->
+
+						<!-- 페이지 타이틀 시작 -->
+						<h1 class="page-title-1depth"><span>권한 상세조회</span></h1>
+						<!-- 페이지 타이틀 끝 -->
+
+						<!-- 내용 시작 -->
+						<div class="content-wrapper">
+
+							<!-- 컨텐츠 행 시작 -->
+							<div class="contents-row">
+
+								<div class="portlet-inline">
+
+									<div class="portlet light bordered" style="max-width: 40%;"><!-- style="max-width: 사이즈;"처럼 가로 사이즈를 지정할 수 있습니다. -->
+										<div class="portlet-body">
+											
+											<!-- 테이블 시작 -->
+											<div class="table-scrollable">
+												<table class="table table-bordered">
+													<caption>지정신청 테이블 요약</caption>
+													<colgroup>
+														<col style="width:140px;">
+														<col style="width:auto;">
+													</colgroup>
+													<tbody>
+														<tr>
+															<td class="td-head" scope="row">권한ID</td>
+															<td>5</td>
+														</tr>
+														<tr>
+															<td class="td-head" scope="row">권한명 <span class="textR">*</span></td>
+															<td>
+																<label class="input-label-none" for="labelEx">권한명 입력</label>
+																<input type="text" id="labelEx" class="form-control" placeholder="" style="width: 100%;">
+															</td>
+														</tr>
+														<tr>
+															<td class="td-head" scope="row">설명</td>
+															<td>
+																<!--input id명칭과 for가 동일해야함 (웹접근성)-->
+																<label class="input-label-none" for="labelEx">설명 입력</label>
+																<textarea id="labelEx" class="form-control"></textarea>
+																<p class="input-explanation">100 / 300 byte</p>
+															</td>
+														</tr>
+														<tr>
+															<td class="td-head" scope="row">사용여부 <span class="textR">*</span></td>
+															<td>
+																<!--input id명칭과 for가 동일해야함 (웹접근성)-->
+																<label class="input-label-none" for="labelEx">사용여부 선택</label>
+																<select id="labelEx" class="bs-select form-control">
+																	<option>전체</option>
+																	<option>선택1</option>
+																	<option>선택2</option>
+																</select>
+															</td>
+														</tr>
+														<tr>
+															<td class="td-head" scope="row">수정일자</td>
+															<td>2024-09-30 10 : 20</td>
+														</tr>
+														<tr>
+															<td class="td-head" scope="row">수정자</td>
+															<td>관리자</td>
+														</tr>
+														<tr>
+															<td class="td-head" scope="row">등록일자</td>
+															<td>2024-09-30 10 : 20</td>
+														</tr>
+														<tr>
+															<td class="td-head" scope="row">등록자</td>
+															<td>관리자</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<!-- 테이블 끝 -->
+											
+										</div>
+									</div>
+
+									<div class="portlet light bordered">
+										<div class="portlet-title">
+											
+											<span class="form-title">프로그램 권한 선택</span>
+
+											<div class="form-inline">
+												<div class="input-group">
+													<!--input id명칭과 for가 동일해야함 (웹접근성)-->
+													<span class="input-group-label">
+														<label class="input-label-display" for="labelEx">필터</label>
+													</span>
+													<input type="text" id="labelEx" class="form-control" placeholder="">
+													<div class="input-group-btn input-group-last">
+														<button type="button" class="btn dark btn-icon-left btn-icon-refresh">초기화</button>
+													</div>
+													
+												</div>
+											</div>
+
+										</div>
+										<div class="portlet-body">
+											
+											<!-- 테이블 시작 -->
+											<div class="table-scrollable grid-table scrollOptionY" style="height: 391px;"><!-- style="height: 사이즈;"처럼  세로 사이즈를 지정할 수 있습니다. -->
+												<table class="table table-bordered table-striped table-hover word-break-all">
+													<caption>테이블 요약</caption>
+													<colgroup>
+														<col style="width:60px;">
+														<col style="width:auto;">
+														<col style="width:140px;">
+														<col style="width:80px;">
+														<col style="width:80px;">
+													</colgroup>
+													<thead>
+														<tr>
+															<th scope="col"> 번호 </th>
+															<th scope="col"> 프로그램 </th>
+															<th scope="col"> 등록일자 </th>
+															<th scope="col"> 조회 </th>
+															<th scope="col"> 수정 </th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>1</td>
+															<td>보호구역 목록 조회</td>
+															<td>2024-08-01</td>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1" checked="">
+																	<span></span>
+																</label>
+															</td>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+														</tr>
+														<tr>
+															<td>2</td>
+															<td>보호구역 목록 조회</td>
+															<td>2024-08-01</td>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1" checked="">
+																	<span></span>
+																</label>
+															</td>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+														</tr>
+														<tr>
+															<td>3</td>
+															<td>보호구역 목록 조회</td>
+															<td>2024-08-01</td>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1" checked="">
+																	<span></span>
+																</label>
+															</td>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+														</tr>
+														<tr>
+															<td>4</td>
+															<td>보호구역 목록 조회</td>
+															<td>2024-08-01</td>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1" checked="">
+																	<span></span>
+																</label>
+															</td>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+														</tr>
+														<tr>
+															<td>5</td>
+															<td>보호구역 목록 조회</td>
+															<td>2024-08-01</td>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1" checked="">
+																	<span></span>
+																</label>
+															</td>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+														</tr>
+														<tr>
+															<td>6</td>
+															<td>보호구역 목록 조회</td>
+															<td>2024-08-01</td>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1" checked="">
+																	<span></span>
+																</label>
+															</td>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+														</tr>
+														<tr>
+															<td>7</td>
+															<td>보호구역 목록 조회</td>
+															<td>2024-08-01</td>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1" checked="">
+																	<span></span>
+																</label>
+															</td>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+														</tr>
+														<tr>
+															<td>8</td>
+															<td>보호구역 목록 조회</td>
+															<td>2024-08-01</td>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1" checked="">
+																	<span></span>
+																</label>
+															</td>
+															<td>
+																<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+																	<input type="checkbox" class="checkboxes" value="1">
+																	<span></span>
+																</label>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<!-- 테이블 끝 -->
+											
+										</div>
+									</div>
+
+								</div>
+
+								<div class="table-bottom-control">
+									<button type="button" class="btn btn-default">취소</button>
+									<button type="button" class="btn dark btn-icon-left btn-icon-refresh">초기화</button>
+									<button type="button" class="btn btn-primary">등록</button>
+								</div>
+							</div>
+							<!-- 컨텐츠 행 끝 -->
+
+						</div>
+						<!-- 내용 끝 -->
+						
+					</div>
+
+				</div>
+				<!-- 컨텐츠 끝 -->
+
+			</div>
+
+		</section>
+		<!-- 페이지 컨테이너 끝 -->
+
+		<!-- footer (JSP 파일 include) 시작 -->
+		<footer id="footer" class="page-footer">
+		</footer>
+		<!-- footer (JSP 파일 include) 끝 -->
+
+	</body>
+
+	<!-- 필독 !!!!!! JSP 상하단 include 예시 완료 후 삭제 !!!!!!! 시작 -->
+	<script>
+		//상단메뉴
+		header(0);
+		function header(index) {
+			$include_pageHeader_management.prependTo("header");
+			$include_pageHeader_management.find(".navbar-nav > li").removeClass("active"); // 상단 메뉴의 활성화를 모두 삭제
+			$include_pageHeader_management.find(".navbar-nav > li").eq(1).addClass("active"); // 현재 페이지의 상단 메뉴의 활성화
+		}
+
+		//왼쪽메뉴
+		sidebar(0);
+		function sidebar(index) {
+			$include_sidebar.prependTo("#sidebar");
+			$include_sidebar.find(".page-sidebar-menu > li").removeClass("active"); // 상단 메뉴의 활성화를 모두 삭제
+			$include_sidebar.find(".page-sidebar-menu > li").eq(2).addClass("active"); // 현재 페이지의 상단 메뉴의 활성화
+			$include_sidebar.find(".page-sidebar-menu > li").eq(2).addClass("active").find(".sub-menu > li").removeClass("active");
+			$include_sidebar.find(".page-sidebar-menu > li").eq(2).addClass("active").find(".sub-menu > li").eq(0).addClass("active");
+			$include_sidebar.find(".page-sidebar-menu > li").eq(2).addClass("active").find(".sub-menu > li").eq(0).find(".sub-menu > li").removeClass("active");
+			$include_sidebar.find(".page-sidebar-menu > li").eq(2).addClass("active").find(".sub-menu > li").eq(0).find(".sub-menu > li").eq(0).addClass("active");
+		}
+
+		//풋터
+		footer();
+		function footer() {
+		 	$include_footer.prependTo("footer");
+		}
+	</script>
+	<!-- 필독 !!!!!! JSP 상하단 include 예시 완료 후 삭제 !!!!!!! 끝 -->
+
+</html>

@@ -1,0 +1,474 @@
+@charset "utf-8";
+
+/* ----------------------------------
+
+Name: login.css
+Categorie : 로그인페이지 (공통)
+Author : 이상혁
+Version : v.1.0
+Created : 2024-09-09
+Last update : 2024-09-09
+-------------------------------------
+
+Table of contents
+
+	01. 레이아웃
+	02. 로그인박스 탭
+	03. 아이디로그인
+	04. 인증
+	05. 풋터
+	06. 인트로
+
+------------------------------------- */
+
+/* ===================================
+	01. 레이아웃 시작
+====================================== */
+html {min-width:auto !important;}
+
+.login-page {
+	background-color: #ffffff !important;
+	height:100%;
+	min-width: auto;
+}
+.login-page .page-container {
+
+}
+.login-page .page-content {
+	padding-left: 0px;
+	padding-top: 40px;
+	padding-bottom: 40px;
+}
+.login-page .logo {
+	margin: 0px auto;
+	padding: 40px 0px 0px 0px;
+	text-align: center;
+	visibility: hidden;
+}
+.login-content {
+	border:1px solid #c6c6c6;
+	background-color: #fff;
+	margin: 0 auto;
+	margin-bottom: 0px;
+	padding: 30px;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	-ms-border-radius: 7px;
+	-o-border-radius: 7px;
+	border-radius: 7px;
+	-webkit-box-shadow: inset 0 1px 1px rgb(0, 0, 0, 8%), 0 0 8px rgb(147, 161, 187, 20%);
+    box-shadow: inset 0 1px 1px rgb(0, 0, 0, 8%), 0 0 8px rgb(147, 161, 187, 20%);
+}
+.login-content,
+.login-options,
+.login-guide {
+	width: 660px;
+}
+.login-content.login-certification {
+	max-width: 600px;
+	padding: 0px;
+	border-top: none;
+}
+.login-content.login-certification .nav-tabs::before {
+	border-bottom: none;
+}
+.login-content.login-certification .nav-tabs > li > a:hover, 
+.login-content.login-certification .nav-tabs > li > a:focus {
+	border: 1px solid transparent;
+    border-top: 1px solid #e3e3e3;
+    border-left: 1px solid #e3e3e3;
+}
+.page-footer .page-footer-inner {
+	padding: 10px 30px;
+    margin: 0px auto;
+    display: table;
+    width: 100%;
+}
+.page-footer .page-footer-inner .page-footer-logo, 
+.page-footer .page-footer-inner .page-footer-container {
+	margin-top: 0px;
+}
+.page-title {
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+.page-title-sub {
+	margin-bottom: 20px;
+}
+.login-select {
+	text-align: center;
+}
+.login-select .mt-radio {
+	font-size: 20px;
+	padding-left: 40px;
+	margin-right: 26px;
+}
+.login-select .mt-radio > span {
+	height: 28px;
+    width: 28px;
+}
+.login-select .mt-radio>span:after {
+	left: 6px;
+    top: 6px;
+    height: 14px;
+    width: 14px;
+    border-radius: 100% !important;
+    background: #000;
+}
+.seoul-login-btn {
+	height: 199px !important;
+}
+/* ===================================
+	01. 레이아웃 끝
+====================================== */
+
+
+/* ===================================
+	02. 로그인박스 탭 시작
+====================================== */
+.login-content .tab-content {
+	margin: 0px;
+	padding: 10px;
+}
+.login-content.login-certification .tab-content {
+	padding: 20px;
+}
+.login-content .nav-tabs {
+	border-bottom: none;
+	display: table;
+    width: calc(100% + 3px);
+    border-collapse: separate;
+	margin: -1px;
+}
+.login-content .nav-tabs > li {
+	float: none;
+    display: table-cell;
+	border-bottom: 1px solid #c6c6c6;
+}
+.login-content .nav-tabs > li > a {
+	text-align: center;
+	color: #6f6f6f;
+    background-color: #f8f9fa;
+	border: 1px solid transparent;
+	border-top: 1px solid #e3e3e3;
+	border-left: 1px solid #e3e3e3;
+	margin: 0px;
+	padding: 20px 30px;
+	font-size: 18px;
+}
+.login-content .nav-tabs > li:last-child > a {
+	border-right: 1px solid #e3e3e3;
+}
+.login-content .nav-tabs > li.active {
+	border-bottom: none;
+}
+.login-content .nav-tabs > li.active > a, 
+.login-content .nav-tabs > li.active > a:focus, 
+.login-content .nav-tabs > li.active > a:hover {
+	background-color: #fff;
+	color: #000;
+	border: 1px solid transparent;
+	border: none;
+	border-top: 1px solid #c6c6c6;
+	border-left: 1px solid #c6c6c6;
+	border-right: 1px solid #c6c6c6;
+	padding: 20px 30px 22px 30px;
+}
+.login-content .nav-tabs > li.active + .login-content .nav-tabs > li > a {
+	border-left: none;
+}
+/* ===================================
+	02. 로그인박스 탭 끝
+====================================== */
+
+
+
+/* ===================================
+	03. 아이디로그인 시작
+====================================== */
+.login-input-group {
+	outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgb(0, 0, 0, 8%), 0 0 8px rgb(147, 161, 187, 20%);
+    box-shadow: inset 0 1px 1px rgb(0, 0, 0, 8%), 0 0 8px rgb(147, 161, 187, 20%);
+}
+.input-icon {
+	position: relative;
+    left: 0;
+}
+.input-icon > .form-control {
+	position: relative;
+	padding-left: 60px;
+	width: 100%;
+	height: 60px;
+	font-size: 18px;
+	border-color: #dadada;
+    z-index: 1;
+}
+.input-icon > .form-control:focus {
+	border-color: #19b3e5;
+	z-index: 2;
+}
+.input-icon + .input-icon {
+	margin-top: -1px;
+}
+.input-icon.input-user > .form-control {
+	border-radius: 6px 6px 0px 0px;
+}
+.input-icon.input-pw > .form-control {
+	border-radius: 0px 0px 6px 6px;
+}
+.input-icon > i.icon {
+    position: absolute;
+    display: block;
+	top: 0px;
+    left: 8px;
+    width: 34px;
+	height: 34px;
+	font-size: 0px;
+    z-index: 3;
+}
+i.icon.icon-user {
+	background: url(../img/common/icon/ico_login_user.png) no-repeat 50% 50%;	
+}
+i.icon.icon-pw {
+	background: url(../img/common/icon/ico_login_pw.png) no-repeat 50% 50%;	
+}
+[class^="icon-"], [class*="icon-"] {
+	display: inline-block;
+    line-height: 14px;
+    -webkit-font-smoothing: antialiased;
+}
+
+.id-memory-row {
+	margin-top: 20px;
+}
+.id-memory-row .mt-checkbox {
+	line-height: 22px;
+}
+.id-memory-row .mt-checkbox-label {
+	font-size: 16px;
+	color: #777777;
+}
+.login-btn-group {
+	margin-top: 30px;
+}
+.login-btn-group .btn {
+	width: 100%;
+	height: 60px;
+	font-size: 20px;
+	border: 1px solid #003675;
+	background-color: #003675;
+}
+.login-btn-group .btn:hover {
+	border: 2px solid #003675;
+}
+.login-options {
+    margin: 20px auto 0 auto;
+	text-align: center;
+}
+.login-options .login-options-link {
+	display: inline-block;
+}
+.login-options .login-options-link li {
+	float: left;
+    margin-left: 8px;
+    padding-left: 16px;
+    background: url(../img/common/bu/bu_footer_link.png) no-repeat left 45%;
+}
+.login-options .login-options-link li:first-child {
+	background: none;
+    margin-left: 0px;
+    padding-left: 0px;
+}
+.login-options .login-options-link li a {
+	color: #888888;
+}
+.login-guide {
+	margin: 0px auto;
+	padding: 20px 0px;
+}
+.login-guide .login-guide-title {
+	font-size: 24px;
+	margin-bottom: 15px;
+	text-align: center;
+}
+ul.guide-ul-list > li {
+	padding-left: 20px;
+    padding-bottom: 2px;
+	color: #777777;
+    background: url(../img/common/bu/bu_li_type_02.png) no-repeat 0 8px;
+}
+/* ===================================
+	03. 아이디로그인 끝
+====================================== */
+
+
+/* ===================================
+	04. 인증 시작
+====================================== */
+.certification-wrapper .col {
+	padding: 10px;
+	min-width: 50%;
+    max-width: 50%;
+}
+.certification-wrapper .col.col-full {
+	min-width: 100%;
+    max-width: 100%;
+}
+.certification-wrapper .col .certification-box {
+	border: 1px solid #dbdbdb;
+	border-radius: 5px;
+	padding: 20px;
+}
+.certification-title {
+	font-size: 24px;
+    margin-bottom: 15px;
+	color: #000;
+}
+.certification-con {
+	font-size: 16px;
+    margin-bottom: 15px;
+	color: #777777;
+}
+.certification-wrapper .btn.btn-icon-left {
+	height: 60px;
+	padding: 7px 20px 7px 60px;
+	font-size: 18px;
+	border: 1px solid #003675;
+}
+.certification-wrapper .btn.btn-icon-left:hover {
+	border: 2px solid #003675;
+}
+.certification-wrapper .btn.btn-icon-left::before {
+	top: 14px;
+	left: 16px;
+}
+.certification-wrapper .btn.btn-icon-id,
+.certification-wrapper .btn.btn-icon-join,
+.certification-wrapper .btn.btn-icon-left.btn-icon-list {
+	width: 100%;
+	padding: 7px 20px;
+}
+.certification-wrapper .contents-explanation-box {
+	background: #f8fcff;
+    display: table;
+    width: 100%;
+    min-height: 40px;
+    border: 1px solid #d7e2ec;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+.certification-wrapper .id-pw-search {
+	display: table;
+	width: 100%;
+	margin-top: 10px;
+}
+.certification-wrapper .id-pw-search .id-pw-search-col {
+	display: table-cell;
+	padding: 0px 5px;
+}
+.certification-wrapper .id-pw-search .id-pw-search-col:first-child {
+	padding-left: 0px;
+}
+.certification-wrapper .id-pw-search .id-pw-search-col:last-child {
+	padding-right: 0px;
+}
+.certification-wrapper .id-pw-search .id-pw-search-col .btn {
+	width: 100%;
+}
+/* ===================================
+	04. 인증 끝
+====================================== */
+
+
+/* ===================================
+	05. 풋터 시작
+====================================== */
+.page-footer {
+	position: relative;
+	width: 100%;
+	height: 140px;
+    padding: 0px;
+}
+.page-footer .page-footer-inner .page-footer-container .address,
+.page-footer .page-footer-inner .page-footer-container .tel {
+    display: inline;
+}
+.page-footer .page-footer-inner .page-footer-container .tel {
+    margin-left: 24px;
+}
+
+
+.page-footer .page-footer-link {
+	background-color: #fbfbfb;
+    width: 100%;
+    float: none;
+	text-align: center;
+	height: 50px;
+	border-bottom: 1px solid #b8bfc6;
+}
+.page-footer .page-footer-link .page-footer-info {
+	position: relative;
+    display: inline-block;
+    margin-top: 14px;
+	font-size: 14px;
+	font-weight: normal;
+}
+.page-footer .page-footer-inner .page-footer-logo,
+.page-footer .page-footer-inner .page-footer-container {
+	margin-top: 14px;
+}
+/* ===================================
+	05. 풋터 끝
+====================================== */
+
+/* ===================================
+	06. 인트로 시작
+====================================== */
+.intro-page::before {
+	content: "";
+	position: absolute;
+	display: block;
+	width: 100%;
+	min-width: 1400px;
+	height: 600px;
+	background-color: #deebf7;
+	z-index: -1;
+}
+.intro-page .page-footer {
+	height: 74px;
+}
+.intro-page header {
+	height: 160px;
+}
+.login-page.intro-page .logo {
+	padding: 40px 15px 15px 15px;
+}
+.intro-page .page-content {
+	padding-bottom: 20px;
+}
+.page-system-title {
+	font-size: 18px;
+    font-weight: bold;
+    vertical-align: middle;
+    padding: 10px 26px;
+    color: #fff;
+    background-color: #8fc43d;
+    border-radius: 100px;
+    margin: 0px auto;
+    display: block;
+    width: 284px;
+	height: 44px;
+    text-align: center;
+}
+.intro-visual {
+	display: block;
+	width: 587px;
+	height: 277px;
+	margin: 0px auto;
+	background: url(../img/common/bg/bg_intro_visual.png) no-repeat 50% 50%;
+}
+/* ===================================
+	06. 인트로 끝
+====================================== */

@@ -1,0 +1,414 @@
+@charset "utf-8";
+
+/* ----------------------------------
+
+Name: admin.css
+Categorie : 행정
+Author : 이상혁
+Version : v.1.0
+Created : 2024-09-09
+Last update : 2024-09-09
+
+-------------------------------------
+
+Table of contents
+
+    01. 레이아웃
+    02. 테이블 스타일
+    03. 스타일
+
+*/
+
+/* ===================================
+    01. 레이아웃 시작
+====================================== */
+body, html {
+    height: auto;
+}
+body,
+.navbar,
+.parallax,
+.page-footer,
+.page-content-wrapper,
+.nav-header-container,
+.menu-all-popup-wrapper
+.mfp-container {
+    min-width: 1280px;
+}
+.page-front .page-content-wrapper, 
+.page-front .navbar-global-inner, 
+.page-front .navbar-collapse-wrapper, 
+.page-front .header-global-wrapper, 
+.page-front .page-footer .page-footer-inner {
+    width: 1280px;
+}
+header nav.navbar .navbar-nav > li > a, 
+nav.navbar.bootsnav ul.nav > li > a {
+    padding: 0px 20px;
+}
+
+/* 반응형웹 메뉴 기능 제거 시작 */
+.navbar-collapse.collapse {
+    display: block !important;
+}
+.navbar-nav > li {
+    float: left;
+}
+.navbar-nav .open .dropdown-menu {
+    position: absolute;
+    background-color: #ffffff;
+    border: 1px solid #000;
+    color: #000;
+}
+/* 반응형웹 메뉴 기능 제거 시작 */
+
+.page-main.page-admin .page-container {
+    background-color: #E5E7ED;
+}
+.page-main.page-admin .page-container .page-content-inner {
+    padding: 40px 20px;
+}
+.page-main.page-admin .main-container {
+    margin-bottom: 30px;
+}
+.page-main.page-admin .main-category-wrapper {
+    position: relative;
+    width: 100%;
+    display: table;
+    height: 40px;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+    border-radius: 10px;
+    background-color: #EBF3FE;
+    padding: 30px;
+    overflow: hidden;
+}
+.page-main.page-admin .main-category-wrapper::after {
+    content: "";
+    position: absolute;
+    top: -46px;
+    right: 0px;
+    width: 253px;
+    height: 217px;
+    background: url(../img/common/bg/bg_main_category.png) no-repeat 50% 50%;
+}
+.page-main.page-admin .main-category-wrapper .main-category-title {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+.page-main.page-admin .page-category {
+    position: relative;
+    padding-left: 0px;
+    right: auto;
+    top: auto;
+}
+.page-main.page-admin .page-category .category-item {
+    font-size: 14px;
+}
+.page-main.page-admin .page-category .category-item a {
+    color: #7C8FAC;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+
+.page-main.page-admin .main-contents-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 30px;
+}
+.page-main.page-admin .main-contents-box {
+    width: 100%;
+    height: 100%;
+    padding: 30px;
+    background-color: #fff;
+    box-shadow: 4px 4px 8px rgba(14, 36, 66, 30%);
+    border-radius: 10px;
+}
+.page-main.page-admin .contents-box-title {
+    position: relative;
+    font-size: 22px;
+    line-height: 24px;
+    margin: 0px 0px 10px 0px;
+    color: #000;
+}
+.page-main.page-admin .contents-info-date {
+    color: #2A3547;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.334rem;
+}
+.page-main.page-admin .main-contents-option {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+.page-main.page-admin .main-contents-col {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 20px;
+}
+.page-main.page-admin .map-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.page-main.page-admin .map-wrapper .map-area {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+.page-main.page-admin .main-contents-box.map-box {
+    position: relative;
+    overflow: hidden;
+    padding: 0px;
+}
+
+
+
+
+
+.map-right-control-wrapper {
+    position: absolute;
+    z-index: 2;
+    right: 20px;
+    top: 20px;
+}
+.map-right-control-wrapper::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+.map-right-control-group {
+    background-color: #fff;
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.2);
+    margin-top: 20px;
+    /* border-radius: 10px; */
+    border: 1px solid #b6b6b6;
+    overflow: hidden;
+}
+.map-right-control-group.map-right-control-group-top {
+    margin-top: 0px;
+}
+.map-right-control-title {
+    position: relative;
+    background-color: #007ea8;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    padding: 4px;
+    margin-bottom: -1px;
+    white-space: nowrap;
+}
+.map-right-btn-group {
+    width: 128px;
+    margin-top: -1px;
+    margin-right: -1px;
+}
+.map-right-btn-group > li {
+    float: left;
+    width: 50%;
+    margin-bottom: -1px;
+    border: 1px solid #b6b6b6;
+    border-left: none;
+}
+.map-right-control-group.map-right-control-col-1 .map-right-btn-group {
+    width: 64px;
+}
+.map-right-control-group.map-right-control-col-1 .map-right-btn-group > li {
+    width: 100%;
+}
+.map-right-btn-group > li.row-all {
+    width: 100%;
+}
+.map-right-btn-group > li .map-right-btn {
+    position: relative;
+    text-align: center;
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 14px;
+    padding: 38px 4px 4px 4px;
+}
+.map-right-btn-group > li .map-right-btn.active, 
+.map-right-btn-group > li .map-right-btn.active {
+    background-color: #003675;
+    border-color: #003675;
+    color: #fff;
+}
+.map-right-btn-group > li .map-right-btn::before {
+    content: "";
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    width: 50px;
+    height: 40px;
+    margin-left: -25px;
+}
+.map-right-btn-group > li .map-right-btn.map-btn-icon-all::before {
+    background: url(../img/map-service/icon/ico_map_right_control_01.png) no-repeat 50% 50%;
+}
+.map-right-btn-group > li .map-right-btn.map-btn-icon-zoom-in::before {
+    background: url(../img/map-service/icon/ico_map_right_control_02.png) no-repeat 50% 50%;
+}
+.map-right-btn-group > li .map-right-btn.map-btn-icon-zoom-in.active::before {
+    background: url(../img/map-service/icon/ico_map_right_control_02_w.png) no-repeat 50% 50%;
+}
+
+.map-right-btn-group > li .map-right-btn.map-btn-icon-zoom-out::before {
+    background: url(../img/map-service/icon/ico_map_right_control_03.png) no-repeat 50% 50%;
+}
+.map-right-btn-group > li .map-right-btn.map-btn-icon-zoom-out.active::before {
+    background: url(../img/map-service/icon/ico_map_right_control_03_w.png) no-repeat 50% 50%;
+}
+
+.map-right-btn-group > li .map-right-btn.map-btn-icon-choice::before {
+    background: url(../img/map-service/icon/ico_map_right_control_04.png) no-repeat 50% 50%;
+}
+.map-right-btn-group > li .map-right-btn.map-btn-icon-choice.active::before {
+    background: url(../img/map-service/icon/ico_map_right_control_04_w.png) no-repeat 50% 50%;
+}
+
+.map-right-btn-group > li .map-right-btn.map-btn-icon-move::before {
+    background: url(../img/map-service/icon/ico_map_right_control_05.png) no-repeat 50% 50%;
+}
+.map-right-btn-group > li .map-right-btn.map-btn-icon-move.active::before {
+    background: url(../img/map-service/icon/ico_map_right_control_05_w.png) no-repeat 50% 50%;
+}
+
+.map-right-btn-group > li .map-right-btn.map-btn-icon-business::before {
+    background: url(../img/map-service/icon/ico_map_right_control_06.png) no-repeat 50% 50%;
+}
+
+.map-right-btn-group > li .map-right-btn.map-btn-icon-area-choice::before {
+    background: url(../img/map-service/icon/ico_map_right_control_07.png) no-repeat 50% 50%;
+}
+.map-right-btn-group > li .map-right-btn.map-btn-icon-area-choice.active::before {
+    background: url(../img/map-service/icon/ico_map_right_control_07_w.png) no-repeat 50% 50%;
+}
+
+.map-right-btn-group > li .map-right-btn.map-btn-icon-screen::before {
+    background: url(../img/map-service/icon/ico_map_right_control_08.png) no-repeat 50% 50%;
+}
+.map-right-btn-group > li .map-right-btn.map-btn-icon-screen.active::before {
+    background: url(../img/map-service/icon/ico_map_right_control_08_w.png) no-repeat 50% 50%;
+}
+
+.map-right-btn-group > li .map-right-btn.map-btn-icon-search::before {
+    background: url(../img/map-service/icon/ico_map_right_control_09.png) no-repeat 50% 50%;
+}
+
+.map-right-btn-group > li .map-right-btn.map-btn-icon-distance::before {
+    background: url(../img/map-service/icon/ico_map_right_control_10.png) no-repeat 50% 50%;
+}
+.map-right-btn-group > li .map-right-btn.map-btn-icon-distance.active::before {
+    background: url(../img/map-service/icon/ico_map_right_control_10_w.png) no-repeat 50% 50%;
+}
+
+.map-right-btn-group > li .map-right-btn.map-btn-icon-area::before {
+    background: url(../img/map-service/icon/ico_map_right_control_11.png) no-repeat 50% 50%;
+}
+.map-right-btn-group > li .map-right-btn.map-btn-icon-area.active::before {
+    background: url(../img/map-service/icon/ico_map_right_control_11_w.png) no-repeat 50% 50%;
+}
+
+.map-right-btn-group > li .map-right-btn.map-btn-icon-index-map::before {
+    background: url(../img/map-service/icon/ico_map_right_control_12.png) no-repeat 50% 50%;
+}
+.map-right-btn-group > li .map-right-btn.map-btn-icon-legend::before {
+    background: url(../img/map-service/icon/ico_map_right_control_13.png) no-repeat 50% 50%;
+}
+
+.map-right-btn-group > li .map-right-btn.map-btn-icon-line::before {
+    background: url(../img/map-service/icon/ico_map_right_control_14.png) no-repeat 50% 50%;
+}
+.map-right-btn-group > li .map-right-btn.map-btn-icon-line.active::before {
+    background: url(../img/map-service/icon/ico_map_right_control_14_w.png) no-repeat 50% 50%;
+}
+
+.map-right-btn-group > li .map-right-btn.map-btn-icon-triangle::before {
+    background: url(../img/map-service/icon/ico_map_right_control_15.png) no-repeat 50% 50%;
+}
+.map-right-btn-group > li .map-right-btn.map-btn-icon-triangle.active::before {
+    background: url(../img/map-service/icon/ico_map_right_control_15_w.png) no-repeat 50% 50%;
+}
+
+.map-right-btn-group > li .map-right-btn.map-btn-icon-circle::before {
+    background: url(../img/map-service/icon/ico_map_right_control_16.png) no-repeat 50% 50%;
+}
+.map-right-btn-group > li .map-right-btn.map-btn-icon-circle.active::before {
+    background: url(../img/map-service/icon/ico_map_right_control_16_w.png) no-repeat 50% 50%;
+}
+
+.map-right-btn-group > li .map-right-btn.map-btn-icon-square::before {
+    background: url(../img/map-service/icon/ico_map_right_control_17.png) no-repeat 50% 50%;
+}
+.map-right-btn-group > li .map-right-btn.map-btn-icon-square.active::before {
+    background: url(../img/map-service/icon/ico_map_right_control_17_w.png) no-repeat 50% 50%;
+}
+
+.map-right-btn-group > li .map-right-btn.map-btn-icon-delete::before {
+    background: url(../img/map-service/icon/ico_map_right_control_18.png) no-repeat 50% 50%;
+}
+.map-right-btn-group > li .map-right-btn.map-btn-icon-delete.active::before {
+    background: url(../img/map-service/icon/ico_map_right_control_18_w.png) no-repeat 50% 50%;
+}
+
+.map-right-btn-group > li .map-right-btn.map-btn-icon-delete-all::before {
+    background: url(../img/map-service/icon/ico_map_right_control_19.png) no-repeat 50% 50%;
+}
+.map-right-btn-group > li .map-right-btn.map-btn-icon-delete-all.active::before {
+    background: url(../img/map-service/icon/ico_map_right_control_19_w.png) no-repeat 50% 50%;
+}
+
+.map-right-btn-group > li .map-right-btn.map-btn-icon-reset::before {
+    background: url(../img/map-service/icon/ico_map_top_control_10.png) no-repeat 50% 50%;
+}
+.map-right-btn-group > li .map-right-btn.map-btn-icon-reset.active::before {
+    background: url(../img/map-service/icon/ico_map_top_control_10_w.png) no-repeat 50% 50%;
+}
+
+.map-right-btn-group > li .map-right-btn.map-btn-icon-print::before {
+    background: url(../img/map-service/icon/ico_btn_print.png) no-repeat 50% 50%;
+}
+.map-right-btn-group > li .map-right-btn.map-btn-icon-print.active::before {
+    background: url(../img/map-service/icon/ico_btn_print_w.png) no-repeat 50% 50%;
+}
+.map-right-btn-group > li .map-right-btn.map-btn-icon-moon::before {
+    background: url(../img/map-service/icon/ico_btn_moon.png) no-repeat 50% 50%;
+}
+.map-right-btn-group > li .map-right-btn.map-btn-icon-moon.active::before {
+    background: url(../img/map-service/icon/ico_btn_moon_w.png) no-repeat 50% 50%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+@media (max-width: 768px) {
+	.modal .form-inline.row {
+		display: block;
+	}
+	.modal .form-inline.row {
+		margin-bottom: 0px;
+	}
+	.modal .form-inline.row > .input-group {
+		margin-bottom: 4px;
+	}
+	.modal .form-inline.row:last-child > .input-group:last-child {
+		margin-bottom: 0px;
+	}
+    .modal .pagination-info {
+        display: none;
+    }
+}

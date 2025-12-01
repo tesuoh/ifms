@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:sec="http://www.springframework.org/schema/security" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+						   http://www.springframework.org/schema/beans/spring-beans.xsd
+						   http://www.springframework.org/schema/security
+						   http://www.springframework.org/schema/security/spring-security.xsd
+						   http://www.springframework.org/schema/aop
+						   https://www.springframework.org/schema/aop/spring-aop.xsd
+						   ">
+
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+	<!-- 메서드 수준 보안 활성화 -->
+	<sec:global-method-security pre-post-annotations="enabled" proxy-target-class="true" />
+
+	<!-- WebExpressionVoter 빈 정의 -->
+	<bean id="webExpressionVoter" class="org.springframework.security.web.access.expression.WebExpressionVoter" />
+
+	<!-- RoleVoter 빈 정의 -->
+	<bean id="roleVoter" class="org.springframework.security.access.vote.RoleVoter" />
+
+	<!-- AccessDecisionManager 빈 정의 -->
+	<bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
+		<constructor-arg>
+			<list>
+				<ref bean="webExpressionVoter" />
+				<ref bean="roleVoter" />
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<!-- 인증 프로바이더 설정 -->
+	<sec:authentication-manager alias="authenticationManager">
+		<sec:authentication-provider user-service-ref="authUserDetailsService">
+			<sec:password-encoder ref="ifmsPasswordEncoder"/>
+		</sec:authentication-provider>
+	</sec:authentication-manager>
+
+	<!-- 커스텀 필터 빈 정의 -->
+	<bean id="customAuthorizationFilter" class="ifms.core.security.handler.CustomAuthorizationFilter" />
+	
+	<bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl"/>
+
+	<!-- 인증 예외 처리 -->
+	<sec:http pattern="/com/**" security="none" />
+	<sec:http pattern="/js/**" security="none" />
+	<sec:http pattern="/css/**" security="none" />
+	<sec:http pattern="/img/**" security="none" />
+	<sec:http pattern="/file/**" security="none" />
+	<sec:http pattern="/ClipReport5/*.jsp"  security="none"/><!-- report_server.jsp 호출시 리포트core 함수를 호출하여 csrf를 보낼 수 없으므로 정의 한다. - 필수 -->
+	<sec:http pattern="/uploads/**" security="none" />
+	<sec:http pattern="/common/file/image.file"  security="none"/>
+	<sec:http pattern="/api/**" security="none" />
+	<!-- <sec:http pattern="/uploads/**" security="none" /> -->
+	<!--<sec:http pattern="\A/WEB-INF/jsp/.*\Z" request-matcher="regex" security="none"/>-->
+
+	<!-- 접근 경로 권한 처리 -->
+	<sec:http auto-config="true" use-expressions="true" access-decision-manager-ref="accessDecisionManager">
+		<sec:headers>
+			<sec:frame-options policy="SAMEORIGIN"/> <!--iframe 허용-->
+		</sec:headers>
+
+		<sec:csrf disabled="false"/>
+
+		<!--<sec:custom-filter ref="customAuthorizationFilter" before="FILTER_SECURITY_INTERCEPTOR" />-->
+		<sec:custom-filter ref="customAuthorizationFilter" after="FILTER_SECURITY_INTERCEPTOR" />
+
+		<!-- HTTP 메서드 제한 -->
+		<sec:intercept-url pattern="/**" method="HEAD" access="denyAll"/>
+		<sec:intercept-url pattern="/**" method="PUT" access="denyAll"/>
+		<sec:intercept-url pattern="/**" method="DELETE" access="denyAll"/>
+		<sec:intercept-url pattern="/**" method="OPTIONS" access="denyAll"/>
+		<!--<sec:intercept-url pattern="/**" method="PATCH" access="denyAll"/>-->
+
+		<!-- 특정 URL에 대한 접근 권한 설정 -->
+		<sec:intercept-url pattern="/index.jsp" access="permitAll" />
+		<sec:intercept-url pattern="/**/*.report"  access="permitAll"/>
+		<sec:intercept-url pattern="/cmn/app/login.do" access="permitAll" />
+		<sec:intercept-url pattern="/loginAction.do" access="permitAll" />
+		<sec:intercept-url pattern="/logout.do" access="permitAll" />
+		<sec:intercept-url pattern="/common/**"  access="permitAll"/>
+		<sec:intercept-url pattern="/cmn/**" access="permitAll" />
+		<sec:intercept-url pattern="/js/biz/**" access="permitAll" />
+
+		<sec:intercept-url pattern="/**" access="isAuthenticated()" />
+		<!--<sec:intercept-url pattern="/**" access="permitAll" />-->
+
+		<!-- 로그인 설정 -->
+		<sec:form-login
+				login-page="/cmn/app/login.do"
+				login-processing-url="/loginAction"
+				username-parameter="username"
+				password-parameter="password"
+				authentication-success-handler-ref="coreAuthenticationSuccessHandler"
+				authentication-failure-handler-ref="coreAuthenticationFailureHandler"
+		/>
+		<!--default-target-url="/main.do" 설정이 추후에 필요할지도 모름  -->
+
+		<!-- 로그아웃 설정 -->
+		<sec:logout
+				logout-url="/logout.do"
+				success-handler-ref="coreLogoutSuccessHandler"
+				invalidate-session="false"
+				delete-cookies="JSESSIONID"
+		/>
+
+		<!-- 세션 관리 -->
+		<sec:session-management invalid-session-url="/cmn/app/login.do">
+			<sec:concurrency-control max-sessions="1" expired-url="/cmn/app/login.do" session-registry-ref="sessionRegistry"/>
+		</sec:session-management>
+
+		<sec:access-denied-handler error-page="/WEB-INF/jsp/cmn/error/errorPage.jsp"/>
+	</sec:http>
+
+
+	<!-- Bean 설정 -->
+	<bean id="authUserDetailsService" class="ifms.core.security.service.AuthUserDetailService"/> <!-- 로그인 인증처리 -->
+	<bean id="ifmsPasswordEncoder" class="ifms.core.security.password.IfmsPasswordEncoder"/> <!-- 패스워드 암호화 -->
+	<bean id="coreAuthenticationSuccessHandler" class="ifms.core.security.handler.CoreAuthenticationSuccessHandler">
+		<!-- 로그인 성공 시 -->
+		<property name="alwaysUseDefaultTargetUrl" value="true"/>
+	</bean>
+	<bean id="coreAuthenticationFailureHandler" class="ifms.core.security.handler.CoreAuthenticationFailureHandler">
+		<!-- 로그인 실패 시-->
+	</bean>
+	<bean id="coreLogoutSuccessHandler" class="ifms.core.security.handler.CoreLogoutSuccessHandler">
+		<!-- 로그아웃 성공 시 -->
+		<property name="alwaysUseDefaultTargetUrl" value="true"/>
+	</bean>
+
+
+
+</beans>

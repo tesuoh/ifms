@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="szms.zzzzzzzz.service.impl.yyyyyyyyMapper">
+	<!-- 파일명 : yyyyyyyySQL.xml -->	
+	<!-- 필수 : 개발이 완료되면 주석 찾기 정규식으로 일괄제거 꼭 해주세요. 이클립스 단축키 컨트롤+F 누르고 옆에꺼 복사 /\*.*?\*/ 및 정규식입력 체크하고 replace All -->
+	<!-- [체크] timestamp 처리 방안 안내
+			timestamp 컬럼 조회 시 : TO_CHAR(컬럼, 'YYYY-MM-DD HH24MISS') / TO_CHAR(컬럼, 'YYYY-MM-DD') 
+			timestamp 컬럼 등록/수정 시 : TO_TIMESTAMP(#{컬럼}, 'YYYY-MM-DD HH24MISS') TO_DATE(#{컬럼}, 'YYYY-MM-DD')		
+	-->
+	
+	<!-- xxxxxxxx 목록 정보 조회 (Paging 처리) -->
+	<!-- 사용여부확인용 주석
+	<select id="selectyyyyyyyyListPaging" parameterType="szms.zzzzzzzz.vo.yyyyyyyyVO" resultType="szms.zzzzzzzz.vo.yyyyyyyyVO">
+		<![CDATA[
+			SELECT TOTAL_CNT AS totalCnt
+				 , RNUM AS rnum
+				 , rrrrrrrrrrrr1			
+			  FROM ( SELECT COUNT(*) OVER() AS TOTAL_CNT
+					      , ROW_NUMBER() OVER (ORDER BY [체크]정렬용컬럼) AS RNUM
+					      , A.*
+					   FROM vvvvvvvvv A
+			  		  WHERE [체크] 개발자직접작성
+			       ) T1
+			  OFFSET #{firstIndex} ROWS FETCH NEXT #{recordCountPerPage} ROWS ONLY 
+		]]>
+	</select>
+	-->
+	
+	<!-- xxxxxxxx 목록 정보 조회 -->
+	<!-- 사용여부확인용 주석
+	<select id="selectyyyyyyyyList" parameterType="szms.zzzzzzzz.vo.yyyyyyyyVO" resultType="szms.zzzzzzzz.vo.yyyyyyyyVO">
+		<![CDATA[
+			SELECT ROW_NUMBER() OVER (ORDER BY [체크]정렬용컬럼) AS rnum
+				 , rrrrrrrrrrrr1
+		      FROM vvvvvvvvv A
+			 WHERE 개발자직접작성     
+		]]>
+	</select>
+	-->	
+	
+	<!-- xxxxxxxx 상세 정보 조회 -->
+	<!-- 사용여부확인용 주석
+	<select id="selectyyyyyyyyDetail" parameterType="szms.zzzzzzzz.vo.yyyyyyyyVO" resultType="szms.zzzzzzzz.vo.yyyyyyyyVO">
+		<![CDATA[
+			SELECT rrrrrrrrrrrr1
+			  FROM vvvvvvvvv A
+			 WHERE PPPPPPP1
+		]]>	 
+	</select> 
+	-->
+		
+	<!-- xxxxxxxx 등록 처리 -->
+	<!-- 사용여부확인용 주석
+	<insert id="insertyyyyyyyy" parameterType="szms.zzzzzzzz.vo.yyyyyyyyVO">
+		<selectKey keyProperty="[체크] 개발자직접작성채번컬럼적어주세요캬멜적용" resultType="[체크] 선택해주세요 Integer or String or BigDecimal" order="BEFORE">
+			<![CDATA[
+				[체크] 시퀀스 활용 또는 max 채번	
+				SELECT MAX(COALESCE(개발자직접작성채번컬럼적어주세요, 0)) + 1	
+				  FROM vvvvvvvvv A
+				       [체크] 개발자확인및조건변경
+				 WHERE PPPPPPP1		
+				       	
+			]]>
+		</selectKey>	
+		<![CDATA[
+			INSERT 
+			  INTO vvvvvvvvv
+				 ( rrrrrrrrrrrr2
+				 )
+		  VALUES ( NNNNNNNNNNNNN
+				 )
+		]]>
+	</insert> 
+	-->
+	
+	<!-- xxxxxxxx 수정 처리 -->
+	<!-- 사용여부확인용 주석
+	<update id="updateyyyyyyyy" parameterType="szms.zzzzzzzz.vo.yyyyyyyyVO">
+		<![CDATA[
+			UPDATE vvvvvvvvv 
+			   SET GGGGGGGGGGGGG
+			 WHERE PPPPPPP1
+		]]>
+	</update>
+	-->
+	
+	<!-- xxxxxxxx 삭제 처리 -->
+	<!-- 사용여부확인용 주석
+	<delete id="deleteyyyyyyyy" parameterType="szms.zzzzzzzz.vo.yyyyyyyyVO">
+		<![CDATA[
+			DELETE 
+			  FROM vvvvvvvvv
+			 WHERE PPPPPPP1
+		]]>
+	</delete> 
+	-->	
+	
+	<!-- xxxxxxxx 삭제여부 처리 -->
+	<!-- 사용여부확인용 주석
+	<update id="updateyyyyyyyyDelAt" parameterType="szms.zzzzzzzz.vo.yyyyyyyyVO">
+		<![CDATA[
+			UPDATE vvvvvvvvv 
+			   SET 삭제여부컬럼확인			   
+			 WHERE PPPPPPP1
+		]]>
+	</update>	
+	--> 
+	
+</mapper>	

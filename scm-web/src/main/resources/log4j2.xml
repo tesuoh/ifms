@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- FATAL > ERROR > WARN > INFO > DEBUG > TRACE -->
+<Configuration>
+    <Properties>
+        <Property name="system">ifms</Property><!-- 시스템구분 -->
+        <Property name="standard">stdout</Property><!-- 서비스로그 -->
+        <Property name="error">stderr</Property><!-- 에러로그 -->
+        <Property name="layoutPattern">[%-5p] [%d{yyyy-MM-dd HH:mm:ss.SSS}] [%t]  %highlight{[%-5p]}{FATAL=bg_red, ERROR=red, INFO=green, DEBUG=blue} [%c{1}.%M:%L] - %m%n</Property><!-- 출력형식 -->
+    </Properties>
+    <Appenders>
+        <!-- 콘솔 -->
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${layoutPattern}" />
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="org.springframework" level="ERROR" additivity="false"/>
+        <Logger name="org.apache.commons.digester" level="OFF" additivity="false"/>
+        <Logger name="jdbc" level="OFF" additivity="false"/>
+        <Logger name="jdbc.sqlonly" level="DEBUG" additivity="false"/>
+        <Logger name="jdbc.audit" level="OFF" additivity="false"/>
+        <Logger name="jdbc.resultset" level="OFF" additivity="false"/>
+        <Logger name="jdbc.resultsettable" level="DEBUG" additivity="false"/>
+        <Logger name="jdbc.connection" level="OFF" additivity="false"/>
+
+        <Root level="DEBUG" additivity="false">
+            <AppenderRef ref="console" />
+        </Root>
+    </Loggers>
+</Configuration>

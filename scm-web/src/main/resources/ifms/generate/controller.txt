@@ -1,0 +1,161 @@
+package szms.zzzzzzzz.web;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.validation.Valid;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import egovframework.util.EgovDoubleSubmitHelper;
+import egovframework.util.EgovMessageSource;
+
+import szms.zzzzzzzz.vo.yyyyyyyyVO;
+import szms.zzzzzzzz.service.yyyyyyyyService;
+
+/**
+ * 경찰청 보호구역통합관리시스템 구축사업 (2024) 
+ * xxxxxxxx Controller
+ */
+
+@Controller
+public class yyyyyyyyController {
+	
+	@Autowired
+	private yyyyyyyyService uuuuuuuService;
+	
+	///**
+	// * xxxxxxxx 목록 조회
+	// * @param yyyyyyyyVO
+	// * @return "selectyyyyyyyyList page"
+	// */ 
+	//@RequestMapping(value="/oooooooo/selectyyyyyyyyList.do")
+	//public String selectyyyyyyyyList(@ModelAttribute("uuuuuuuVO") yyyyyyyyVO uuuuuuuVO, ModelMap model) throws Exception {
+	//	
+	//	PaginationInfo paginationInfo = new PaginationInfo();
+	//	paginationInfo.setCurrentPageNo(uuuuuuuVO.getPageIndex());
+	//	paginationInfo.setRecordCountPerPage(uuuuuuuVO.getPageUnit());
+	//	paginationInfo.setPageSize(uuuuuuuVO.getPageSize());
+	//	
+	//	uuuuuuuVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+	//	uuuuuuuVO.setLastIndex(paginationInfo.getLastRecordIndex());
+	//	uuuuuuuVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());	
+	//	
+	//	List<yyyyyyyyVO> selectyyyyyyyyList = uuuuuuuService.selectyyyyyyyyListPaging(uuuuuuuVO);	
+	//	
+	//	int totalCnt = 0;
+	//	if(selectyyyyyyyyList.size() != 0){totalCnt = selectyyyyyyyyList.get(0).getTotalCnt(); }
+	//	paginationInfo.setTotalRecordCount(totalCnt);
+	//	model.addAttribute("paginationInfo", paginationInfo);	
+	//	
+	//	model.addAttribute("selectyyyyyyyyList", selectyyyyyyyyList);  
+	//	return "/oooooooo/selectyyyyyyyyList.tiles";
+	//}
+	
+	///**
+	// * xxxxxxxx 상세 조회
+	// * @param yyyyyyyyVO
+	// * @return "selectyyyyyyyyDetail page"
+	// */ 
+	//@RequestMapping(value="/oooooooo/selectyyyyyyyyDetail.do")
+	//public String selectyyyyyyyyDetail(@ModelAttribute("uuuuuuuVO") yyyyyyyyVO uuuuuuuVO, ModelMap model) throws Exception {	
+	//	model.addAttribute("uuuuuuuVO", uuuuuuuService.selectyyyyyyyyDetail(uuuuuuuVO)); 
+	//	return "/oooooooo/selectyyyyyyyyDetail.tiles";
+	//}
+	
+	///**
+	// * xxxxxxxx 등록 처리
+	// * @param yyyyyyyyVO
+	// * @return "selectyyyyyyyyDetail page"
+	// */ 
+	//@RequestMapping(value="/oooooooo/insertyyyyyyyy.do")
+	//public String insertyyyyyyyy(@Valid @ModelAttribute("uuuuuuuVO") yyyyyyyyVO uuuuuuuVO, BindingResult bindingResult, ModelMap model) throws Exception {
+	// 	if(!EgovDoubleSubmitHelper.checkAndSaveToken("tokenKey")) { return "forward:/oooooooo/selectyyyyyyyyList.do"; }
+	// 
+	//	if (bindingResult.hasErrors()) {
+	//		String errorMessage = "";
+	//		List<FieldError> list = bindingResult.getFieldErrors();
+	//		for(FieldError error : list) {
+	//			//채번될PK bindingResult 검증 제외
+	//			if("[체크] 채번될PK제외".equals(list.get(0).getField())) continue; 	
+	//			errorMessage += error.getDefaultMessage()+ "\\n";
+	//		}	
+	//		//채번PK 이외 bindingResult 검증된 에러메세지가 없다면...
+	//		if(!"".equals(errorMessage)) {
+	//			uuuuuuuVO.setReturnMessage(errorMessage); 
+	//			return "/oooooooo/selectyyyyyyyyDetail.tiles";				
+	//		}
+	//	}	
+	//		
+	//	if(1 == uuuuuuuService.insertyyyyyyyy(uuuuuuuVO)){
+	//		model.addAttribute("uuuuuuuVO", uuuuuuuVO);
+	//		return "/oooooooo/selectyyyyyyyyDetail.tiles";
+	//	}else {
+	//		return "/cmn/error/errorPage"; //정보처리에 실패했습니다.
+	//	}
+	//}
+	
+	
+	///**
+	// * xxxxxxxx 수정 처리
+	// * @param yyyyyyyyVO
+	// * @return "selectyyyyyyyyDetail page"
+	// */ 
+	//@RequestMapping(value="/oooooooo/updateyyyyyyyy.do")
+	//public String updateyyyyyyyy(@Valid @ModelAttribute("uuuuuuuVO") yyyyyyyyVO uuuuuuuVO, BindingResult bindingResult, ModelMap model) throws Exception {
+	// 	if(!EgovDoubleSubmitHelper.checkAndSaveToken("tokenKey")) { return "forward:/oooooooo/selectyyyyyyyyList.do"; }
+	//
+	//	if (bindingResult.hasErrors()) {
+	//		String errorMessage = "";
+	//		List<FieldError> list = bindingResult.getFieldErrors();
+	//		for(FieldError error : list) {
+	//			errorMessage += error.getDefaultMessage()+ "\\n";
+	//		}	
+	//		uuuuuuuVO.setReturnMessage(errorMessage); 
+	//		return "/oooooooo/selectyyyyyyyyDetail.tiles";
+	//	}	
+	//
+	//	if(1 == uuuuuuuService.updateyyyyyyyy(uuuuuuuVO)){
+	//		model.addAttribute("uuuuuuuVO", uuuuuuuVO);
+	//		return "/oooooooo/selectyyyyyyyyDetail.tiles";
+	//	}else {
+	//		return "/cmn/error/errorPage"; //정보처리에 실패했습니다.
+	//	}		
+	//} 
+	
+	///**
+	// * xxxxxxxx 삭제 처리
+	// * @param yyyyyyyyVO
+	// * @return forward "selectyyyyyyyyList page"
+	// */ 
+	//@RequestMapping(value="/oooooooo/deleteyyyyyyyy.do")
+	//public String deleteyyyyyyyy(@ModelAttribute("uuuuuuuVO") yyyyyyyyVO uuuuuuuVO, ModelMap model) throws Exception {
+	// 	if(!EgovDoubleSubmitHelper.checkAndSaveToken("tokenKey")) { return "forward:/oooooooo/selectyyyyyyyyList.do"; }		
+	//	if(1 == uuuuuuuService.deleteyyyyyyyy(uuuuuuuVO)){
+	//		return "forward:/oooooooo/selectyyyyyyyyList.do";
+	//	}else {
+	//		return "/cmn/error/errorPage"; //정보처리에 실패했습니다.
+	//	}			
+	//} 
+	
+	///**
+	// * xxxxxxxx 삭제여부 처리
+	// * @param yyyyyyyyVO
+	// * @return forward "selectyyyyyyyyList page"
+	// */ 
+	//@RequestMapping(value="/oooooooo/updateyyyyyyyyDelAt.do")
+	//public String	updateyyyyyyyyDelAt(@ModelAttribute("uuuuuuuVO") yyyyyyyyVO uuuuuuuVO, ModelMap model) throws Exception {
+	// 	if(!EgovDoubleSubmitHelper.checkAndSaveToken("tokenKey")) { return "forward:/oooooooo/selectyyyyyyyyList.do"; }
+	//	if(1 == uuuuuuuService.updateyyyyyyyyDelAt(uuuuuuuVO)){
+	//		return "forward:/oooooooo/selectyyyyyyyyList.do";
+	//	}else {
+	//		return "/cmn/error/errorPage"; //정보처리에 실패했습니다.
+	//	}		
+	//}	 
+}

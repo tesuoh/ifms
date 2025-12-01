@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+                       http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <context:property-placeholder location="classpath:/ifms/egovProps/globals.properties" />
+
+    <!-- Properties 파일 로드 -->
+    <util:properties id="globalProps" location="classpath:/ifms/egovProps/globals.properties"/>
+
+    <bean id="dataSourceTemp" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${Temp.DriverClassName}"/>
+        <property name="url" value="${Temp.Url}" />
+        <property name="username" value="${Temp.UserName}"/>
+        <property name="password" value="${Temp.Password}"/>
+    </bean>
+
+    <!-- Proxy DataSource 설정 -->
+    <bean id="proxyDataSourceTemp" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+        <constructor-arg ref="dataSourceTemp"/>
+        <property name="logFormatter" > 
+        		<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+        			<property name="loggingType" value="MULTI_LINE" />
+        			<property name="sqlPrefix" value="[SQL] : " />
+        		</bean>
+        </property>
+    </bean>   
+     
+</beans>
