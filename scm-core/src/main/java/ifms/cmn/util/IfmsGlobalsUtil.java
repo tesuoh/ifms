@@ -85,7 +85,10 @@ public class IfmsGlobalsUtil {
 	// resources path
 	@Value("#{globalProps['Globals.pythonScriptPath']}")
 	public String PYTHON_SCRIPT_PATH;
-
+	
+	
+	@Value("#{globalProps['Globals.encryption.key']}")
+	public String ENCRYPT_KEY;
 
 	public String getProperties(String req) {
 		String res = "";
@@ -114,6 +117,7 @@ public class IfmsGlobalsUtil {
 			case "ROOT_PATH"                	 : res =  ROOT_PATH; break;
 			case "TEMP_PATH"                	 : res =  TEMP_PATH; break;
 			case "REAL_PATH_ADM", "REAL_PATH"    : res =  REAL_PATH; break;
+			case "ENCRYPT_KEY"					 : res = ENCRYPT_KEY; break;
 
 			default: break;
 		}

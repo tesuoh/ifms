@@ -8,6 +8,6 @@
     
     <!-- TypeHandlers 등록 -->
     <typeHandlers>
-        <typeHandler handler="ifms.mybatis.typehandler.CryptTypeHandler" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <typeHandler handler="ifms.mybatis.typehandler.CryptoStringTypeHandler" javaType="java.lang.String" jdbcType="VARCHAR"/>
     </typeHandlers>
 </configuration> 
