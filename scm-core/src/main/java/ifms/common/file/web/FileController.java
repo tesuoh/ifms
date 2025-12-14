@@ -137,10 +137,31 @@ public class FileController {
         vo.setFileGroupSn(fileGroupSn);																	//화면에서 넘어온 파일그룹 KEY
         vo.setFileDtlSn(fileDtlSn);																	//화면에서 넘어온 파일그룹 KEY
         vo.setMdfrId(userId);
-        vo.setMdfrId(userId);
+        vo.setDelYn("N");  // 삭제 전 파일 정보 조회를 위해 DEL_YN = 'N' 설정
 
+        /* 삭제할 파일 정보 조회 */
+        FileVO fileInfo = fileService.selectFileDtl(vo);
+        
         /* 파일정보 삭제하기 - UPDATE처리 */
+        vo.setMdfrId(userId);
 		int result = fileService.deleteFile(vo);
+		
+		/* 물리적 파일 삭제 */
+		if (result > 0 && fileInfo != null) {
+			String fileFullPath = fileInfo.getFileFullPath();
+			if (fileFullPath != null && !fileFullPath.isEmpty()) {
+				File physicalFile = new File(fileFullPath);
+				if (physicalFile.exists()) {
+					boolean deleted = physicalFile.delete();
+					if (!deleted) {
+						logger.warn("물리적 파일 삭제 실패: " + fileFullPath);
+					} else {
+						logger.debug("물리적 파일 삭제 성공: " + fileFullPath);
+					}
+				}
+			}
+		}
+		
 		model.addAttribute("result", result);
     }
 

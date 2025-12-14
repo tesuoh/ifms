@@ -571,8 +571,22 @@ var fn_download = function(fileGroupSn, fileDtlSn, fileNm, type) {
 
 		var _$inputGroup = $("<div>").addClass("input-group");
 
-		var _$inputFixed = $("<div>").addClass("form-control input-fixed").attr("data-trigger", "fileinput").css({ width: FILE_NM_INPUT_WIDTH }).html('<i class="fa fa-file fileinput-exists"></i>&nbsp;<span class="fileinput-filename">첨부된 파일이 없습니다.</span>');
-		_$inputFixed.css('border-right', '1px solid #adb4c1');
+		// readonly 모드일 때는 초기 텍스트를 빈 값으로 설정
+		var initialText = options.readonly ? '' : '첨부된 파일이 없습니다.';
+		var _$inputFixed = $("<div>").addClass("form-control input-fixed").attr("data-trigger", "fileinput").css({ width: FILE_NM_INPUT_WIDTH }).html('<i class="fa fa-file fileinput-exists"></i>&nbsp;<span class="fileinput-filename">' + initialText + '</span>');
+		
+		// readonly 모드일 때는 테두리와 배경 제거
+		if (options.readonly) {
+			_$inputFixed.css({
+				'border': 'none',
+				'border-right': 'none',
+				'background': 'transparent',
+				'padding': '0',
+				'box-shadow': 'none'
+			});
+		} else {
+			_$inputFixed.css('border-right', '1px solid #adb4c1');
+		}
 
 		var _$btnFile = $("<span>").addClass("input-group-addon btn btn-default btn-file").html('<span class="fileinput-new"> 파일선택 </span><span class="fileinput-exists"> 파일교체 </span>');
 		var _$fileInput = $("<input>").attr({
@@ -612,6 +626,19 @@ var fn_download = function(fileGroupSn, fileDtlSn, fileNm, type) {
 			_$fileInput.hide();
 			_$btnFile.hide(); // 파일 선택 버튼을 숨깁니다.
 			_$btnDelete.remove();
+			// readonly 모드일 때 입력 그룹의 테두리와 배경 제거
+			_$inputGroup.css({
+				'border': 'none',
+				'background': 'transparent',
+				'box-shadow': 'none'
+			});
+			_$fileInputGroup.css({
+				'border': 'none',
+				'background': 'transparent',
+				'box-shadow': 'none'
+			});
+			// readonly 모드일 때 초기 텍스트는 이미 빈 값으로 설정되어 있음
+			// 파일이 로드되면 loadSingleUpload에서 표시됨
 			//_$btnDelete.off().hide();
 		}
 
