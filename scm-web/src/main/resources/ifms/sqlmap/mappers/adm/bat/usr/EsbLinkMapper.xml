@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ifms.adm.bat.usr.mapper.EsbLinkMapper">
+	
+	<!-- ESB Link 테이블에서 성공 상태인 새로운 레코드 조회 (if_tb_scm_user_all 테이블 대상) -->
+	<select id="selectNewEsbLinkRecords" resultType="egovMap">
+		SELECT 
+			link_tbl_nm,
+			link_dt,
+			link_job_stts_cd
+		FROM itfown.esb_link
+		WHERE (link_tbl_nm = 'if_tb_scm_user_all' OR link_tbl_nm = 'fmsif.if_tb_scm_user_all')
+			AND link_job_stts_cd = 'S'
+			AND link_dt >= CURRENT_DATE
+		ORDER BY link_dt DESC
+		LIMIT 10
+	</select>
+	
+	<!-- if_tb_scm_user_all 인터페이스 테이블에서 동기화할 사용자 데이터 조회 -->
+	<select id="selectUserAllForSync" resultType="egovMap">
+		SELECT 
+			user_id,
+			user_clsf_cd,
+			lgn_id,
+			user_nm,
+			emp_no,
+			sms_rcptn_yn,
+			last_cntn_ip_addr,
+			last_cntn_dt,
+			parco_user_id,
+			user_pswd,
+			user_orgnl_id,
+			user_photo_file,
+			parco_user_nm,
+			user_eng_nm,
+			parco_emp_no,
+			dept_cd,
+			dept_nm,
+			indct_jbps_cd,
+			indct_jbps_cd_nm,
+			jbgd_cd,
+			jbgd_nm,
+			jbps_cd,
+			jbps_nm,
+			jbttl_cd,
+			jbttl_nm,
+			duty_cd,
+			duty_nm,
+			tkcg_task_nm,
+			jbgd_lvl_no,
+			reg_ynd,
+			jncmp_ynd,
+			rsgntn_ymd,
+			eml_ador,
+			work_suts_cd,
+			mbl_telno,
+			ofc_telno,
+			co_fxno,
+			co_zip,
+			co_ador,
+			co_daddr,
+			gndr_cd,
+			ext_telno,
+			emp_se_cd,
+			co_cd,
+			co_nm,
+			hghrk_dept_cd,
+			hghrk_dept_nm,
+			powk_cd,
+			powk_nm,
+			ocpt_nm,
+			ocpt_cd,
+			cstct_nm,
+			cstct_cd,
+			work_rul_nm,
+			work_rul_cd,
+			last_prmt_ymd,
+			prp_grd_no,
+			ntnlty_nm,
+			if_stts_cd,
+			if_rslt_msg,
+			if_dt,
+			if_recv_dt,
+			if_proc_dt
+		FROM fmsif.if_tb_scm_user_all
+		WHERE if_dt >= CURRENT_DATE
+			AND (if_stts_cd IS NULL OR if_stts_cd = 'R')
+		ORDER BY if_recv_dt DESC
+	</select>
+	
+	<!-- tb_scm_user (마스터 테이블)에 사용자 데이터 삽입 -->
+	<insert id="insertScmUser" parameterType="map">
+		INSERT INTO fmsown.tb_scm_user (
+			user_id,
+			user_clsf_cd,
+			lgn_id,
+			user_nm,
+			emp_no,
+			sms_rcptn_yn,
+			last_cntn_ip_addr,
+			last_cntn_dt,
+			crt_user_id,
+			crt_dt,
+			updt_user_id,
+			updt_dt
+		) VALUES (
+			#{userId},
+			COALESCE(#{userClsfCd}, 'USR01'),
+			COALESCE(#{lgnId}, #{userId}),
+			#{userNm},
+			#{empNo},
+			COALESCE(#{smsRcptnYn}, 'N'),
+			NULL,
+			NULL,
+			'system',
+			CURRENT_TIMESTAMP,
+			'system',
+			CURRENT_TIMESTAMP
+		)
+	</insert>
+	
+	<!-- tb_scm_user (마스터 테이블)에 사용자 ID 존재 여부 확인 -->
+	<select id="existsScmUser" parameterType="String" resultType="boolean">
+		SELECT CASE WHEN COUNT(*) > 0 THEN true ELSE false END
+		FROM fmsown.tb_scm_user
+		WHERE user_id = #{userId}
+	</select>
+	
+	<!-- tb_scm_user (마스터 테이블)에 사용자 데이터 업데이트 -->
+	<update id="updateScmUser" parameterType="map">
+		UPDATE fmsown.tb_scm_user
+		SET 
+			user_nm = #{userNm},
+			emp_no = #{empNo},
+			sms_rcptn_yn = COALESCE(#{smsRcptnYn}, sms_rcptn_yn),
+			last_cntn_ip_addr = #{lastCntnIpAddr},
+			last_cntn_dt = #{lastCntnDt},
+			updt_user_id = 'system',
+			updt_dt = CURRENT_TIMESTAMP
+		WHERE user_id = #{userId}
+	</update>
+	
+	<!-- tb_scm_user_parco (디테일 테이블)에 사용자 데이터 삽입 -->
+	<insert id="insertScmUserParco" parameterType="map">
+		INSERT INTO fmsown.tb_scm_user_parco (
+			user_id,
+			parco_user_id,
+			user_pswd,
+			user_orgnl_id,
+			user_photo_file,
+			user_nm,
+			user_eng_nm,
+			emp_no,
+			dept_cd,
+			dept_nm,
+			indct_jbps_cd,
+			indct_jbps_cd_nm,
+			jbgd_cd,
+			jbgd_nm,
+			jbps_cd,
+			jbps_nm,
+			jbttl_cd,
+			jbttl_nm,
+			duty_cd,
+			duty_nm,
+			tkcg_task_nm,
+			jbgd_lvl_no,
+			reg_ynd,
+			jncmp_ynd,
+			rsgntn_ymd,
+			eml_ador,
+			work_suts_cd,
+			mbl_telno,
+			ofc_telno,
+			co_fxno,
+			co_zip,
+			co_ador,
+			co_daddr,
+			gndr_cd,
+			ext_telno,
+			emp_se_cd,
+			co_cd,
+			co_nm,
+			hghrk_dept_cd,
+			hghrk_dept_nm,
+			powk_cd,
+			powk_nm,
+			ocpt_nm,
+			ocpt_cd,
+			cstct_nm,
+			cstct_cd,
+			work_rul_nm,
+			work_rul_cd,
+			last_prmt_ymd,
+			prp_grd_no,
+			ntnlty_nm,
+			if_dt,
+			crt_user_id,
+			crt_ot,
+			updt_user_id,
+			updt_ot
+		) VALUES (
+			#{userId},
+			#{parcoUserId},
+			#{userPswd},
+			#{userOrgnlId},
+			#{userPhotoFile},
+			#{parcoUserNm},
+			#{userEngNm},
+			#{parcoEmpNo},
+			#{deptCd},
+			#{deptNm},
+			#{indctJbpsCd},
+			#{indctJbpsCdNm},
+			#{jbgdCd},
+			#{jbgdNm},
+			#{jbpsCd},
+			#{jbpsNm},
+			#{jbttlCd},
+			#{jbttlNm},
+			#{dutyCd},
+			#{dutyNm},
+			#{tkcgTaskNm},
+			#{jbgdLvlNo},
+			#{regYnd},
+			#{jncmpYnd},
+			#{rsgntnYmd},
+			#{emlAdor},
+			COALESCE(#{workSutsCd}, '0'),
+			#{mblTelno},
+			#{ofcTelno},
+			#{coFxno},
+			#{coZip},
+			#{coAdor},
+			#{coDaddr},
+			COALESCE(#{gndrCd}, '0'),
+			#{extTelno},
+			COALESCE(#{empSeCd}, '0'),
+			#{coCd},
+			#{coNm},
+			#{hghrkDeptCd},
+			#{hghrkDeptNm},
+			#{powkCd},
+			#{powkNm},
+			#{ocptNm},
+			#{ocptCd},
+			#{cstctNm},
+			#{cstctCd},
+			#{workRulNm},
+			#{workRulCd},
+			#{lastPrmtYmd},
+			#{prpGrdNo},
+			#{ntnltyNm},
+			COALESCE(#{ifDt}, CURRENT_DATE),
+			'system',
+			CURRENT_TIMESTAMP,
+			'system',
+			CURRENT_TIMESTAMP
+		)
+	</insert>
+	
+	<!-- tb_scm_user_parco (디테일 테이블)에 사용자 ID 존재 여부 확인 -->
+	<select id="existsScmUserParco" parameterType="String" resultType="boolean">
+		SELECT CASE WHEN COUNT(*) > 0 THEN true ELSE false END
+		FROM fmsown.tb_scm_user_parco
+		WHERE user_id = #{userId}
+	</select>
+	
+	<!-- tb_scm_user_parco (디테일 테이블)에 사용자 데이터 업데이트 -->
+	<update id="updateScmUserParco" parameterType="map">
+		UPDATE fmsown.tb_scm_user_parco
+		SET 
+			parco_user_id = #{parcoUserId},
+			user_pswd = #{userPswd},
+			user_orgnl_id = #{userOrgnlId},
+			user_photo_file = #{userPhotoFile},
+			user_nm = #{parcoUserNm},
+			user_eng_nm = #{userEngNm},
+			emp_no = #{parcoEmpNo},
+			dept_cd = #{deptCd},
+			dept_nm = #{deptNm},
+			indct_jbps_cd = #{indctJbpsCd},
+			indct_jbps_cd_nm = #{indctJbpsCdNm},
+			jbgd_cd = #{jbgdCd},
+			jbgd_nm = #{jbgdNm},
+			jbps_cd = #{jbpsCd},
+			jbps_nm = #{jbpsNm},
+			jbttl_cd = #{jbttlCd},
+			jbttl_nm = #{jbttlNm},
+			duty_cd = #{dutyCd},
+			duty_nm = #{dutyNm},
+			tkcg_task_nm = #{tkcgTaskNm},
+			jbgd_lvl_no = #{jbgdLvlNo},
+			reg_ynd = #{regYnd},
+			jncmp_ynd = #{jncmpYnd},
+			rsgntn_ymd = #{rsgntnYmd},
+			eml_ador = #{emlAdor},
+			work_suts_cd = COALESCE(#{workSutsCd}, work_suts_cd),
+			mbl_telno = #{mblTelno},
+			ofc_telno = #{ofcTelno},
+			co_fxno = #{coFxno},
+			co_zip = #{coZip},
+			co_ador = #{coAdor},
+			co_daddr = #{coDaddr},
+			gndr_cd = COALESCE(#{gndrCd}, gndr_cd),
+			ext_telno = #{extTelno},
+			emp_se_cd = COALESCE(#{empSeCd}, emp_se_cd),
+			co_cd = #{coCd},
+			co_nm = #{coNm},
+			hghrk_dept_cd = #{hghrkDeptCd},
+			hghrk_dept_nm = #{hghrkDeptNm},
+			powk_cd = #{powkCd},
+			powk_nm = #{powkNm},
+			ocpt_nm = #{ocptNm},
+			ocpt_cd = #{ocptCd},
+			cstct_nm = #{cstctNm},
+			cstct_cd = #{cstctCd},
+			work_rul_nm = #{workRulNm},
+			work_rul_cd = #{workRulCd},
+			last_prmt_ymd = #{lastPrmtYmd},
+			prp_grd_no = #{prpGrdNo},
+			ntnlty_nm = #{ntnltyNm},
+			if_dt = COALESCE(#{ifDt}, if_dt),
+			updt_user_id = 'system',
+			updt_ot = CURRENT_TIMESTAMP
+		WHERE user_id = #{userId}
+	</update>
+	
+</mapper>
+
