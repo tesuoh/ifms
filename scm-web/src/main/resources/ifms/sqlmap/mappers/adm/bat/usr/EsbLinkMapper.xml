@@ -3,16 +3,21 @@
 <mapper namespace="ifms.adm.bat.usr.mapper.EsbLinkMapper">
 	
 	<!-- ESB Link 테이블에서 성공 상태인 새로운 레코드 조회 (if_tb_scm_user_all 테이블 대상) -->
+	<!-- ESB_LINK_HSTRY 테이블과 JOIN하여 아직 완료되지 않은 작업만 조회 -->
 	<select id="selectNewEsbLinkRecords" resultType="egovMap">
 		SELECT 
-			link_tbl_nm,
-			link_dt,
-			link_job_stts_cd
-		FROM itfown.esb_link
-		WHERE (link_tbl_nm = 'if_tb_scm_user_all' OR link_tbl_nm = 'fmsif.if_tb_scm_user_all')
-			AND link_job_stts_cd = 'S'
-			AND link_dt >= CURRENT_DATE
-		ORDER BY link_dt DESC
+			el.link_tbl_nm,
+			el.link_dt,
+			el.link_job_stts_cd
+		FROM itfown.esb_link el
+		LEFT JOIN itfown.esb_link_hstry elh 
+			ON el.link_tbl_nm = elh.link_tbl_nm 
+			AND elh.link_job_stts_cd = 'S'
+		WHERE (el.link_tbl_nm = 'if_tb_scm_user_all' OR el.link_tbl_nm = 'fmsif.if_tb_scm_user_all')
+			AND el.link_job_stts_cd = 'S'
+			AND el.link_dt >= CURRENT_DATE
+			AND elh.link_tbl_nm IS NULL
+		ORDER BY el.link_dt DESC
 		LIMIT 10
 	</select>
 	
@@ -325,6 +330,18 @@
 			updt_ot = CURRENT_TIMESTAMP
 		WHERE user_id = #{userId}
 	</update>
+	
+	<!-- user seq 에서 사용자 아이디 조회 (문자열)-->
+	<select id="selectUserIdStr" resultType="string">
+		SELECT
+			'USR' || LPAD(FMSOWN.TB_SCM_USER_SEQ.NEXTVAL, 8, '0') AS user_id
+		FROM dual
+	</select>
+	
+	<!-- user seq 에서 사용자 아이디 조회 -->
+	<select id="selectUserIdSeq" resultType="long">
+  		SELECT fmsown.tb_scm_user_seq.NEXTVAL AS user_id FROM dual
+  	</select>
 	
 </mapper>
 

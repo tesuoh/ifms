@@ -73,5 +73,20 @@ public interface EsbLinkMapper {
 	 * @throws Exception
 	 */
 	int updateScmUserParco(Map<String, Object> requestMap) throws Exception;
+	
+	/**
+	 * userId String
+	 * @return
+	 * @throws Exception
+	 */
+	String selectUserIdStr() throws Exception;
+	
+	/**
+	 * userId Long
+	 * @return
+	 * @throws Exception
+	 */
+	Long selectUserIdSeq() throws Exception;
+	
 }
 
