@@ -9,7 +9,6 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-	// 초기 서버 값 사용하지 않음
 	// setFileInfo.init();
 	// setMultiFileInfo.init();
 	eventHandler.init();
@@ -22,72 +21,40 @@ document.addEventListener('DOMContentLoaded', () => {
 	if(btnMultiSave) btnMultiSave.style.display = 'none';
 	if(btnMultiDelete) btnMultiDelete.style.display = 'none';
 	
-	// 다운로드 완료 감지를 위한 iframe 이벤트 리스너 설정
 	setupDownloadCompleteListener();
+	
+	window.resetDownloadDiv = (target) => {
+        const $el = $(target);
+        if ($el.length === 0) return;
+
+        $el.empty();
+
+        $.each($el[0].attributes, function () {
+            if (this.name.startsWith('data-')) {
+                $el.removeAttr(this.name);
+            }
+        });
+    };
+
 	
 	// Single 파일 업로드 성공 콜백
 	const singleUploadSuccess = function(response, files) {
 		if (response && response.file) {
+
 			const btnSingleSave = document.getElementById('btSingleSave');
 			if (btnSingleSave) btnSingleSave.style.display = '';
 			
-			// 다른 파일을 선택하면 singleDownload 영역 완전히 초기화
-			const singleDownloadDiv = document.getElementById('singleDownload');
-			if (singleDownloadDiv) {
-				// 모든 내용 제거
-				singleDownloadDiv.innerHTML = '';
-				// 모든 data 속성 제거
-				const attrs = singleDownloadDiv.attributes;
-				for (let i = attrs.length - 1; i >= 0; i--) {
-					if (attrs[i].name.startsWith('data-')) {
-						singleDownloadDiv.removeAttribute(attrs[i].name);
-					}
-				}
-			}
-			
-			// jQuery로도 한 번 더 확실히 제거
-			const $singleDownload = $('#singleDownload');
-			if ($singleDownload.length > 0) {
-				$singleDownload.empty();
-				$singleDownload.removeAttr('data-filegroupsn');
-				$singleDownload.removeAttr('data-filedtlsn');
-				$singleDownload.removeAttr('data-key');
-				// 내부의 모든 요소도 제거
-				$singleDownload.find('*').remove();
-			}
+			resetDownloadDiv('#singleDownload');
 		}
 	};
 	
 	// Multi 파일 업로드 성공 콜백
 	const multiUploadSuccess = function(response) {
 		if (response && response.file) {
-			// 파일 업로드 성공 시 버튼 표시
+
 			checkMultiUploadButtons();
 			
-			// 다른 파일을 선택하면 multiDownload 영역 완전히 초기화
-			const multiDownloadDiv = document.getElementById('multiDownload');
-			if (multiDownloadDiv) {
-				// 모든 내용 제거
-				multiDownloadDiv.innerHTML = '';
-				// 모든 data 속성 제거
-				const attrs = multiDownloadDiv.attributes;
-				for (let i = attrs.length - 1; i >= 0; i--) {
-					if (attrs[i].name.startsWith('data-')) {
-						multiDownloadDiv.removeAttribute(attrs[i].name);
-					}
-				}
-			}
-			
-			// jQuery로도 한 번 더 확실히 제거
-			const $multiDownload = $('#multiDownload');
-			if ($multiDownload.length > 0) {
-				$multiDownload.empty();
-				$multiDownload.removeAttr('data-filegroupsn');
-				$multiDownload.removeAttr('data-filedtlsn');
-				$multiDownload.removeAttr('data-key');
-				// 내부의 모든 요소도 제거
-				$multiDownload.find('*').remove();
-			}
+			resetDownloadDiv('#multiDownload');
 		}
 	};
 	
@@ -120,8 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 })
 
-// multiUpload 영역의 파일 입력 필드 상태를 확인하여 버튼 표시 여부 결정
-// 전역 함수로 정의하여 어디서든 호출 가능하도록 함
 function checkMultiUploadButtons() {
 	const $multiUpload = $('#multiUpload');
 	const $fileInputs = $multiUpload.find('input[type="file"]');
@@ -156,13 +121,13 @@ function checkMultiUploadButtons() {
 	}
 }
 
-// 다운로드 완료 감지 함수
+// 다운로드 완료 함수
 function setupDownloadCompleteListener() {
-	// 기존 fn_download 함수를 래핑하여 다운로드 완료 감지
+
 	const originalFnDownload = window.fn_download;
 	
 	window.fn_download = function(fileGroupSn, fileDtlSn, fileNm, type) {
-		// 원본 함수 호출
+
 		if (originalFnDownload) {
 			originalFnDownload(fileGroupSn, fileDtlSn, fileNm, type);
 		}
@@ -170,16 +135,13 @@ function setupDownloadCompleteListener() {
 		// 다운로드 타입에 따라 버튼 표시
 		const downloadType = type || 'single';
 		
-		// iframe이 생성될 때까지 대기 후 이벤트 리스너 추가
 		const checkInterval = setInterval(function() {
 			const iframe = document.querySelector('iframe[name="_downloadIFrame"]');
 			if (iframe) {
 				clearInterval(checkInterval);
 				
-				// iframe load 이벤트로 다운로드 완료 감지
 				const checkDownloadComplete = function() {
 					try {
-						// iframe이 로드되었는지 확인
 						if (iframe.contentWindow && iframe.contentWindow.document) {
 							// 다운로드가 완료되면 버튼 표시
 							if (downloadType === 'single') {
@@ -191,7 +153,6 @@ function setupDownloadCompleteListener() {
 							}
 						}
 					} catch (e) {
-						// cross-origin 오류는 무시 (다운로드가 진행 중임을 의미)
 						// 다운로드가 시작되었으므로 버튼 표시
 						if (downloadType === 'single') {
 							const btnSingleSave = document.getElementById('btSingleSave');
@@ -203,10 +164,8 @@ function setupDownloadCompleteListener() {
 					}
 				};
 				
-				// iframe load 이벤트 리스너 추가
 				iframe.addEventListener('load', checkDownloadComplete);
 				
-				// 일정 시간 후에도 버튼 표시 (다운로드가 시작되었음을 의미)
 				setTimeout(function() {
 					if (downloadType === 'single') {
 						const btnSingleSave = document.getElementById('btSingleSave');
@@ -223,7 +182,6 @@ function setupDownloadCompleteListener() {
 			}
 		}, 50);
 		
-		// 최대 5초 후에는 인터벌 정리
 		setTimeout(function() {
 			clearInterval(checkInterval);
 		}, 5000);
@@ -249,29 +207,20 @@ const updateFileDownloadArea = {
 			// 기존 내용 제거
 			$singleDownload.empty();
 			
-			// addSingleUpload로 초기화 (readonly 모드, fileGroupSn 옵션 사용)
-			// fileGroupSn 옵션을 사용하면 자동으로 파일을 로드하지만, 저장 직후에는 파일이 아직 업데이트되지 않았을 수 있으므로
-			// 별도로 loadSingleUpload를 호출하는 것이 더 안전합니다.
 			$singleDownload.addSingleUpload(
 				null
 				, {useDefaultExtension : false,  readonly : true, fileGroupSn: 0 }
 			);
 			
-			// addSingleUpload가 replaceWith로 div를 교체하므로, 교체 후 새로운 요소를 찾아야 함
-			// replaceWith는 동기적으로 작동하므로 즉시 찾을 수 있어야 하지만, 안전을 위해 약간의 지연을 둡니다.
 			setTimeout(function() {
-				// replaceWith 후에는 id가 'singleDownload'인 요소를 다시 찾아야 함
 				const $newSingleDownload = $('#singleDownload');
 				if ($newSingleDownload.length > 0) {
-					// readonly 모드일 때 파일 입력창 숨기기 (addSingleUpload에서 이미 처리되지만 확실히 하기 위해)
 					$newSingleDownload.find('.btn-file').hide();
 					$newSingleDownload.find('input[type="file"]').hide();
 					
-					// loadSingleUpload 호출 (서버에서 파일 정보 업데이트 시간 확보를 위해 약간의 지연)
 					setTimeout(function() {
 						$newSingleDownload.loadSingleUpload(fileGroupSn);
 						
-						// loadSingleUpload 완료 후 삭제 버튼 추가
 						setTimeout(function() {
 							addDeleteButtonToSingleDownload();
 						}, 500);
@@ -309,22 +258,18 @@ const updateFileDownloadArea = {
 				, {useDefaultExtension : false,  readonly : true }
 			);
 			
-			// addMultiUpload가 DOM을 생성할 때까지 대기 후 loadMultiUpload 호출
 			const checkInterval = setInterval(function() {
-				// addMultiUpload가 replaceWith를 사용할 수 있으므로 다시 찾기
+
 				const $newMultiDownload = $('#multiDownload');
 				if ($newMultiDownload.length > 0 && $newMultiDownload.find('.form-inline').length >= 0) {
 					clearInterval(checkInterval);
 					
-					// 약간의 지연 후 loadMultiUpload 호출 (서버에서 파일 정보 업데이트 시간 확보)
 					setTimeout(function() {
 						$newMultiDownload.loadMultiUpload(fileGroupSn);
 						
-						// loadMultiUpload 완료 후 삭제 버튼 추가 및 전체 삭제 버튼 표시
-						// AJAX 완료를 감지하기 위해 충분한 지연 시간 확보
 						setTimeout(function() {
 							addDeleteButtonToMultiDownload();
-							// multiDownload 영역에 파일이 로드되었으므로 전체 삭제 버튼 표시
+
 							checkMultiUploadButtons();
 						}, 800);
 					}, 200);
@@ -407,39 +352,21 @@ function addDeleteButtonToSingleDownload() {
 									// singleUpload 영역 초기화
 									const $singleUpload = $('#singleUpload');
 									if ($singleUpload.length > 0) {
-										// 파일 입력 필드 제거
+
 										$singleUpload.find('input[type="file"]').val('');
 										$singleUpload.find('.form-inline').remove();
 										$singleUpload.removeAttr('data-filegroupsn');
 										$singleUpload.removeAttr('data-filedtlsn');
 										
-										// 파일명 표시 영역 초기화
 										$singleUpload.find('.fileinput-filename').text('');
 										
-										// addSingleUpload 재호출하여 초기화
 										const singleUploadSuccessCallback = function(response, files) {
 											if (response && response.file) {
 												const btnSingleSave = document.getElementById('btSingleSave');
 												if (btnSingleSave) btnSingleSave.style.display = '';
 												
-												// 다른 파일을 선택하면 singleDownload 영역 완전히 초기화
-												const singleDownloadDiv = document.getElementById('singleDownload');
-												if (singleDownloadDiv) {
-													singleDownloadDiv.innerHTML = '';
-													const attrs = singleDownloadDiv.attributes;
-													for (let i = attrs.length - 1; i >= 0; i--) {
-														if (attrs[i].name.startsWith('data-')) {
-															singleDownloadDiv.removeAttribute(attrs[i].name);
-														}
-													}
-												}
-												const $singleDownload = $('#singleDownload');
-												if ($singleDownload.length > 0) {
-													$singleDownload.empty();
-													$singleDownload.removeAttr('data-filegroupsn');
-													$singleDownload.removeAttr('data-filedtlsn');
-													$singleDownload.find('*').remove();
-												}
+												resetDownloadDiv('#singleDownload');
+												
 											}
 										};
 										
@@ -477,9 +404,9 @@ function addDeleteButtonToSingleDownload() {
 				}
 			});
 			
-			$fileContainer.append($fileNameLink.clone());
+			$fileContainer.append($fileNameLink);
 			$fileContainer.append($deleteBtn);
-			$inputGroup.html($fileContainer);
+			$inputGroup.empty().append($fileContainer);
 		}
 	}
 }
@@ -549,12 +476,10 @@ function addDeleteButtonToMultiDownload() {
 										// 파일 정보 제거
 										$formInline.remove();
 										
-										// 파일이 모두 삭제되면 영역 초기화
 										if ($multiDownload.find('.form-inline').length === 0) {
 											$multiDownload.empty();
 											$multiDownload.removeAttr('data-filegroupsn');
 										} else {
-											// 다른 파일들에 대해서도 삭제 버튼 다시 추가
 											addDeleteButtonToMultiDownload();
 										}
 										
@@ -588,9 +513,9 @@ function addDeleteButtonToMultiDownload() {
 					}
 				});
 				
-				$fileContainer.append($fileNameLink.clone());
+				$fileContainer.append($fileNameLink);
 				$fileContainer.append($deleteBtn);
-				$inputGroup.html($fileContainer);
+				$inputGroup.empty().append($fileContainer);
 			}
 		});
 	}
@@ -603,7 +528,7 @@ const eventHandler = {
 		btnMultiDelete: { handler: 'deleteMultiFile', eventType: 'click' }
 	}
 	, params: function(){
-		return {popupSn: ${detail.popupSn }};
+		return {popupSn: 129}; // {popupSn: ${detail.popupSn }};
 	}
 	, init: function(){
 		this.bind();
@@ -714,10 +639,8 @@ const eventHandler = {
 		sendJson('/adm/sample/saveUpDownloadSample.json', params, function(data){
 			if(data.result === 'success'){
 				// 저장 완료 후 업로드된 파일로 다운로드 영역 업데이트
-				// 서버에서 파일 정보가 업데이트되는 시간을 확보하기 위해 약간의 지연
 				const fileGroupSn = fileData && fileData.fileGroupSn ? parseInt(fileData.fileGroupSn) : null;
 				if(fileGroupSn && fileGroupSn > 0){
-					// 서버에서 파일 정보 업데이트 시간 확보를 위해 지연
 					setTimeout(function() {
 						updateFileDownloadArea.updateMulti(fileGroupSn);
 					}, 500);
@@ -774,27 +697,22 @@ const eventHandler = {
 					const fileGroupSn = fileData.fileGroupSn;
 					const _key = 'multiUpload';
 					
-					// 각 파일을 순차적으로 삭제
 					let deleteCount = 0;
 					let totalCount = fileDtlSnArray.length;
 				
 				const deleteNextFile = function(index) {
 					if (index >= totalCount) {
-						// 모든 파일 삭제 완료 - 로딩바 종료
+
 						if (typeof szms !== 'undefined' && szms.loading && szms.loading.end) {
 							szms.loading.end();
 						}
 						
-						// multiUpload 영역에서 파일 목록만 제거 (업로드 기능은 유지)
+						// multiUpload 영역에서 파일 목록 제거
 						const $multiUpload = $('#multiUpload');
 						if ($multiUpload.length > 0) {
-							// 파일 목록만 제거 (form-inline 요소들)
 							$multiUpload.find('.form-inline').remove();
-							// data 속성 제거
 							$multiUpload.removeAttr('data-filegroupsn');
-							// data-key는 유지 (addMultiUpload에 필요)
 							
-							// multiUploadSuccess 콜백 함수 재정의 (스코프 문제 해결)
 							const multiUploadSuccessCallback = function(response) {
 								if (response && response.file) {
 									const btnMultiSave = document.getElementById('btnMultiSave');
@@ -802,33 +720,14 @@ const eventHandler = {
 								}
 							};
 							
-							// addMultiUpload를 다시 호출하여 초기 상태로 복원
 							$multiUpload.addMultiUpload(
 								multiUploadSuccessCallback
 								, { useDefaultExtension: true, extension: 'multi', realDelete: true}
 							);
 						}
 						
-						// multiDownload 영역 초기화
-						const multiDownloadDiv = document.getElementById('multiDownload');
-						if (multiDownloadDiv) {
-							multiDownloadDiv.innerHTML = '';
-							const attrs = multiDownloadDiv.attributes;
-							for (let i = attrs.length - 1; i >= 0; i--) {
-								if (attrs[i].name.startsWith('data-')) {
-									multiDownloadDiv.removeAttribute(attrs[i].name);
-								}
-							}
-						}
-						const $multiDownload = $('#multiDownload');
-						if ($multiDownload.length > 0) {
-							$multiDownload.empty();
-							$multiDownload.removeAttr('data-filegroupsn');
-							$multiDownload.removeAttr('data-key');
-							$multiDownload.find('*').remove();
-						}
+						resetDownloadDiv('#multiDownload');
 						
-						// 버튼 상태 업데이트
 						checkMultiUploadButtons();
 						
 						if(typeof szms !== 'undefined' && szms.alert){
@@ -862,30 +761,23 @@ const eventHandler = {
 						},
 						success: function(response) {
 							deleteCount++;
-							// 다음 파일 삭제
 							deleteNextFile(index + 1);
 						},
 						error: function() {
-							// 오류 발생해도 다음 파일 삭제 시도
 							deleteCount++;
 							deleteNextFile(index + 1);
 						},
 						complete: function() {
-							// complete에서는 로딩바를 종료하지 않음
-							// 모든 파일 삭제가 완료된 경우 deleteNextFile 함수에서 처리
 						}
 					});
 				};
 				
-					// 첫 번째 파일부터 삭제 시작
 					deleteNextFile(0);
 				} else {
-					// 서버에 저장되지 않은 파일 입력 필드만 있는 경우 UI에서만 제거
 					const $multiUpload = $('#multiUpload');
 					$multiUpload.find('.form-inline').remove();
 					$multiUpload.removeAttr('data-filegroupsn');
 					
-					// multiUploadSuccess 콜백 함수 재정의 (스코프 문제 해결)
 					const multiUploadSuccessCallback = function(response) {
 						if (response && response.file) {
 							const btnMultiSave = document.getElementById('btnMultiSave');
@@ -895,32 +787,13 @@ const eventHandler = {
 						}
 					};
 					
-					// addMultiUpload를 다시 호출하여 초기 상태로 복원
 					$multiUpload.addMultiUpload(
 						multiUploadSuccessCallback
 						, { useDefaultExtension: true, extension: 'multi', realDelete: true}
 					);
 					
-					// multiDownload 영역 초기화
-					const multiDownloadDiv = document.getElementById('multiDownload');
-					if (multiDownloadDiv) {
-						multiDownloadDiv.innerHTML = '';
-						const attrs = multiDownloadDiv.attributes;
-						for (let i = attrs.length - 1; i >= 0; i--) {
-							if (attrs[i].name.startsWith('data-')) {
-								multiDownloadDiv.removeAttribute(attrs[i].name);
-							}
-						}
-					}
-					const $multiDownload = $('#multiDownload');
-					if ($multiDownload.length > 0) {
-						$multiDownload.empty();
-						$multiDownload.removeAttr('data-filegroupsn');
-						$multiDownload.removeAttr('data-key');
-						$multiDownload.find('*').remove();
-					}
+					resetDownloadDiv('#multiDownload');
 					
-					// 저장 버튼 및 전체 삭제 버튼 숨기기
 					const btnMultiSave = document.getElementById('btnMultiSave');
 					const btnMultiDelete = document.getElementById('btnMultiDelete');
 					if (btnMultiSave) btnMultiSave.style.display = 'none';

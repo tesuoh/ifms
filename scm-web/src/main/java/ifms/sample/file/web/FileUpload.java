@@ -34,37 +34,10 @@ public class FileUpload {
 	private IfmsGlobalsUtil ifmsGlobalsUtil;
 	
 	@PostMapping("/UpDownloadSample.do")
-	public String uploadFile(@RequestParam Map<String, Object> requestMap, ModelMap model) throws Exception {
-		Map<String, Object> detail = new HashMap<>();
-
-        detail.put("popupSn", 129);
-        detail.put("popupTtl", "테스트1");
-        detail.put("popupBgngDt", "2025-09-26");
-        detail.put("popupEndDt", "2025-09-26");
-        detail.put("popupSzSeCd", "Basic");
-        detail.put("frstRegDt", "2025-09-26");
-        detail.put("fileGroupSn", 20479);
-        detail.put("atchFileUrlAddr", "/Users/yangcheolseung/data/file/real/adm/202509");
-        detail.put("orgnlFileNm", "233D5D3952CF365C21");
-        detail.put("orgnlFileExtnNm", "jpeg");
-        detail.put("atchFileSz", 149699);
-        detail.put("fileDtlSn", 1);
-        detail.put("srvrFileNm", "ffe5ea3231c2461f961a0a672f3e125b");
-        detail.put("fileFullPath", "/Users/yangcheolseung/data/file/real/adm/202509/233D5D3952CF365C21.jpeg");
-        detail.put("sysClsfCd", "ptl");
-        
-        model.addAttribute("detail", detail);
-        
+	public String uploadFile() {
         return "adm/sample/UpDownloadSample2.do";
 	}
 	
-	/**
-	 * 파일 저장 (Single/Multi)
-	 * @param authentication
-	 * @param requestMap
-	 * @return
-	 * @throws Exception
-	 */
 	@PostMapping(value="/saveUpDownloadSample.json")
 	public ResponseEntity<Map<String, Object>> saveUpDownloadSample(
 			Authentication authentication,
@@ -74,11 +47,11 @@ public class FileUpload {
 		
 		try {
 			// 사용자 ID 가져오기
-			String userId = "SYSTEM";
+			String userId = "devuser";
 			if (authentication != null && authentication.getPrincipal() instanceof AuthUser) {
 				AuthUser authUser = (AuthUser) authentication.getPrincipal();
 				SessionVO sessionVO = (authUser != null) ? authUser.getSessionVO() : null;
-				userId = (sessionVO != null) ? sessionVO.getUserId() : "SYSTEM";
+				userId = (sessionVO != null) ? sessionVO.getUserId() : "devuser";
 			}
 			
 			// 실제 파일 저장 경로 가져오기

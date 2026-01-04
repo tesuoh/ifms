@@ -146,7 +146,7 @@ public class FileController {
         vo.setMdfrId(userId);
 		int result = fileService.deleteFile(vo);
 		
-		/* 물리적 파일 삭제 */
+		/* 파일 삭제 */
 		if (result > 0 && fileInfo != null) {
 			String fileFullPath = fileInfo.getFileFullPath();
 			if (fileFullPath != null && !fileFullPath.isEmpty()) {
@@ -154,9 +154,9 @@ public class FileController {
 				if (physicalFile.exists()) {
 					boolean deleted = physicalFile.delete();
 					if (!deleted) {
-						logger.warn("물리적 파일 삭제 실패: " + fileFullPath);
+						logger.warn("파일 삭제 실패: " + fileFullPath);
 					} else {
-						logger.debug("물리적 파일 삭제 성공: " + fileFullPath);
+						logger.debug("파일 삭제 성공: " + fileFullPath);
 					}
 				}
 			}
