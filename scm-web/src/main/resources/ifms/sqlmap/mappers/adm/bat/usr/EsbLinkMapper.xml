@@ -12,14 +12,34 @@
 		FROM itfown.esb_link el
 		LEFT JOIN itfown.esb_link_hstry elh 
 			ON el.link_tbl_nm = elh.link_tbl_nm 
-			AND elh.link_job_stts_cd = 'S'
+			AND elh.link_job_stts_cd = 'N'
 		WHERE (el.link_tbl_nm = 'if_tb_scm_user_all' OR el.link_tbl_nm = 'fmsif.if_tb_scm_user_all')
-			AND el.link_job_stts_cd = 'S'
+			AND el.link_job_stts_cd = 'N'
 			AND el.link_dt >= CURRENT_DATE
 			AND elh.link_tbl_nm IS NULL
 		ORDER BY el.link_dt DESC
 		LIMIT 10
 	</select>
+	
+	<!-- 
+	
+	SELECT
+    el.link_tbl_nm,
+    el.link_dt,
+    el.link_job_stts_cd
+	FROM itfown.esb_link el
+	LEFT JOIN itfown.esb_link_hstry elh
+	    ON el.link_tbl_nm = elh.link_tbl_nm
+	   AND elh.link_job_stts_cd = 'S'
+	WHERE (el.link_tbl_nm = 'if_tb_scm_user_all'
+	    OR el.link_tbl_nm = 'fmsif.if_tb_scm_user_all')
+	  AND el.link_job_stts_cd = 'S'
+	  AND el.link_dt >= TRUNC(SYSDATE)
+	  AND elh.link_tbl_nm IS NULL
+	ORDER BY el.link_dt DESC
+	FETCH FIRST 10 ROWS ONLY;
+	
+	 -->
 	
 	<!-- ITFOWN.EAI_USERTGT_RCV 인터페이스 테이블에서 동기화할 사용자 데이터 조회 -->
 	<select id="selectUserAllForSync" resultType="egovMap">
