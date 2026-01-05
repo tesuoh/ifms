@@ -21,77 +21,70 @@
 		LIMIT 10
 	</select>
 	
-	<!-- if_tb_scm_user_all 인터페이스 테이블에서 동기화할 사용자 데이터 조회 -->
+	<!-- ITFOWN.EAI_USERTGT_RCV 인터페이스 테이블에서 동기화할 사용자 데이터 조회 -->
 	<select id="selectUserAllForSync" resultType="egovMap">
+	<![CDATA[
 		SELECT 
-			user_id,
-			user_clsf_cd,
-			lgn_id,
-			user_nm,
-			emp_no,
-			sms_rcptn_yn,
-			last_cntn_ip_addr,
-			last_cntn_dt,
-			parco_user_id,
-			user_pswd,
-			user_orgnl_id,
-			user_photo_file,
-			parco_user_nm,
-			user_eng_nm,
-			parco_emp_no,
-			dept_cd,
-			dept_nm,
-			indct_jbps_cd,
-			indct_jbps_cd_nm,
-			jbgd_cd,
-			jbgd_nm,
-			jbps_cd,
-			jbps_nm,
-			jbttl_cd,
-			jbttl_nm,
-			duty_cd,
-			duty_nm,
-			tkcg_task_nm,
-			jbgd_lvl_no,
-			reg_ynd,
-			jncmp_ynd,
-			rsgntn_ymd,
-			eml_ador,
-			work_suts_cd,
-			mbl_telno,
-			ofc_telno,
-			co_fxno,
-			co_zip,
-			co_ador,
-			co_daddr,
-			gndr_cd,
-			ext_telno,
-			emp_se_cd,
-			co_cd,
-			co_nm,
-			hghrk_dept_cd,
-			hghrk_dept_nm,
-			powk_cd,
-			powk_nm,
-			ocpt_nm,
-			ocpt_cd,
-			cstct_nm,
-			cstct_cd,
-			work_rul_nm,
-			work_rul_cd,
-			last_prmt_ymd,
-			prp_grd_no,
-			ntnlty_nm,
-			if_stts_cd,
-			if_rslt_msg,
-			if_dt,
-			if_recv_dt,
-			if_proc_dt
-		FROM fmsif.if_tb_scm_user_all
-		WHERE if_dt >= CURRENT_DATE
-			AND (if_stts_cd IS NULL OR if_stts_cd = 'R')
-		ORDER BY if_recv_dt DESC
+			userid,
+			passwd,
+			photo,
+			username,
+			engusername,
+			employeenumber,
+			oucode,
+			ou,
+			dippos,
+			dipposname,
+			grade,
+			gradename,
+			"POSITION",
+			positionname,
+			titlecode,
+			titlename,
+			dutycode,
+			dutyname,
+			gorank,
+			createdate,
+			joindate,
+			deletedate,
+			email,
+			mobile,
+			officedeptphone,
+			officefax,
+			officeaddress,
+			officeaddressdetail,
+			gender,
+			officepersonalphone,
+			usertype,
+			companyid,
+			companyname,
+			topoucode,
+			topou,
+			workplacecode,
+			workplace,
+			worktype,
+			worktypecode,
+			costcenter,
+			costcentercode,
+			workrule,
+			workrulecode,
+			lastpromotiondate,
+			proposalgrade,
+			nationality
+		FROM ITFOWN.EAI_USERTGT_RCV
+		WHERE send_time >= to_char(current_date, 'YYYYMMDD') || '000000'
+  			AND send_time <  to_char(current_date + interval '1 day', 'YYYYMMDD') || '000000'
+  			AND (deal_stat IS NULL OR deal_stat = 'N')
+		ORDER BY SEND_TIME DESC
+	]]>
 	</select>
+	
+<!-- 
+	WHERE send_time >= to_char(trunc(sysdate), 'YYYYMMDD') || '000000'
+	  AND send_time <  to_char(trunc(sysdate) + 1, 'YYYYMMDD') || '000000'
+	  AND (deal_stat IS NULL OR deal_stat = 'N')
+	ORDER BY send_time DESC
+-->
 	
 	<!-- tb_scm_user (마스터 테이블)에 사용자 데이터 삽입 -->
 	<insert id="insertScmUser" parameterType="map">
@@ -123,6 +116,21 @@
 			CURRENT_TIMESTAMP
 		)
 	</insert>
+	
+	<!-- 
+#{userId},
+NVL(#{userClsfCd}, 'USR01'),
+NVL(#{lgnId}, #{userId}),
+#{userNm},
+#{empNo},
+NVL(#{smsRcptnYn}, 'N'),
+NULL,
+NULL,
+'system',
+SYSDATE,
+'system',
+SYSDATE
+	 -->
 	
 	<!-- tb_scm_user (마스터 테이블)에 사용자 ID 존재 여부 확인 -->
 	<select id="existsScmUser" parameterType="String" resultType="boolean">
@@ -334,13 +342,13 @@
 	<!-- user seq 에서 사용자 아이디 조회 (문자열)-->
 	<select id="selectUserIdStr" resultType="string">
 		SELECT
-			'USR' || LPAD(FMSOWN.TB_SCM_USER_SEQ.NEXTVAL, 8, '0') AS user_id
+			'USR' || LPAD(FMSOWN.SQ_SCM_USER_SEQ.NEXTVAL, 8, '0') AS user_id
 		FROM dual
 	</select>
 	
 	<!-- user seq 에서 사용자 아이디 조회 -->
 	<select id="selectUserIdSeq" resultType="long">
-  		SELECT fmsown.tb_scm_user_seq.NEXTVAL AS user_id FROM dual
+  		SELECT fmsown.sq_scm_user_seq.NEXTVAL AS user_id FROM dual
   	</select>
 	
 </mapper>
