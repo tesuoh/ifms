@@ -20,7 +20,7 @@ public interface EsbLinkMapper {
 	List<Map<String, Object>> selectNewEsbLinkRecords() throws Exception;
 	
 	/**
-	 * if_tb_scm_user_all 인터페이스 테이블에서 동기화할 사용자 데이터 조회
+	 * eai_usertgt_rcv 인터페이스 테이블에서 동기화할 사용자 데이터 조회
 	 * @return
 	 * @throws Exception
 	 */
@@ -36,11 +36,19 @@ public interface EsbLinkMapper {
 	
 	/**
 	 * tb_scm_user에 사용자 ID 존재 여부 확인
-	 * @param userId
+	 * @param parcoUserId
 	 * @return
 	 * @throws Exception
 	 */
-	boolean existsScmUser(String userId) throws Exception;
+	boolean existsScmUser(String parcoUserId) throws Exception;
+	
+	/**
+	 * lgn_id로 기존 user_id 조회
+	 * @param parcoUserId
+	 * @return
+	 * @throws Exception
+	 */
+	String selectUserIdByLgnId(String parcoUserId) throws Exception;
 	
 	/**
 	 * tb_scm_user에 사용자 데이터 업데이트
@@ -79,14 +87,15 @@ public interface EsbLinkMapper {
 	 * @return
 	 * @throws Exception
 	 */
-	String selectUserIdStr() throws Exception;
+	String selectUserId() throws Exception;
 	
 	/**
-	 * userId Long
+	 * EAI_USERTGT_RCV 테이블의 deal_stat를 'S'로 업데이트 (복합키 사용)
+	 * @param requestMap (unitsystemid, messageid, dateandtime)
 	 * @return
 	 * @throws Exception
 	 */
-	Long selectUserIdSeq() throws Exception;
+	int updateEaiUsertgtRcvDealStat(Map<String, Object> requestMap) throws Exception;
 	
 }
 
