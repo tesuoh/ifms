@@ -21,6 +21,7 @@
         <result property="regDt" column="FRST_REG_DT" />
         <result property="mdfrId" column="LAST_MDFR_ID" />
         <result property="mdfcnDt" column="LAST_MDFCN_DT" />
+        <result property="thumbPath" column="ATCH_THMB_URL_ADDR" />
     </resultMap>
 
     <!-- upload single/upload multi 파일그룹정보 생성 -->
@@ -141,6 +142,9 @@
             <if test="fileNm != null and !fileNm.equals('')">
             , srvr_file_nm = #{fileNm}
             </if>
+            <if test="thumbPath != null and !thumbPath.equals('')">
+            , ATCH_THMB_URL_ADDR = #{thumbPath}
+            </if>
             , LAST_MDFR_ID = #{mdfrId}
             , LAST_MDFCN_DT = NOW()
         WHERE FILE_GROUP_SN = #{fileGroupSn}
@@ -185,6 +189,7 @@
         , DTL.FRST_REG_DT
         , DTL.LAST_MDFR_ID
         , DTL.LAST_MDFCN_DT
+        , DTL.ATCH_THMB_URL_ADDR
         FROM SZMS.PT_COM_FILE_GROUP GRP
         , SZMS.PT_COM_AHFL_M DTL
         WHERE GRP.FILE_GROUP_SN = #{fileGroupSn}
@@ -224,6 +229,7 @@
         , DTL.frst_rgtr_id
         , DTL.last_mdfcn_dt
         , DTL.last_mdfr_id
+        , DTL.ATCH_THMB_URL_ADDR
         FROM SZMS.pt_com_file_group GRP
         , SZMS.PT_COM_AHFL_M DTL
         WHERE GRP.FILE_GROUP_SN = CAST(#{fileGroupSn} AS NUMERIC)

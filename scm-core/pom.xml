@@ -167,6 +167,32 @@
         </dependency>
         <!-- 메뉴 및 권한 url cache 설정을 위한 라이브러리 end -->
 
+		<!-- Apache Tika - 파일 타입 감지 및 메타데이터 추출 -->
+		<dependency>
+			<groupId>org.apache.tika</groupId>
+			<artifactId>tika-core</artifactId>
+			<version>2.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tika</groupId>
+			<artifactId>tika-parsers-standard-package</artifactId>
+			<version>2.9.1</version>
+		</dependency>
+
+		<!-- Thumbnailator - 이미지 썸네일 생성 -->
+		<dependency>
+			<groupId>net.coobird</groupId>
+			<artifactId>thumbnailator</artifactId>
+			<version>0.4.20</version>
+		</dependency>
+
+		<!-- Jaffree - FFmpeg Java 바인딩 -->
+		<dependency>
+			<groupId>io.v47.jaffree</groupId>
+			<artifactId>jaffree</artifactId>
+			<version>2.1.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

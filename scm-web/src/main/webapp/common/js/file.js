@@ -23,7 +23,7 @@ var FILE_EXT_FACTORY = {
 	hwp: ["hwp"],
 	dxf: ["dxf"],
 	set01: ["xls", "xlsx", "pdf", "hwp"],
-	multi: ["xls", "xlsx", "pdf", "hwp", "png", "jpg", "gif", "doc", "docx", "ppt", "pptx", "txt"],
+	multi: ["xls", "xlsx", "pdf", "hwp", "png", "jpg", "gif", "doc", "docx", "ppt", "pptx", "txt", "mp4", "avi", "mov", "wmv", "flv", "mkv", "webm"],
 	infoInpt01: ["pdf", "hwp", "doc", "png"],
 	infoInpt02: ["jpg", "png"],
 	infoInpt03: ["pdf", "hwp", "doc"],

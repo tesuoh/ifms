@@ -36,6 +36,8 @@ public class FileVO {
 
     private String fileChangeYn;
     
+    private String thumbPath;              //썸네일 경로
+    
     /**
      * 파일 전체 경로 - 확장자 포함된 파일명
      * @return
@@ -272,6 +274,14 @@ public class FileVO {
 
 	public void setFileChangeYn(String fileChangeYn) {
 		this.fileChangeYn = fileChangeYn;
+	}
+
+	public String getThumbPath() {
+		return thumbPath;
+	}
+
+	public void setThumbPath(String thumbPath) {
+		this.thumbPath = thumbPath;
 	}
 
 }

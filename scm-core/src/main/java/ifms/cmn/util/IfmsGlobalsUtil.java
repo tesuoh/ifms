@@ -18,6 +18,12 @@ public class IfmsGlobalsUtil {
 	@Value("#{globalProps['file.real.path']}") //실제경로
 	public String REAL_PATH;
 
+	@Value("#{globalProps['file.thumb.path']}") //썸네일경로
+	public String THUMB_PATH;
+
+	@Value("#{globalProps['Globals.ffmpegPath']}") //FFmpeg경로
+	public String FFMPEG_PATH;
+
 	//서버유형
 	@Value("#{globalProps['Globals.ServerType']}")
 	public String SERVER_TYPE;
@@ -117,6 +123,8 @@ public class IfmsGlobalsUtil {
 			case "ROOT_PATH"                	 : res =  ROOT_PATH; break;
 			case "TEMP_PATH"                	 : res =  TEMP_PATH; break;
 			case "REAL_PATH_ADM", "REAL_PATH"    : res =  REAL_PATH; break;
+			case "THUMB_PATH"                	 : res =  THUMB_PATH; break;
+			case "FFMPEG_PATH"                	 : res =  FFMPEG_PATH; break;
 			case "ENCRYPT_KEY"					 : res = ENCRYPT_KEY; break;
 
 			default: break;

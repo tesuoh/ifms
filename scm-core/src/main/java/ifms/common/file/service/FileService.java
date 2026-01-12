@@ -3,6 +3,7 @@ package ifms.common.file.service;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ifms.common.file.mapper.FileMapper;
@@ -10,15 +11,19 @@ import ifms.common.file.vo.FileDownloadVO;
 import ifms.common.file.vo.FileGroupVO;
 import ifms.common.file.vo.FileVO;
 import ifms.common.util.DateUtil;
-import ifms.core.security.service.AuthUser;
+import ifms.cmn.util.IfmsGlobalsUtil;
+import net.coobird.thumbnailator.Thumbnails;
+import com.github.kokorin.jaffree.ffmpeg.FFmpeg;
+import com.github.kokorin.jaffree.ffmpeg.UrlInput;
+import com.github.kokorin.jaffree.ffmpeg.UrlOutput;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +34,11 @@ public class FileService {
 
     @Autowired
     private FileMapper fileMapper;
+
+    @Autowired
+    private IfmsGlobalsUtil globalsUtil;
+
+    private static final Tika tika = new Tika();
 
     /**
      * upload single/upload multi 파일 업로드정보 생성하기
@@ -312,10 +322,23 @@ public class FileService {
                 file.mkdirs();
             }
 
+            // 파일 이동 전 썸네일 생성
+            String thumbPath = null;
+            try {
+                thumbPath = generateThumbnail(oldPath.toFile(), vo, realPath);
+            } catch (Exception e) {
+                logger.error("썸네일 생성 실패: " + e.getMessage(), e);
+            }
+
             Files.move(oldPath, newPath);
 
             /* 이동할 경로 */
             fileVO.setFilePath(realPath);
+            
+            /* 썸네일 경로 설정 */
+            if (thumbPath != null && !thumbPath.isEmpty()) {
+                fileVO.setThumbPath(thumbPath);
+            }
 
             fileMapper.saveSingleFile(fileVO);
         }
@@ -418,6 +441,108 @@ public class FileService {
         return (updateCount == 1) ? true : false;
     }
 
+    /**
+     * 썸네일 생성 함수
+     * 이미지나 동영상 파일인 경우 300x300 사이즈 썸네일 생성
+     * @param sourceFile 원본 파일
+     * @param fileVO 파일 정보 VO
+     * @param realPath 실제 파일 저장 경로 (월별 경로 포함)
+     * @return 썸네일 파일 경로 (생성 실패 시 null)
+     * @throws Exception
+     */
+    private String generateThumbnail(File sourceFile, FileVO fileVO, String realPath) throws Exception {
+        if (sourceFile == null || !sourceFile.exists()) {
+            logger.debug("썸네일 생성 대상 파일이 존재하지 않습니다: " + (sourceFile != null ? sourceFile.getPath() : "null"));
+            return null;
+        }
 
+        try {
+            // Apache Tika로 파일 타입 확인
+            String mimeType = tika.detect(sourceFile);
+            logger.debug("파일 MIME 타입: " + mimeType + ", 파일: " + sourceFile.getName());
+
+            // 이미지 또는 동영상인지 확인
+            boolean isImage = mimeType != null && mimeType.startsWith("image/");
+            boolean isVideo = mimeType != null && mimeType.startsWith("video/");
+
+            if (!isImage && !isVideo) {
+                logger.debug("이미지나 동영상 파일이 아니므로 썸네일을 생성하지 않습니다: " + mimeType);
+                return null;
+            }
+
+            // 썸네일 저장 경로 가져오기
+            String thumbBasePath = globalsUtil.getProperties("THUMB_PATH");
+            if (thumbBasePath == null || thumbBasePath.isEmpty()) {
+                logger.warn("썸네일 저장 경로가 설정되지 않았습니다.");
+                return null;
+            }
+
+            // realPath에서 /real/adm/yyyyMM 형식을 /thumb/adm/yyyyMM으로 변환
+            // 예: /Users/yangcheolseung/data/file/real/adm/202412 -> /Users/yangcheolseung/data/file/thumb/adm/202412
+            String thumbPath = thumbBasePath;
+            if (realPath != null && realPath.contains("/real/")) {
+                // realPath에서 /real/ 이후 부분 추출 (예: /adm/202412)
+                int realIndex = realPath.indexOf("/real/");
+                if (realIndex >= 0) {
+                    String afterReal = realPath.substring(realIndex + "/real/".length());
+                    // thumbBasePath와 조합
+                    thumbPath = thumbBasePath + "/" + afterReal;
+                }
+            }
+
+            // 썸네일 저장 디렉토리 생성
+            File thumbDir = new File(thumbPath);
+            if (!thumbDir.exists()) {
+                thumbDir.mkdirs();
+            }
+
+            // 썸네일 파일명 생성 (원본파일명_thumb.확장자)
+            String thumbFileName = fileVO.getFileNm() + "_thumb." + (isImage ? fileVO.getFileExtnNm() : "png");
+            File thumbFile = new File(thumbPath, thumbFileName);
+
+            if (isImage) {
+                // 이미지 썸네일 생성 (Thumbnailator 사용)
+                Thumbnails.of(sourceFile)
+                        .size(300, 300)
+                        .outputFormat(fileVO.getFileExtnNm())
+                        .toFile(thumbFile);
+                logger.debug("이미지 썸네일 생성 완료: " + thumbFile.getAbsolutePath());
+            } else if (isVideo) {
+                // 동영상 썸네일 생성 (Jaffree 사용)
+                String ffmpegPath = globalsUtil.getProperties("FFMPEG_PATH");
+                if (ffmpegPath != null && !ffmpegPath.isEmpty()) {
+                    // globals.properties에서 FFmpeg 경로를 가져온 경우
+                    Path bin = Paths.get(ffmpegPath);
+                    FFmpeg.atPath(bin)
+                            .addInput(UrlInput.fromPath(sourceFile.toPath()))
+                            .addOutput(UrlOutput.toPath(thumbFile.toPath())
+                                    .addArguments("-ss", "00:00:01")
+                                    .addArguments("-vframes", "1")
+                                    .addArguments("-vf", "scale=300:300:force_original_aspect_ratio=decrease,pad=300:300:(ow-iw)/2:(oh-ih)/2"))
+                            .execute();
+                } else {
+                    // PATH에서 자동으로 찾기
+                    FFmpeg.atPath()
+                            .addInput(UrlInput.fromPath(sourceFile.toPath()))
+                            .addOutput(UrlOutput.toPath(thumbFile.toPath())
+                                    .addArguments("-ss", "00:00:01")
+                                    .addArguments("-vframes", "1")
+                                    .addArguments("-vf", "scale=300:300:force_original_aspect_ratio=decrease,pad=300:300:(ow-iw)/2:(oh-ih)/2"))
+                            .execute();
+                }
+                logger.debug("동영상 썸네일 생성 완료: " + thumbFile.getAbsolutePath());
+            }
+
+            // 썸네일 파일 경로 반환 (파일명 포함)
+            return thumbPath + "/" + thumbFileName;
+
+        } catch (IOException e) {
+            logger.error("썸네일 생성 중 IO 오류 발생: " + e.getMessage(), e);
+            throw new Exception("썸네일 생성 실패", e);
+        } catch (Exception e) {
+            logger.error("썸네일 생성 중 오류 발생: " + e.getMessage(), e);
+            throw e;
+        }
+    }
 
 }
