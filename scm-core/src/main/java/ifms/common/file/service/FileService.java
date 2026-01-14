@@ -477,15 +477,11 @@ public class FileService {
                 return null;
             }
 
-            // realPath에서 /real/adm/yyyyMM 형식을 /thumb/adm/yyyyMM으로 변환
-            // 예: /Users/yangcheolseung/data/file/real/adm/202412 -> /Users/yangcheolseung/data/file/thumb/adm/202412
             String thumbPath = thumbBasePath;
             if (realPath != null && realPath.contains("/real/")) {
-                // realPath에서 /real/ 이후 부분 추출 (예: /adm/202412)
                 int realIndex = realPath.indexOf("/real/");
                 if (realIndex >= 0) {
                     String afterReal = realPath.substring(realIndex + "/real/".length());
-                    // thumbBasePath와 조합
                     thumbPath = thumbBasePath + "/" + afterReal;
                 }
             }

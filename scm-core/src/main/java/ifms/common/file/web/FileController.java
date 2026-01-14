@@ -148,6 +148,7 @@ public class FileController {
 		
 		/* 파일 삭제 */
 		if (result > 0 && fileInfo != null) {
+			// 실제 파일 삭제
 			String fileFullPath = fileInfo.getFileFullPath();
 			if (fileFullPath != null && !fileFullPath.isEmpty()) {
 				File physicalFile = new File(fileFullPath);
@@ -157,6 +158,20 @@ public class FileController {
 						logger.warn("파일 삭제 실패: " + fileFullPath);
 					} else {
 						logger.debug("파일 삭제 성공: " + fileFullPath);
+					}
+				}
+			}
+			
+			// 썸네일 파일 삭제
+			String thumbPath = fileInfo.getThumbPath();
+			if (thumbPath != null && !thumbPath.isEmpty()) {
+				File thumbFile = new File(thumbPath);
+				if (thumbFile.exists()) {
+					boolean thumbDeleted = thumbFile.delete();
+					if (!thumbDeleted) {
+						logger.warn("썸네일 파일 삭제 실패: " + thumbPath);
+					} else {
+						logger.debug("썸네일 파일 삭제 성공: " + thumbPath);
 					}
 				}
 			}
