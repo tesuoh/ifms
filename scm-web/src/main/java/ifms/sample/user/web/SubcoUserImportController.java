@@ -83,7 +83,7 @@ public class SubcoUserImportController {
 	}
 	
 	@PostMapping(value="/cmn/app/user/insertsubcouser.json")
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public ResponseEntity<Map<String, Object>> insertUserData() {
 		
 		Map<String, Object> response = new HashMap<>();
@@ -210,7 +210,8 @@ public class SubcoUserImportController {
 			logger.error("사용자 데이터 처리 중 오류 발생", e);
 			response.put("result", "error");
 			response.put("message", "사용자 데이터 처리 중 오류가 발생했습니다: " + e.getMessage());
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+			
+			throw new RuntimeException("사용자 데이터 처리 중 오류가 발생했습니다: " + e.getMessage(), e);
 		}
 	}
 	
