@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ifms.sample.user.mapper.SubcoUserImportMapper">
+	
+	<select id="existsScmUser" parameterType="string" resultType="boolean">
+	SELECT CASE WHEN COUNT(*) > 0 THEN true ELSE false END
+	FROM fmsown.tb_scm_user
+	WHERE lgn_id = #{lgnId}
+	</select>
+	
+	<select id="selectUserIdByLgnId" parameterType="string" resultType="string">
+		SELECT user_id
+		FROM fmsown.tb_scm_user
+		WHERE lgn_id = #{lgnId}
+			AND user_clsf_cd = 'PAR'
+		LIMIT 1
+	</select>
+	
+	<select id="selectUserId" resultType="string">
+		SELECT 'PAR' || LPAD(NEXTVAL('FMSOWN.TB_SCM_USER_SEQ')::TEXT, 8, '0') AS user_id
+	</select>
+	
+	<insert id="insertScmUser" parameterType="map">
+		<selectKey keyProperty="userId" resultType="string" order="BEFORE">
+			SELECT 'PAR' || LPAD(NEXTVAL('FMSOWN.TB_SCM_USER_SEQ')::TEXT, 8, '0') AS user_id
+		</selectKey>
+		INSERT INTO fmsown.tb_scm_user (
+			user_id,
+			user_clsf_cd,
+			lgn_id,
+			user_nm,
+			emp_no,
+			crt_user_id,
+			crt_dt,
+			updt_user_id,
+			updt_dt
+		) VALUES (
+			#{userId},
+			COALESCE(#{userClsfCd}, 'PAR'),
+			#{lgnId},
+			#{userNm},
+			#{empNo},
+			#{crtUserId},
+			CURRENT_TIMESTAMP,
+			#{updtUserId},
+			CURRENT_TIMESTAMP
+		)
+	</insert>
+	
+	<update id="updateScmUser" parameterType="map">
+		UPDATE fmsown.tb_scm_user
+		SET
+			user_nm = #{userNm},
+			emp_no = #{empNo},
+			updt_user_id = #{updtUserId},
+			updt_dt = CURRENT_TIMESTAMP
+		WHERE lgn_id = #{lgnId}
+		  AND user_clsf_cd = 'PAR'
+	</update>
+	
+	<select id="existsScmUserParco" parameterType="string" resultType="boolean">
+		SELECT CASE WHEN COUNT(*) > 0 THEN true ELSE false END
+		FROM fmsown.tb_scm_user_parco
+		WHERE parco_user_id = #{parcoUserId}
+	</select>
+	
+	<insert id="insertScmUserParco" parameterType="map">
+		INSERT INTO fmsown.tb_scm_user_parco (
+			user_id,
+			parco_user_id,
+			user_pswd,
+			user_orgnl_id,
+			user_nm,
+			emp_no,
+			dept_cd,
+			dept_nm,
+			mbl_telno,
+			user_contact_id,
+			crt_user_id,
+			crt_ot,
+			updt_user_id,
+			updt_ot
+		) VALUES (
+			#{userId},
+			#{parcoUserId},
+			#{userPswd},
+			#{userOrgnlId},
+			#{userNm},
+			#{empNo},
+			#{deptCd},
+			#{deptNm},
+			#{mblTelno},
+			#{userContactId},
+			#{crtUserId},
+			CURRENT_TIMESTAMP,
+			#{updtUserId},
+			CURRENT_TIMESTAMP
+		)
+	</insert>
+	
+	<update id="updateScmUserParco" parameterType="map">
+		UPDATE fmsown.tb_scm_user_parco
+		SET
+			user_pswd = #{userPswd},
+			user_orgnl_id = #{userOrgnlId},
+			user_nm = #{userNm},
+			emp_no = #{empNo},
+			dept_cd = #{deptCd},
+			dept_nm = #{deptNm},
+			mbl_telno = #{mblTelno},
+			user_contact_id = #{userContactId},
+			updt_user_id = #{updtUserId},
+			updt_ot = CURRENT_TIMESTAMP
+		WHERE parco_user_id = #{parcoUserId}
+	</update>
+	
+	<insert id="insertUserContact" parameterType="map"
+			useGeneratedKeys="true"
+			keyProperty="seqid">
+		INSERT INTO fmsown.tb_user_contact (
+			seqid,
+			email,
+			mobilephone,
+			created_at
+		) VALUES (
+			nextval('fmsown.tb_user_contact_seqid_seq'),
+			CASE WHEN CAST(#{email} AS TEXT) IS NULL THEN NULL ELSE fmsown.fn_encrypt(#{email}, #{encryptKey}) END,
+			CASE WHEN CAST(#{mobilephone} AS TEXT) IS NULL THEN NULL ELSE fmsown.fn_encrypt(#{mobilephone}, #{encryptKey}) END,
+			DEFAULT
+		)
+		RETURNING seqid
+	</insert>
+	
+	<select id="selectUserContact" parameterType="map" resultType="egovMap">
+		SELECT 
+			CASE 
+				WHEN uc.email IS NULL THEN NULL 
+				ELSE fmsown.fn_decrypt(uc.email, #{encryptKey}) 
+			END AS email,
+			CASE 
+				WHEN uc.mobilephone IS NULL THEN NULL 
+				ELSE fmsown.fn_decrypt(uc.mobilephone, #{encryptKey}) 
+			END AS mobilephone
+		FROM fmsown.tb_scm_user u
+		INNER JOIN fmsown.tb_scm_user_parco p ON u.user_id = p.user_id
+		INNER JOIN fmsown.tb_user_contact uc ON p.user_contact_id = uc.seqid
+		WHERE u.user_id = #{userId}
+			AND u.user_clsf_cd = 'PAR'
+		LIMIT 1
+	</select>
+</mapper>
