@@ -18,7 +18,7 @@ public class SubcoUserImportService {
 	@Autowired
 	private SubcoUserImportMapper subcoUserImportMapper;
 	
-	public boolean existsScmUser(@Param("lgnId") String lgnId) throws Exception {
+	public int existsScmUser(@Param("lgnId") String lgnId) throws Exception {
 		return subcoUserImportMapper.existsScmUser(lgnId);
 	}
 	
@@ -30,7 +30,6 @@ public class SubcoUserImportService {
 		return subcoUserImportMapper.selectUserId();
 	}
 	
-	
 	public int insertScmUser(Map<String, Object> paramMap) throws Exception {
 		return subcoUserImportMapper.insertScmUser(paramMap);
 		
@@ -40,20 +39,36 @@ public class SubcoUserImportService {
 		return subcoUserImportMapper.updateScmUser(paramMap);
 	}
 	
-	public boolean existsScmUserParco(@Param("parcoUserId") String parcoUserId) throws Exception {
-		return subcoUserImportMapper.existsScmUserParco(parcoUserId);
+	public int existsScmUserSubco(@Param("lgnId") String lgnId) throws Exception {
+		return subcoUserImportMapper.existsScmUserSubco(lgnId);
 	}
 	
-	public int insertScmUserParco(Map<String, Object> paramMap) throws Exception {
-		return subcoUserImportMapper.insertScmUserParco(paramMap);
+	public Map<String, Object> selectScmUserSubcoPrtc(@Param("lgnId") String lgnId) throws Exception {
+		return subcoUserImportMapper.selectScmUserSubcoPrtc(lgnId);
 	}
 	
-	public int updateScmUserParco(Map<String, Object> paramMap) throws Exception {
-		return subcoUserImportMapper.updateScmUserParco(paramMap);
+	public int insertScmUserSubco(Map<String, Object> paramMap) throws Exception {
+		return subcoUserImportMapper.insertScmUserSubco(paramMap);
 	}
 	
-	public int insertUserContact(Map<String, Object> paramMap) throws Exception {
-		return subcoUserImportMapper.insertUserContact(paramMap);
+	public int updateScmUserSubco(Map<String, Object> paramMap) throws Exception {
+		return subcoUserImportMapper.updateScmUserSubco(paramMap);
+	}
+	
+	public int insertUserPrtc(Map<String, Object> paramMap) throws Exception {
+		return subcoUserImportMapper.insertUserPrtc(paramMap);
+	}
+	
+	public int updateUserPrtc(Map<String, Object> paramMap) throws Exception {
+		return subcoUserImportMapper.updateUserPrtc(paramMap);
+	}
+	
+	public Map<String, Object> selectCoopPrtlUserPrtc(String userId, String encryptKey) throws Exception {
+		return subcoUserImportMapper.selectCoopPrtlUserPrtc(userId, encryptKey);
+	}
+	
+	public Map<String, Object> selectMblTelUserPrtc(String userId, String encryptKey) throws Exception {
+		return subcoUserImportMapper.selectMblTelUserPrtc(userId, encryptKey);
 	}
 	
 	public Map<String, Object> selectUserContact(String userId, String encryptKey) throws Exception {

@@ -41,9 +41,9 @@ public class SubcoUserImportController {
 	@Autowired
 	private IfmsGlobalsUtil ifmsGlobalsUtil;
 	
-	@RequestMapping(value="/cmn/app/user/parcouserimport.do", method = {RequestMethod.GET, RequestMethod.POST})
-	public String parcoUserImport(ModelMap model) {
-		return "cmn/app/user/parcoruserimport";
+	@RequestMapping(value="/cmn/app/user/subcouserimport.do", method = {RequestMethod.GET, RequestMethod.POST})
+	public String subcoUserImport(ModelMap model) {
+		return "cmn/app/user/subcoruserimport";
 	}
 	
 	@PostMapping(value="/cmn/app/user/searchusercontact.json")
@@ -136,19 +136,19 @@ public class SubcoUserImportController {
 					continue;
 				}
 				
-				boolean existsUser = subcoUserImportService.existsScmUser(lgnId);
-				String userId = existsUser ? subcoUserImportService.selectUserIdByLgnId(lgnId) : "";
+				int existsUser = subcoUserImportService.existsScmUser(lgnId);
+				String userId = existsUser > 0 ? subcoUserImportService.selectUserIdByLgnId(lgnId) : "";
 				
 				Map<String, Object> userMap = new HashMap<>();
 				userMap.put("userId", userId);
-				userMap.put("userClsfCd", "PAR");
+				userMap.put("userClsfCd", "SUB");
 				userMap.put("lgnId", lgnId);
 				userMap.put("userNm", userNm);
 				userMap.put("empNo", empNo);
 				userMap.put("crtUserId", "system");
 				userMap.put("updtUserId", "system");
 				
-				if (existsUser) {
+				if (existsUser > 0) {
 					subcoUserImportService.updateScmUser(userMap);
 				} else {
 					subcoUserImportService.insertScmUser(userMap);
@@ -163,44 +163,88 @@ public class SubcoUserImportController {
 				
 				String mobileForPassword = mobile.replace("-", "");
 				
-				Long userContactId = null;
+				Long coopPrtlUserPrtcSn = null;
+				Long mblTelUserPrtcSn = null;
 				
-				if (!mobile.isEmpty() || !portalId.isEmpty()) {
-					Map<String, Object> contactMap = new HashMap<>();
-					contactMap.put("email", portalId);
-					contactMap.put("mobilephone", mobile);
-					contactMap.put("encryptKey", encryptKey);
-					subcoUserImportService.insertUserContact(contactMap);
+				Map<String, Object> userPrtcMap = subcoUserImportService.selectScmUserSubcoPrtc(lgnId);
+				
+				if (userPrtcMap != null) {
 					
-				    Object seqidObj = contactMap.get("seqid");
-				    if (seqidObj instanceof Number) {
-				        userContactId = ((Number) seqidObj).longValue();
-				    }
+					Object coopPrtlObj = userPrtcMap.get("COOPPRTLUSERPRTC");
+					coopPrtlUserPrtcSn = coopPrtlObj == null ? null : ((Number) coopPrtlObj).longValue();
+					
+					Object mblTelObj = userPrtcMap.get("MBLTELUSERPRTC");
+					mblTelUserPrtcSn = mblTelObj == null ? null : ((Number) mblTelObj).longValue();
 				}
 				
-				Map<String, Object> parcoMap = new HashMap<>();
-				parcoMap.put("userId", userId);
-				parcoMap.put("parcoUserId", lgnId);
-				parcoMap.put("userPswd", passwordEncoder.encode(mobileForPassword));
-				parcoMap.put("userOrgnlId", lgnId);
-				parcoMap.put("userNm", userNm);
-				parcoMap.put("empNo", empNo);
-				parcoMap.put("deptCd", deptCd);
-				parcoMap.put("deptNm", deptNm);
-				parcoMap.put("mblTelno", mobile);
-				parcoMap.put("crtUserId", "system");
-				parcoMap.put("updtUserId", "system");
-				
-				if (userContactId != null) {
-				    parcoMap.put("userContactId", userContactId);
+				if (!portalId.isEmpty()) {
+					if (coopPrtlUserPrtcSn == null) {
+						Map<String, Object> contactMap = new HashMap<>();
+						contactMap.put("value", portalId);
+						contactMap.put("encryptKey", encryptKey);
+						subcoUserImportService.insertUserPrtc(contactMap);
+						
+						Object seqidObj = contactMap.get("seqId");
+						if (seqidObj instanceof Number) {
+							coopPrtlUserPrtcSn = ((Number) seqidObj).longValue();
+						}
+						
+					} else {
+						Map<String, Object> contactMap = new HashMap<>();
+						contactMap.put("userPrtcSn", coopPrtlUserPrtcSn);
+						contactMap.put("value", portalId);
+						contactMap.put("encryptKey", encryptKey);
+						subcoUserImportService.updateUserPrtc(contactMap);
+					}
 				}
 				
-				boolean existsParco = subcoUserImportService.existsScmUserParco(lgnId);
-				if (existsParco) {
-					subcoUserImportService.updateScmUserParco(parcoMap);
+				if (!mobile.isEmpty()) {
+					if (mblTelUserPrtcSn == null) {
+						Map<String, Object> contactMap = new HashMap<>();
+						contactMap.put("value", mobile);
+						contactMap.put("encryptKey", encryptKey);
+						subcoUserImportService.insertUserPrtc(contactMap);
+						
+						Object seqidObj = contactMap.get("seqId");
+					    if (seqidObj instanceof Number) {
+					        mblTelUserPrtcSn = ((Number) seqidObj).longValue();
+					    }
+					} else {
+						Map<String, Object> contactMap = new HashMap<>();
+						contactMap.put("userPrtcSn", mblTelUserPrtcSn);
+						contactMap.put("value", mobile);
+						contactMap.put("encryptKey", encryptKey);
+						subcoUserImportService.updateUserPrtc(contactMap);
+					}
+				}
+				
+				Map<String, Object> subcoMap = new HashMap<>();
+				subcoMap.put("userId", userId);
+				subcoMap.put("lgnId", lgnId);
+				subcoMap.put("userPswd", passwordEncoder.encode(mobileForPassword));
+				subcoMap.put("userOrgnlId", lgnId);
+				subcoMap.put("userNm", userNm);
+				subcoMap.put("empNo", empNo);
+				subcoMap.put("deptCd", deptCd);
+				subcoMap.put("deptNm", deptNm);
+				subcoMap.put("mblTelno", mobile);
+				subcoMap.put("crtUserId", "system");
+				subcoMap.put("updtUserId", "system");
+				
+				if (mblTelUserPrtcSn != null) {
+					subcoMap.put("mblTelUserPrtcSn", mblTelUserPrtcSn);
+				}
+				
+				if (coopPrtlUserPrtcSn != null) {
+				    subcoMap.put("userContactId", coopPrtlUserPrtcSn);
+				}
+				
+				int existsSubco = subcoUserImportService.existsScmUserSubco(lgnId);
+				if (existsSubco > 0) {
+					subcoUserImportService.updateScmUserSubco(subcoMap);
 					updateCount++;
 				} else {
-					subcoUserImportService.insertScmUserParco(parcoMap);
+					subcoUserImportService.insertScmUserSubco(subcoMap);
 					insertCount++;
 				}
 			}
