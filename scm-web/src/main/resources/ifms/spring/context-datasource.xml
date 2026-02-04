@@ -34,6 +34,27 @@
         			<property name="sqlPrefix" value="[SQL] : " />
         		</bean>
         </property>
-    </bean>   
+    </bean>
+    
+    <!-- ========================================== -->
+    <!-- Emma DataSource 설정 (SMS 발송용)           -->
+    <!-- ========================================== -->
+    <bean id="emmaDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${Emma.DriverClassName}"/>
+        <property name="url" value="${Emma.Url}" />
+        <property name="username" value="${Emma.UserName}"/>
+        <property name="password" value="${Emma.Password}"/>
+    </bean>
+    
+    <!-- Emma Proxy DataSource 설정 -->
+    <bean id="emmaProxyDataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+        <constructor-arg ref="emmaDataSource"/>
+        <property name="logFormatter" > 
+        		<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+        			<property name="loggingType" value="MULTI_LINE" />
+        			<property name="sqlPrefix" value="[EMMA-SQL] : " />
+        		</bean>
+        </property>
+    </bean>
      
 </beans>

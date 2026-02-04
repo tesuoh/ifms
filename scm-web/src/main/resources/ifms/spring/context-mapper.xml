@@ -15,9 +15,30 @@
 	</bean>
 	
 	<!-- MapperConfigurer setup for MyBatis Database Layer with @Mapper("deptMapper") in DeptMapper Interface -->
+	<!-- ifms.emma.mapper 제외 - 별도 DataSource 사용 -->
 	<bean class="org.egovframe.rte.psl.dataaccess.mapper.MapperConfigurer">
-		<property name="basePackage" value="ifms.cmn.session.mapper, ifms.**.impl, ifms.**.mapper" />
+		<property name="basePackage" value="ifms.cmn.session.mapper, ifms.cmn.**.mapper, ifms.common.**.mapper, ifms.core.**.mapper, ifms.adm.**.mapper, ifms.sample.**.mapper, ifms.mybatis.**.mapper, ifms.**.impl" />
 		<property name="sqlSessionFactoryBeanName" value="sqlSession"/>
+	</bean>
+	
+	<!-- ========================================== -->
+	<!-- Emma SqlSession 설정 (SMS 발송용)           -->
+	<!-- ========================================== -->
+	<bean id="emmaSqlSession" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="emmaDataSource" />
+		<property name="configLocation" value="classpath:/ifms/sqlmap/config/sql-mapper-config.xml" />
+		<property name="mapperLocations" value="classpath*:/ifms/sqlmap/mappers/emma/**/*.xml" />
+	</bean>
+	
+	<!-- Emma SqlSessionTemplate 설정 -->
+	<bean id="emmaSqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="emmaSqlSession"/>
+	</bean>
+	
+	<!-- Emma MapperConfigurer 설정 (ifms.emma.mapper 전용) -->
+	<bean class="org.egovframe.rte.psl.dataaccess.mapper.MapperConfigurer">
+		<property name="basePackage" value="ifms.emma.mapper" />
+		<property name="sqlSessionFactoryBeanName" value="emmaSqlSession"/>
 	</bean>
 
 </beans>
