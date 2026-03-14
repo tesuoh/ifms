@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ifms.adm.smc.code.mapper.CodeMngMapper">
+
+	<!--
+	* description : 공통코드 목록 조회
+	* author : 양철승
+	* since : 2026.03.12 
+	 -->
+	<select id="selectCodeList" parameterType="Map" resultType="egovMap"></select>
+	
+	<!--
+	* description : 공통코드 목록 건수 조회
+	* author : 양철승
+	* since : 2026.03.12 
+	 -->
+	<select id="selectCodeListTotCnt" parameterType="Map" resultType="int"></select>
+	
+	<!--
+	* description : 공통코드 중복 조회
+	* author : 양철승
+	* since : 2026.03.12 
+	 -->
+	<select id="selectExistCode" parameterType="ifms.adm.smc.code.vo.CodeMngVO"></select>
+	
+	<!--
+	* description : 공통코드 등록
+	* author : 양철승
+	* since : 2026.03.12 
+	 -->
+	<insert id="insertCodeMng" parameterType="ifms.adm.smc.code.vo.CodeMngVO"></insert>
+	
+	<!--
+	* description : 공통코드 상세조회
+	* author : 양철승
+	* since : 2026.03.12 
+	 -->
+	<select id="selectCodeDetail" parameterType="Map" resultType="egovMap"></select>
+	
+	<!--
+	* description : 공통코드 삭제
+	* author : 양철승
+	* since : 2026.03.12 
+	 -->
+	<delete id="deleteCodeDetail" parameterType="Map"></delete>
+	
+	<!--
+	* description : 공통코드 수정
+	* author : 양철승
+	* since : 2026.03.12 
+	 -->
+	<update id="updateCodeDetail" parameterType="Map"></update>
+	
+	<!--
+	* description : 상세코드 목록 조회
+	* author : 양철승
+	* since : 2026.03.12 
+	 -->
+	<select id="selectCodeDtlList" parameterType="Map" resultType="egovMap"></select>
+	
+	<!--
+	* description : 상세코드 목록 건수 조회
+	* author : 양철승
+	* since : 2026.03.12 
+	 -->
+	<select id="selectCodeDtlListTotCnt" parameterType="Map" resultType="int"></select>
+	
+	<!--
+	* description : 상세코드 중복 조회
+	* author : 양철승
+	* since : 2026.03.12 
+	 -->
+	<select id="selectExistCodeDtl" parameterType="ifms.adm.smc.code.vo.CodeDtlMngVO"></select>
+	
+	<!--
+	* description : 상세코드 등록
+	* author : 양철승
+	* since : 2026.03.12 
+	 -->
+	<insert id="insertCodeDtlMng" parameterType="ifms.adm.smc.code.vo.CodeDtlMngVO"></insert>
+	
+	<!--
+	* description : 상세코드 상세조회
+	* author : 양철승
+	* since : 2026.03.12 
+	 -->
+	<select id="selectCodeDtlDetail" parameterType="Map" resultType="egovMap"></select>
+	
+	<!--
+	* description : 상세코드 삭제
+	* author : 양철승
+	* since : 2026.03.12 
+	 -->
+	<delete id="deleteCodeDtlDetail" parameterType="Map"></delete>
+	
+	<!--
+	* description : 상세코드 수정
+	* author : 양철승
+	* since : 2026.03.12 
+	 -->
+	<update id="updateCodeDtlDetail" parameterType="Map"></update>
+</mapper>
