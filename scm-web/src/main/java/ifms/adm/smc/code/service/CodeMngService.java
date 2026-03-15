@@ -12,6 +12,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import ifms.adm.smc.code.mapper.CodeMngMapper;
+import ifms.adm.smc.code.vo.CodeDtlMngVO;
 import ifms.adm.smc.code.vo.CodeMngVO;
 import ifms.cmn.session.hlp.IfmsUserDetailsHelper;
 import ifms.core.security.vo.SessionVO;
@@ -65,8 +66,24 @@ public class CodeMngService  {
 	 * @return
 	 * @throws Exception
 	 */
-	public int insertCodeMng(CodeMngVO codeMngVO) throws Exception {
-		return codeMngMapper.insertCodeMng(codeMngVO);
+	public int insertCode(CodeMngVO codeMngVO) throws Exception {
+		Object auth = IfmsUserDetailsHelper.getAuthenticatedUser();
+		if (auth instanceof SessionVO) {
+			String userId = ((SessionVO) auth).getUserId();
+			if (userId != null) {
+				if (codeMngVO.getCrtUserId() == null) {
+					codeMngVO.setCrtUserId(userId);
+				}
+				if (codeMngVO.getUpdtUserId() == null) {
+					codeMngVO.setUpdtUserId(userId);
+				}
+			}
+		}
+		int result = codeMngMapper.insertCodeMng(codeMngVO);
+		if (result > 0) {
+			codeMngMapper.insertCodeMngMlng(codeMngVO);
+		}
+		return result;
 	}
 	
 	/**
@@ -116,7 +133,7 @@ public class CodeMngService  {
 	 * @throws Exception
 	 */
 	public int selectCodeDtlListTotCnt(Map<String, Object> paramMap) throws Exception {
-		return codeMngMapper.selectCodeListTotCnt(paramMap);
+		return codeMngMapper.selectCodeDtlListTotCnt(paramMap);
 	}
 	
 	/**
@@ -125,8 +142,8 @@ public class CodeMngService  {
 	 * @return 
 	 * @throws Exception
 	 */
-	public int selectExistCodeDtl(CodeMngVO codeMngVO) throws Exception {
-		return codeMngMapper.selectExistCodeDtl(codeMngVO);
+	public int selectExistCodeDtl(CodeDtlMngVO codeDtlMngVO) throws Exception {
+		return codeMngMapper.selectExistCodeDtl(codeDtlMngVO);
 	}
 	
 	/**
@@ -135,8 +152,24 @@ public class CodeMngService  {
 	 * @return
 	 * @throws Exception
 	 */
-	public int insertCodeDtlMng(CodeMngVO codeMngVO) throws Exception {
-		return codeMngMapper.insertCodeDtlMng(codeMngVO);
+	public int insertCodeDtlMng(CodeDtlMngVO codeDtlMngVO) throws Exception {
+		Object auth = IfmsUserDetailsHelper.getAuthenticatedUser();
+		if (auth instanceof SessionVO) {
+			String userId = ((SessionVO) auth).getUserId();
+			if (userId != null) {
+				if (codeDtlMngVO.getCrtUserId() == null) {
+					codeDtlMngVO.setCrtUserId(userId);
+				}
+				if (codeDtlMngVO.getUpdtUserId() == null) {
+					codeDtlMngVO.setUpdtUserId(userId);
+				}
+			}
+		}
+		int result = codeMngMapper.insertCodeDtlMng(codeDtlMngVO);
+		if (result > 0) {
+			codeMngMapper.insertCodeDtlMngMlng(codeDtlMngVO);
+		}
+		return result;
 	}
 	
 	/**

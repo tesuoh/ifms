@@ -7,96 +7,368 @@
 	* author : 양철승
 	* since : 2026.03.12 
 	 -->
-	<select id="selectCodeList" parameterType="Map" resultType="egovMap"></select>
+	<select id="selectCodeList" parameterType="Map" resultType="egovMap">
+		SELECT S.SUBSYS_NM
+			, C.COM_CD_ID
+			, M.COM_CD_NM
+			, C.DEL_YN
+			, (SELECT COUNT(*) FROM FMSOWN.TB_SCM_COM_CD_DTL D WHERE D.COM_CD_ID = C.COM_CD_ID) AS DTL_CD_CNT
+			, C.CRT_DT
+			, C.UPDT_DT
+		FROM FMSOWN.TB_SCM_COM_CD C
+		LEFT JOIN FMSOWN.TB_SCM_SUBSYS S ON S.SUBSYS_CD = C.SUBSYS_CD
+		LEFT JOIN FMSOWN.TB_SCM_COM_CD_MLNG M ON M.COM_CD_ID = C.COM_CD_ID AND M.MLNG_LANG_CD = NVL(#{mlngLangCd}, 'KO')
+		WHERE 1 = 1
+		<if test="subsysCd != null and subsysCd != ''">
+			AND C.SUBSYS_CD = #{subsysCd}
+		</if>
+		<if test="comCdId != null and comCdId != ''">
+			AND C.COM_CD_ID LIKE '%' || #{comCdId} || '%'
+		</if>
+		<if test="comCdNm != null and comCdNm != ''">
+			AND M.COM_CD_NM LIKE '%' || #{comCdNm} || '%'
+		</if>
+		<if test="delYn != null and delYn != ''">
+			AND C.DEL_YN = #{delYn}
+		</if>
+		ORDER BY C.CRT_DT DESC, C.COM_CD_ID
+		<if test="startNo != null and listCount != null">
+			OFFSET #{startNo} ROWS FETCH NEXT #{listCount} ROWS ONLY
+		</if>
+	</select>
 	
 	<!--
 	* description : 공통코드 목록 건수 조회
 	* author : 양철승
 	* since : 2026.03.12 
 	 -->
-	<select id="selectCodeListTotCnt" parameterType="Map" resultType="int"></select>
+	<select id="selectCodeListTotCnt" parameterType="Map" resultType="int">
+		SELECT COUNT(*)
+		FROM FMSOWN.TB_SCM_COM_CD C
+		LEFT JOIN FMSOWN.TB_SCM_SUBSYS S ON S.SUBSYS_CD = C.SUBSYS_CD
+		LEFT JOIN FMSOWN.TB_SCM_COM_CD_MLNG M ON M.COM_CD_ID = C.COM_CD_ID AND M.MLNG_LANG_CD = NVL(#{mlngLangCd}, 'KO')
+		WHERE 1 = 1
+		<if test="subsysCd != null and subsysCd != ''">
+			AND C.SUBSYS_CD = #{subsysCd}
+		</if>
+		<if test="comCdId != null and comCdId != ''">
+			AND C.COM_CD_ID LIKE '%' || #{comCdId} || '%'
+		</if>
+		<if test="comCdNm != null and comCdNm != ''">
+			AND M.COM_CD_NM LIKE '%' || #{comCdNm} || '%'
+		</if>
+		<if test="delYn != null and delYn != ''">
+			AND C.DEL_YN = #{delYn}
+		</if>
+	</select>
 	
 	<!--
 	* description : 공통코드 중복 조회
 	* author : 양철승
 	* since : 2026.03.12 
 	 -->
-	<select id="selectExistCode" parameterType="ifms.adm.smc.code.vo.CodeMngVO"></select>
+	<select id="selectExistCode" parameterType="ifms.adm.smc.code.vo.CodeMngVO" resultType="int">
+		SELECT COUNT(*)
+		FROM FMSOWN.TB_SCM_COM_CD
+		WHERE COM_CD_ID = #{comCdId}
+	</select>
 	
 	<!--
 	* description : 공통코드 등록
 	* author : 양철승
 	* since : 2026.03.12 
 	 -->
-	<insert id="insertCodeMng" parameterType="ifms.adm.smc.code.vo.CodeMngVO"></insert>
+	<insert id="insertCodeMng" parameterType="ifms.adm.smc.code.vo.CodeMngVO">
+		INSERT INTO FMSOWN.TB_SCM_COM_CD (
+			COM_CD_ID,
+			COM_CD_LEN,
+			SUBSYS_CD,
+			SYS_COM_CD_YN,
+			DEL_YN,
+			CRT_USER_ID,
+			UPDT_USER_ID
+		) VALUES (
+			#{comCdId},
+			#{comCdLen},
+			#{subsysCd},
+			NVL(#{sysComCdYn}, 'N'),
+			NVL(#{delYn}, 'N'),
+			#{crtUserId},
+			#{updtUserId}
+		)
+	</insert>
+
+	<!--
+	* description : 공통코드 다국어 등록 (KO, EN, ZH)
+	* author : 양철승
+	* since : 2026.03.12
+	 -->
+	<insert id="insertCodeMngMlng" parameterType="ifms.adm.smc.code.vo.CodeMngVO">
+		INSERT ALL
+		INTO FMSOWN.TB_SCM_COM_CD_MLNG (COM_CD_ID, MLNG_LANG_CD, COM_CD_NM, COM_CD_EXPLN, CRT_USER_ID, UPDT_USER_ID)
+		VALUES (#{comCdId}, 'KO', NVL(#{comCdNm}, ' '), NVL(#{comCdExpln}, ' '), #{crtUserId}, #{updtUserId})
+		INTO FMSOWN.TB_SCM_COM_CD_MLNG (COM_CD_ID, MLNG_LANG_CD, COM_CD_NM, COM_CD_EXPLN, CRT_USER_ID, UPDT_USER_ID)
+		VALUES (#{comCdId}, 'EN', NVL(#{comCdNm}, ' '), NVL(#{comCdExpln}, ' '), #{crtUserId}, #{updtUserId})
+		INTO FMSOWN.TB_SCM_COM_CD_MLNG (COM_CD_ID, MLNG_LANG_CD, COM_CD_NM, COM_CD_EXPLN, CRT_USER_ID, UPDT_USER_ID)
+		VALUES (#{comCdId}, 'ZH', NVL(#{comCdNm}, ' '), NVL(#{comCdExpln}, ' '), #{crtUserId}, #{updtUserId})
+		SELECT 1 FROM DUAL
+	</insert>
 	
 	<!--
 	* description : 공통코드 상세조회
 	* author : 양철승
 	* since : 2026.03.12 
 	 -->
-	<select id="selectCodeDetail" parameterType="Map" resultType="egovMap"></select>
+	<select id="selectCodeDetail" parameterType="Map" resultType="egovMap">
+		SELECT C.COM_CD_ID
+			, C.COM_CD_LEN
+			, C.SUBSYS_CD
+			, C.SYS_COM_CD_YN
+			, C.DEL_YN
+			, C.CRT_USER_ID
+			, C.UPDT_USER_ID
+			, C.CRT_DT
+			, C.UPDT_DT
+			, M_KO.COM_CD_NM   AS COM_CD_NM_KO
+			, M_KO.COM_CD_EXPLN AS COM_CD_EXPLN_KO
+			, M_EN.COM_CD_NM   AS COM_CD_NM_EN
+			, M_EN.COM_CD_EXPLN AS COM_CD_EXPLN_EN
+			, M_ZH.COM_CD_NM   AS COM_CD_NM_ZH
+			, M_ZH.COM_CD_EXPLN AS COM_CD_EXPLN_ZH
+		FROM FMSOWN.TB_SCM_COM_CD C
+		LEFT JOIN FMSOWN.TB_SCM_COM_CD_MLNG M_KO ON M_KO.COM_CD_ID = C.COM_CD_ID AND M_KO.MLNG_LANG_CD = 'KO'
+		LEFT JOIN FMSOWN.TB_SCM_COM_CD_MLNG M_EN ON M_EN.COM_CD_ID = C.COM_CD_ID AND M_EN.MLNG_LANG_CD = 'EN'
+		LEFT JOIN FMSOWN.TB_SCM_COM_CD_MLNG M_ZH ON M_ZH.COM_CD_ID = C.COM_CD_ID AND M_ZH.MLNG_LANG_CD = 'ZH'
+		WHERE C.COM_CD_ID = #{comCdId}
+	</select>
 	
 	<!--
-	* description : 공통코드 삭제
+	* description : 공통코드 삭제 (논리삭제: DEL_YN = 'Y')
 	* author : 양철승
 	* since : 2026.03.12 
 	 -->
-	<delete id="deleteCodeDetail" parameterType="Map"></delete>
+	<update id="deleteCodeDetail" parameterType="Map">
+		UPDATE FMSOWN.TB_SCM_COM_CD
+		SET DEL_YN = 'Y'
+		WHERE COM_CD_ID = #{comCdId}
+	</update>
 	
 	<!--
-	* description : 공통코드 수정
+	* description : 공통코드 수정 (TB_SCM_COM_CD, TB_SCM_COM_CD_MLNG KO/EN/ZH)
 	* author : 양철승
 	* since : 2026.03.12 
 	 -->
-	<update id="updateCodeDetail" parameterType="Map"></update>
+	<update id="updateCodeDetail" parameterType="Map">
+		BEGIN
+			UPDATE FMSOWN.TB_SCM_COM_CD
+			SET COM_CD_LEN = #{comCdLen}
+				, SUBSYS_CD = #{subsysCd}
+				, SYS_COM_CD_YN = NVL(#{sysComCdYn}, 'N')
+				, DEL_YN = NVL(#{delYn}, 'N')
+				, UPDT_USER_ID = #{updtUserId}
+				, UPDT_DT = SYSDATE
+			WHERE COM_CD_ID = #{comCdId};
+			UPDATE FMSOWN.TB_SCM_COM_CD_MLNG
+			SET COM_CD_NM = NVL(#{comCdNmKo}, ' ')
+				, COM_CD_EXPLN = NVL(#{comCdExplnKo}, ' ')
+				, UPDT_USER_ID = #{updtUserId}
+				, UPDT_DT = SYSDATE
+			WHERE COM_CD_ID = #{comCdId} AND MLNG_LANG_CD = 'KO';
+			UPDATE FMSOWN.TB_SCM_COM_CD_MLNG
+			SET COM_CD_NM = NVL(#{comCdNmEn}, ' ')
+				, COM_CD_EXPLN = NVL(#{comCdExplnEn}, ' ')
+				, UPDT_USER_ID = #{updtUserId}
+				, UPDT_DT = SYSDATE
+			WHERE COM_CD_ID = #{comCdId} AND MLNG_LANG_CD = 'EN';
+			UPDATE FMSOWN.TB_SCM_COM_CD_MLNG
+			SET COM_CD_NM = NVL(#{comCdNmZh}, ' ')
+				, COM_CD_EXPLN = NVL(#{comCdExplnZh}, ' ')
+				, UPDT_USER_ID = #{updtUserId}
+				, UPDT_DT = SYSDATE
+			WHERE COM_CD_ID = #{comCdId} AND MLNG_LANG_CD = 'ZH';
+		END;
+	</update>
 	
 	<!--
-	* description : 상세코드 목록 조회
+	* description : 상세코드 목록 조회 (COM_CD_NM, DTL_CD_NM은 MLNG_LANG_CD 로케일 기준)
 	* author : 양철승
-	* since : 2026.03.12 
+	* since : 2026.03.12
 	 -->
-	<select id="selectCodeDtlList" parameterType="Map" resultType="egovMap"></select>
+	<select id="selectCodeDtlList" parameterType="Map" resultType="egovMap">
+		SELECT D.COM_CD_ID
+			, M.COM_CD_NM
+			, D.DTL_CD
+			, DM.DTL_CD_NM
+			, D.SORT_SEQ
+			, D.DEL_YN
+			, D.CRT_DT
+			, D.UPDT_DT
+		FROM FMSOWN.TB_SCM_COM_CD_DTL D
+		LEFT JOIN FMSOWN.TB_SCM_COM_CD_MLNG M ON M.COM_CD_ID = D.COM_CD_ID AND M.MLNG_LANG_CD = NVL(#{mlngLangCd}, 'KO')
+		LEFT JOIN FMSOWN.TB_SCM_COM_CD_DTL_MLNG DM ON DM.COM_CD_ID = D.COM_CD_ID AND DM.DTL_CD = D.DTL_CD AND DM.MLNG_LANG_CD = NVL(#{mlngLangCd}, 'KO')
+		WHERE 1 = 1
+		<if test="comCdId != null and comCdId != ''">
+			AND D.COM_CD_ID = #{comCdId}
+		</if>
+		<if test="delYn != null and delYn != ''">
+			AND D.DEL_YN = #{delYn}
+		</if>
+		ORDER BY D.COM_CD_ID, D.SORT_SEQ, D.DTL_CD
+		<if test="startNo != null and listCount != null">
+			OFFSET #{startNo} ROWS FETCH NEXT #{listCount} ROWS ONLY
+		</if>
+	</select>
 	
 	<!--
 	* description : 상세코드 목록 건수 조회
 	* author : 양철승
 	* since : 2026.03.12 
 	 -->
-	<select id="selectCodeDtlListTotCnt" parameterType="Map" resultType="int"></select>
+	<select id="selectCodeDtlListTotCnt" parameterType="Map" resultType="int">
+		SELECT COUNT(*)
+		FROM FMSOWN.TB_SCM_COM_CD_DTL D
+		LEFT JOIN FMSOWN.TB_SCM_COM_CD_MLNG M ON M.COM_CD_ID = D.COM_CD_ID AND M.MLNG_LANG_CD = NVL(#{mlngLangCd}, 'KO')
+		LEFT JOIN FMSOWN.TB_SCM_COM_CD_DTL_MLNG DM ON DM.COM_CD_ID = D.COM_CD_ID AND DM.DTL_CD = D.DTL_CD AND DM.MLNG_LANG_CD = NVL(#{mlngLangCd}, 'KO')
+		WHERE 1 = 1
+		<if test="comCdId != null and comCdId != ''">
+			AND D.COM_CD_ID = #{comCdId}
+		</if>
+		<if test="delYn != null and delYn != ''">
+			AND D.DEL_YN = #{delYn}
+		</if>
+	</select>
 	
 	<!--
 	* description : 상세코드 중복 조회
 	* author : 양철승
 	* since : 2026.03.12 
 	 -->
-	<select id="selectExistCodeDtl" parameterType="ifms.adm.smc.code.vo.CodeDtlMngVO"></select>
+	<select id="selectExistCodeDtl" parameterType="ifms.adm.smc.code.vo.CodeDtlMngVO" resultType="int">
+		SELECT COUNT(*)
+		FROM FMSOWN.TB_SCM_COM_CD_DTL
+		WHERE COM_CD_ID = #{comCdId}
+			AND DTL_CD = #{dtlCd}
+	</select>
 	
 	<!--
-	* description : 상세코드 등록
+	* description : 상세코드 등록 (TB_SCM_COM_CD_DTL)
 	* author : 양철승
 	* since : 2026.03.12 
 	 -->
-	<insert id="insertCodeDtlMng" parameterType="ifms.adm.smc.code.vo.CodeDtlMngVO"></insert>
+	<insert id="insertCodeDtlMng" parameterType="ifms.adm.smc.code.vo.CodeDtlMngVO">
+		INSERT INTO FMSOWN.TB_SCM_COM_CD_DTL (
+			COM_CD_ID,
+			DTL_CD,
+			SORT_SEQ,
+			DEL_YN,
+			APLCN_BGNG_YND,
+			APLEN_END_YMD,
+			CRT_USER_ID,
+			UPDT_USER_ID
+		) VALUES (
+			#{comCdId},
+			#{dtlCd},
+			#{sortSeq},
+			NVL(#{delYn}, 'N'),
+			NVL(#{aplcnBgngYnd}, '19000101'),
+			NVL(#{aplcnEndYmd}, '99991231'),
+			#{crtUserId},
+			#{updtUserId}
+		)
+	</insert>
+
+	<!--
+	* description : 상세코드 다국어 등록 (KO, EN, ZH) - TB_SCM_COM_CD_DTL_MLNG
+	* author : 양철승
+	* since : 2026.03.12
+	 -->
+	<insert id="insertCodeDtlMngMlng" parameterType="ifms.adm.smc.code.vo.CodeDtlMngVO">
+		INSERT ALL
+		INTO FMSOWN.TB_SCM_COM_CD_DTL_MLNG (COM_CD_ID, DTL_CD, MLNG_LANG_CD, DTL_CD_NM, COM_CD_EXPLN, CRT_USER_ID, UPDT_USER_ID)
+		VALUES (#{comCdId}, #{dtlCd}, 'KO', NVL(#{dtlCdNm}, ' '), NVL(#{dtlCdExpln}, ' '), #{crtUserId}, #{updtUserId})
+		INTO FMSOWN.TB_SCM_COM_CD_DTL_MLNG (COM_CD_ID, DTL_CD, MLNG_LANG_CD, DTL_CD_NM, COM_CD_EXPLN, CRT_USER_ID, UPDT_USER_ID)
+		VALUES (#{comCdId}, #{dtlCd}, 'EN', NVL(#{dtlCdNm}, ' '), NVL(#{dtlCdExpln}, ' '), #{crtUserId}, #{updtUserId})
+		INTO FMSOWN.TB_SCM_COM_CD_DTL_MLNG (COM_CD_ID, DTL_CD, MLNG_LANG_CD, DTL_CD_NM, COM_CD_EXPLN, CRT_USER_ID, UPDT_USER_ID)
+		VALUES (#{comCdId}, #{dtlCd}, 'ZH', NVL(#{dtlCdNm}, ' '), NVL(#{dtlCdExpln}, ' '), #{crtUserId}, #{updtUserId})
+		SELECT 1 FROM DUAL
+	</insert>
 	
 	<!--
-	* description : 상세코드 상세조회
+	* description : 상세코드 상세조회 (COM_CD_NM은 현재 로케일, 각 언어별 DTL_CD_NM/DTL_CD_EXPLN)
+	* author : 양철승
+	* since : 2026.03.12
+	 -->
+	<select id="selectCodeDtlDetail" parameterType="Map" resultType="egovMap">
+		SELECT D.COM_CD_ID
+			, M.COM_CD_NM
+			, D.DTL_CD
+			, D.SORT_SEQ
+			, D.DEL_YN
+			, DM_KO.DTL_CD_NM   AS DTL_CD_NM_KO
+			, DM_KO.COM_CD_EXPLN AS DTL_CD_EXPLN_KO
+			, DM_EN.DTL_CD_NM   AS DTL_CD_NM_EN
+			, DM_EN.COM_CD_EXPLN AS DTL_CD_EXPLN_EN
+			, DM_ZH.DTL_CD_NM   AS DTL_CD_NM_ZH
+			, DM_ZH.COM_CD_EXPLN AS DTL_CD_EXPLN_ZH
+			, D.CRT_USER_ID
+			, D.CRT_DT
+			, D.UPDT_USER_ID
+			, D.UPDT_DT
+		FROM FMSOWN.TB_SCM_COM_CD_DTL D
+		LEFT JOIN FMSOWN.TB_SCM_COM_CD_MLNG M ON M.COM_CD_ID = D.COM_CD_ID AND M.MLNG_LANG_CD = NVL(#{mlngLangCd}, 'KO')
+		LEFT JOIN FMSOWN.TB_SCM_COM_CD_DTL_MLNG DM_KO ON DM_KO.COM_CD_ID = D.COM_CD_ID AND DM_KO.DTL_CD = D.DTL_CD AND DM_KO.MLNG_LANG_CD = 'KO'
+		LEFT JOIN FMSOWN.TB_SCM_COM_CD_DTL_MLNG DM_EN ON DM_EN.COM_CD_ID = D.COM_CD_ID AND DM_EN.DTL_CD = D.DTL_CD AND DM_EN.MLNG_LANG_CD = 'EN'
+		LEFT JOIN FMSOWN.TB_SCM_COM_CD_DTL_MLNG DM_ZH ON DM_ZH.COM_CD_ID = D.COM_CD_ID AND DM_ZH.DTL_CD = D.DTL_CD AND DM_ZH.MLNG_LANG_CD = 'ZH'
+		WHERE D.COM_CD_ID = #{comCdId}
+			AND D.DTL_CD = #{dtlCd}
+	</select>
+	
+	<!--
+	* description : 상세코드 삭제 (논리삭제: DEL_YN = 'Y')
+	* author : 양철승
+	* since : 2026.03.12
+	 -->
+	<update id="deleteCodeDtlDetail" parameterType="Map">
+		UPDATE FMSOWN.TB_SCM_COM_CD_DTL
+		SET DEL_YN = 'Y'
+		WHERE COM_CD_ID = #{comCdId}
+			AND DTL_CD = #{dtlCd}
+	</update>
+	
+	<!--
+	* description : 상세코드 수정 (TB_SCM_COM_CD_DTL + TB_SCM_COM_CD_DTL_MLNG KO/EN/ZH)
 	* author : 양철승
 	* since : 2026.03.12 
 	 -->
-	<select id="selectCodeDtlDetail" parameterType="Map" resultType="egovMap"></select>
-	
-	<!--
-	* description : 상세코드 삭제
-	* author : 양철승
-	* since : 2026.03.12 
-	 -->
-	<delete id="deleteCodeDtlDetail" parameterType="Map"></delete>
-	
-	<!--
-	* description : 상세코드 수정
-	* author : 양철승
-	* since : 2026.03.12 
-	 -->
-	<update id="updateCodeDtlDetail" parameterType="Map"></update>
+	<update id="updateCodeDtlDetail" parameterType="Map">
+		BEGIN
+			UPDATE FMSOWN.TB_SCM_COM_CD_DTL
+			SET SORT_SEQ = #{sortSeq}
+				, DEL_YN = NVL(#{delYn}, 'N')
+				, APLCN_BGNG_YND = NVL(#{aplcnBgngYnd}, '19000101')
+				, APLEN_END_YMD = NVL(#{aplcnEndYmd}, '99991231')
+				, UPDT_USER_ID = #{updtUserId}
+				, UPDT_DT = SYSDATE
+			WHERE COM_CD_ID = #{comCdId}
+				AND DTL_CD = #{dtlCd};
+			UPDATE FMSOWN.TB_SCM_COM_CD_DTL_MLNG
+			SET DTL_CD_NM = NVL(#{dtlCdNmKo}, ' ')
+				, COM_CD_EXPLN = NVL(#{dtlCdExplnKo}, ' ')
+				, UPDT_USER_ID = #{updtUserId}
+				, UPDT_DT = SYSDATE
+			WHERE COM_CD_ID = #{comCdId} AND DTL_CD = #{dtlCd} AND MLNG_LANG_CD = 'KO';
+			UPDATE FMSOWN.TB_SCM_COM_CD_DTL_MLNG
+			SET DTL_CD_NM = NVL(#{dtlCdNmEn}, ' ')
+				, COM_CD_EXPLN = NVL(#{dtlCdExplnEn}, ' ')
+				, UPDT_USER_ID = #{updtUserId}
+				, UPDT_DT = SYSDATE
+			WHERE COM_CD_ID = #{comCdId} AND DTL_CD = #{dtlCd} AND MLNG_LANG_CD = 'EN';
+			UPDATE FMSOWN.TB_SCM_COM_CD_DTL_MLNG
+			SET DTL_CD_NM = NVL(#{dtlCdNmZh}, ' ')
+				, COM_CD_EXPLN = NVL(#{dtlCdExplnZh}, ' ')
+				, UPDT_USER_ID = #{updtUserId}
+				, UPDT_DT = SYSDATE
+			WHERE COM_CD_ID = #{comCdId} AND DTL_CD = #{dtlCd} AND MLNG_LANG_CD = 'ZH';
+		END;
+	</update>
 </mapper>

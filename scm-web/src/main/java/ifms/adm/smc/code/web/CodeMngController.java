@@ -96,9 +96,9 @@ public class CodeMngController {
 	 * @throws Exception
 	 */
 	@PostMapping("/codeMng_detail.viw")
-	public void selectCodeMngDetail(@RequestBody(required = false) Map<String, Object> requestMap, ModelMap model) throws Exception {
+	public void selectCodeDetail(@RequestBody(required = false) Map<String, Object> requestMap, ModelMap model) throws Exception {
 		
-		List<Map<String, Object>> detail = codeMngService.selectCodeMngDetail(requestMap);
+		List<Map<String, Object>> detail = codeMngService.selectCodeDetail(requestMap);
 		
 		model.addAttribute(Const.RESULT_DETAIL, detail);
 	}
@@ -137,7 +137,7 @@ public class CodeMngController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/codeDtlMng.do")
-	public void selectCodeMng(ModelMap modelMap) throws Exception {
+	public void selectCodeDtlMng(ModelMap modelMap) throws Exception {
 		modelMap.addAttribute(Const.DYNAMIC_ID_1, CommonUtils.generateDynamicId());
 		modelMap.addAttribute(Const.DYNAMIC_ID_2, CommonUtils.generateDynamicId());
 	}
@@ -148,7 +148,7 @@ public class CodeMngController {
 	 * @throws Exception
 	 */
 	@PostMapping("/codeDtlMng.add")
-	public void inserDtlCode(@Validated({Create.class} @RequestBody CodeDtlMngVO codeDtlMngVO) throws Exception {
+	public void inserCodeDtl(@Validated({Create.class} @RequestBody CodeDtlMngVO codeDtlMngVO) throws Exception {
 		
 		int existCode = codeMngService.selectExistCodeDtl(codeDtlMngVO);
 		
@@ -166,9 +166,9 @@ public class CodeMngController {
 	 * @throws Exception
 	 */
 	@PostMapping("/codeDtlMng_detail.viw")
-	public void selectCodeDtlMngDetail(@RequestBody(required = false) Map<String, Object> requestMap, ModelMap model) throws Exception {
+	public void selectCodeDtlDetail(@RequestBody(required = false) Map<String, Object> requestMap, ModelMap model) throws Exception {
 		
-		List<Map<String, Object>> detail = codeMngService.selectCodeDtlMngDetail(requestMap);
+		List<Map<String, Object>> detail = codeMngService.selectCodeDtlDetail(requestMap);
 		
 		model.addAttribute(Const.RESULT_DETAIL, detail);
 	}
@@ -180,7 +180,7 @@ public class CodeMngController {
 	 * @throws Exception
 	 */
 	@PostMapping("/codeDelMng.del")
-	public void deleteCodeDtlMngDetail(@RequestBody(required = false) Map<String, Object> requestMap, ModelMap model) throws Exception {
+	public void deleteCodeDtlDetail(@RequestBody(required = false) Map<String, Object> requestMap, ModelMap model) throws Exception {
 		
 		codeMngService.deleteCodeDtlDetail(requestMap);
 		
@@ -194,7 +194,7 @@ public class CodeMngController {
 	 * @throws Exception
 	 */
 	@PostMapping("/codeDtlMng.edt")
-	public void editCodeDtlMngDetail(@RequestBody(required = false) Map<String, Object> requestMap, ModelMap model) throws Exception {
+	public void editCodeDtlDetail(@RequestBody(required = false) Map<String, Object> requestMap, ModelMap model) throws Exception {
 		
 		codeMngService.editCodeDtlDetail(requestMap);
 		

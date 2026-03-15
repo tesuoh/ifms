@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 import org.egovframe.rte.psl.dataaccess.mapper.Mapper;
 
+import ifms.adm.smc.code.vo.CodeDtlMngVO;
 import ifms.adm.smc.code.vo.CodeMngVO;
 
 @Mapper
@@ -42,6 +43,14 @@ public interface CodeMngMapper {
 	 * @throws Exception
 	 */
 	int insertCodeMng(CodeMngVO codeMngVO) throws Exception;
+
+	/**
+	 * 공통코드 다국어 등록 (KO, EN, ZH)
+	 * @param CodeMngVO
+	 * @return
+	 * @throws Exception
+	 */
+	int insertCodeMngMlng(CodeMngVO codeMngVO) throws Exception;
 	
 	/**
 	 * 공통코드 상세조회
@@ -85,19 +94,27 @@ public interface CodeMngMapper {
 	
 	/**
 	 * 상세코드 중복조회
-	 * @param CodeMngVO
+	 * @param CodeDtlMngVO
 	 * @return 
 	 * @throws Exception
 	 */
-	int selectExistCodeDtl(CodeMngVO codeMngVO) throws Exception;
+	int selectExistCodeDtl(CodeDtlMngVO codeDtlMngVO) throws Exception;
 	
 	/**
 	 * 상세코드 등록
-	 * @param CodeMngVO
+	 * @param CodeDtlMngVO
 	 * @return
 	 * @throws Exception
 	 */
-	int insertCodeDtlMng(CodeMngVO codeMngVO) throws Exception;
+	int insertCodeDtlMng(CodeDtlMngVO codeDtlMngVO) throws Exception;
+
+	/**
+	 * 상세코드 다국어 등록 (KO, EN, ZH)
+	 * @param CodeDtlMngVO
+	 * @return
+	 * @throws Exception
+	 */
+	int insertCodeDtlMngMlng(CodeDtlMngVO codeDtlMngVO) throws Exception;
 	
 	/**
 	 * 상세코드 상세조회
