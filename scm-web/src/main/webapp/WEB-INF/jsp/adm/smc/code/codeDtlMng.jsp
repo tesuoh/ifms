@@ -25,11 +25,38 @@
 	src="${pageContext.request.contextPath}/static/com/plugins/realgrid.2.9.2/realgrid.2.9.2.min.js"></script>
 <script
 	src="${pageContext.request.contextPath}/static/com/plugins/realgrid.2.9.2/libs/jszip.min.js"></script>
+	
+<%-- 버튼명 --%>
+<spring:message code="label.close" var="closeText"/>			<%-- 닫기 --%>
+<spring:message code="label.save" var="saveText"/>				<%-- 저장 --%>
+<spring:message code="label.cancel" var="calcelText"/>			<%-- 취소 --%>
+<spring:message code="label.modify" var="modifyText"/>			<%-- 수정 --%>
+<spring:message code="label.new" var="newText"/>				<%-- 신규 --%>
+<spring:message code="label.dup.chk" var="dupChkText"/>			<%-- 중복확인 --%>
+
+<spring:message code="label.open" var="openText"/>
+<c:set var="delInpText" value="글자삭제" />						<%-- 글자삭제 --%>
+
+<%-- 필드명 --%>
+<c:set var="cdCdText" value="코드분류" />							<%-- 코드분류 --%>
+<c:set var="cdCdNmText" value="코드분류명" />						<%-- 코드분류명 --%>
+<c:set var="dtlCdText" value="상세코드" />							<%-- 상세코드 --%>
+<c:set var="ExplnText" value="설명" />							<%-- 설명 --%>
+<c:set var="cdNmText" value="코드명" />							<%-- 코드명 --%>
+<spring:message code="label.useYn" var="useYnText" />			<%-- 사용여부 --%>
+<spring:message code="label.regYmd" var="crtDtText" />			<%-- 등록일자 --%>
+<c:set var="crtUserIdText" value="등록자" />						<%-- 등록자 --%>
+<spring:message code="label.mdfcnYmd" var="updtDtText" />		<%-- 수정일자 --%>
+<spring:message code="label.mdfr" var="updtUserIdText" />		<%-- 수정자 --%>
+
+<c:set var="krText" value="한국어" />
+<c:set var="enText" value="영어" />
+<c:set var="zhText" value="중국어" />
 
 <div class="content-wrap active">
 	<div class="breadcrumb-wrap">
 		<h2>
-			<spring:message code="label.code.mng" />
+			상세코드 조회
 		</h2>
 	</div>
 	<form id="searchForm">
@@ -37,41 +64,41 @@
 			<div class="search-item">
 				<div class="search-box">
 					<div class="search-item">
-						<span class="search-tit">코드분류ID</span>
+						<span class="search-tit">${cdIdText}</span>
 						<div class="input-box">
-							<input type="text" name="code1" title="<ifms:tooltip code=""/>" placeholder="<ifms:tooltip code=""/>" />
+							<input type="text" name="code1" title="${cdIdTooltip}" placeholder="${cdIdTooltip}" />
 						</div>
 					</div>
 						
 					<div class="search-item"></div>
-						<span class="search-tit">코드분류명</span>
+						<span class="search-tit">${cdNmText}</span>
 						<div class="input-box">
-							<input type="text" name="code2" title="<itms:tooltip code=""/>" placeholder="<ifms:tooltip code=""/>" />
+							<input type="text" name="code2" title="${cdNmTooltip}" placeholder="${cdNmTooltip}" />
 						</div>
 					<div class="search-item">
-						<span class="search-tit">코드분류사용여부</span>
+						<span class="search-tit">${cdCdText}${useYnText}</span>
 						<div class="select-box" id="code3">
 							<div class="select ev-click-toggle-select">
 								<span class="txt"></span> <span 
-									class="arror"><em class="sr-only">열기</em></span>
+									class="arror"><em class="sr-only">${openText}</em></span>
 							</div>
 						</div>
 					</div>
 					
 					<div class="search-item">
-						<span class="search-tit">상세코드</span>
+						<span class="search-tit">${dtlCdText}</span>
 						<div class="input-box">
 							<input type="text" name="code4" title="<ifms:tooltip code=""/>" placeholder="<ifms:tooltip code=""/>" />
 						</div>
 					</div>
 					
 					<div class="search-item">
-						<span class="search-tit">상세코드명</span>
+						<span class="search-tit">${dtlCdNmText}</span>
 						<input type="text" name="code5" title="<ifms:tooltip code=""/>" placeholder="<ifms:tooltip code=""/>" />
 					</div>
 					
 					<div class="search-item">
-						<span class="search-tit">상세코드사용여부</span>
+						<span class="search-tit">${dtlCdText}${useYnText}</span>
 						<div class="select-box" id="code6">
 							<div class="select ev-click-toggle-select">
 								<span class="txt"></span> <span 
@@ -104,11 +131,6 @@
 					(<span id="pagingCntbox">총 <em></em> 건
 					</span>)
 				</div>
-				<div class="btn-box">
-					<button type="button" class="btn-border btn-modal" id="codeDtlPopup"
-						data-target="#${dinamicId1} style="display:none">
-					</button>
-				</div>
 			</div>
 			<div class="result-body grid">
 				<div id="mainGridContainer" class="realgrid-wrap"
@@ -126,42 +148,42 @@
 <%-- 상세코드 조회 팝업  --%>
 <div id="$dynamicId1" class="modal-wrap w-1350" tabindex="-1"
 	role="dialog">
-	<form id="codeDtlForm">
+	<form id="dtlCodeViwForm">
 		<div class="modal-header">
-			<p class="modal-title">상세코드 조회</p>
-			<button type="button" class="btn-modal-close" title="닫기" data-close>
-				<span class="sr-only">닫기</span>
+			<p class="modal-title">${dtlCdText} 조회</p>
+			<button type="button" class="btn-modal-close" title="${closeText}" data-close>
+				<span class="sr-only">${closeText}</span>
 			</button>
 		</div>
 		<div class="modal-body">
 			<div class="from-wrap">
 				<div class="form-box">
 					<div class="form-row">
-						<label class="form-label" for="inp1">코드분류ID<i
+						<label class="form-label" for="inp1">${cdIdText}<i
 							class="asterick-mark">*</i>
 						</label>
 						<div class="from-item">
 							<div class="input-box">
-								<input type="text" id=inp1 name="inp1" , maxlength=40
+								<input type="text" id="inp1" name="inp1" maxlength=40
 									placeholder="" class="ev-input-text-box">
 								<button type="button" class="btn-clear ev-click-btn-clear"
 									style="display: none;">
-									<span class="sr-only">글자삭제</span>
+									<span class="sr-only">${delInpText}</span>
 								</button>
 							</div>
 
 						</div>
 					</div>
 					<div class="form-row">
-						<label class="form-label" for="inp2">코드분류명</label>
+						<label class="form-label" for="inp2">${cdNmText}</label>
 						<div class="from-item">
 							<div class="from-item">
 								<div class="input-box">
-									<input type="text" id=inp1 name="inp2" , maxlength=40
+									<input type="text" id="inp2" name="inp2" maxlength=40
 										placeholder="" class="ev-input-text-box">
 									<button type="button" class="btn-clear ev-click-btn-clear"
 										style="display: none;">
-										<span class="sr-only">글자삭제</span>
+										<span class="sr-only">${delInpText}</span>
 									</button>
 								</div>
 							</div>
@@ -170,7 +192,7 @@
 				</div>
 				<div class="form-box">
 					<div class="form-row">
-						<label class="form-label" for="inp3">상세코드<i
+						<label class="form-label" for="inp3">${dtlCdText}<i
 							class="asterick-mark">*</i>
 						</label>
 						<div class="from-item">
@@ -179,14 +201,16 @@
 									placeholder="" class="ev-input-text-box">
 								<button type="button" class="btn-clear ev-click-btn-clear"
 									style="display: none;">
-									<span class="sr-only">글자삭제</span>
+									<span class="sr-only">${delInpText}</span>
 								</button>
 							</div>
-
+							<button class="btn-border" id="btnCodeDtlExistCheck">
+								<span>${dupChkText}</span>								
+							</button>
 						</div>
 					</div>
 					<div class="form-row">
-						<label class="form-label" for="inp4">코드사용길이<i
+						<label class="form-label" for="inp4">${sortSeqText}<i
 							class="asterick-mark">*</i>
 						</label>
 						<div class="from-item">
@@ -195,7 +219,7 @@
 									placeholder="" class="ev-input-text-box">
 								<button type="button" class="btn-clear ev-click-btn-clear"
 									style="display: none;">
-									<span class="sr-only">글자삭제</span>
+									<span class="sr-only">${delInpText}</span>
 								</button>
 							</div>
 
@@ -205,7 +229,7 @@
 				</div>
 				<div class="form-box">
 					<div class="form-row">
-						<label class="form-label" for="inp5">사용여부<i
+						<label class="form-label" for="inp5">${useYnText}<i
 							class="asterick-mark">*</i>
 						</label>
 						<div class="from-item">
@@ -224,7 +248,7 @@
 				</div>
 				<div class="form-box">
 					<div class="form-row">
-						<label class="form-label" for="inp6">한국어 코드분류명<i
+						<label class="form-label" for="inp6">${krText} ${cdCdNmText}<i
 							class="asterick-mark">*</i>
 						</label>
 						<div class="from-item">
@@ -233,14 +257,14 @@
 									placeholder="" class="ev-input-text-box">
 								<button type="button" class="btn-clear ev-click-btn-clear"
 									style="display: none;">
-									<span class="sr-only">글자삭제</span>
+									<span class="sr-only">${delInpText}</span>
 								</button>
 							</div>
 
 						</div>
 					</div>
 					<div class="form-row">
-						<label class="form-label" for="inp7">한국어 설명</label>
+						<label class="form-label" for="inp7">${krText} ${explnText}</label>
 						<div class="from-item">
 							<div class="textarea-box">
 								<textarea name="" id="" cols="30" rows="3" placeholder=""></textarea>
@@ -253,7 +277,7 @@
 				</div>
 				<div class="form-box">
 					<div class="form-row">
-						<label class="form-label" for="inp8">영어 코드분류명<i
+						<label class="form-label" for="inp8">${enText} ${cdCdNmText}<i
 							class="asterick-mark">*</i>
 						</label>
 						<div class="from-item">
@@ -262,14 +286,14 @@
 									placeholder="" class="ev-input-text-box">
 								<button type="button" class="btn-clear ev-click-btn-clear"
 									style="display: none;">
-									<span class="sr-only">글자삭제</span>
+									<span class="sr-only">${delInpText}</span>
 								</button>
 							</div>
 
 						</div>
 					</div>
 					<div class="form-row">
-						<label class="form-label" for="inp9">영어 설명</label>
+						<label class="form-label" for="inp9">${enText} ${explnTest}</label>
 						<div class="from-item">
 							<div class="textarea-box">
 								<textarea name="" id="" cols="30" rows="3" placeholder=""></textarea>
@@ -282,7 +306,7 @@
 				</div>
 				<div class="form-box">
 					<div class="form-row">
-						<label class="form-label" for="inp10">중국어 코드분류명<i
+						<label class="form-label" for="inp10">${zhText} ${cdCdNmText}<i
 							class="asterick-mark">*</i>
 						</label>
 						<div class="from-item">
@@ -291,14 +315,14 @@
 									placeholder="" class="ev-input-text-box">
 								<button type="button" class="btn-clear ev-click-btn-clear"
 									style="display: none;">
-									<span class="sr-only">글자삭제</span>
+									<span class="sr-only">${delInpText}</span>
 								</button>
 							</div>
 
 						</div>
 					</div>
 					<div class="form-row">
-						<label class="form-label" for="inp11">중국어 설명</label>
+						<label class="form-label" for="inp11">${zhText} ${explnText}</label>
 						<div class="from-item">
 							<div class="textarea-box">
 								<textarea name="" id="inp11" cols="30" rows="3" placeholder=""></textarea>
@@ -311,21 +335,21 @@
 				</div>
 				<div class="form-box">
 					<div class="form-row">
-						<label class="form-label" for="inp12">수정일자</label>
+						<label class="form-label" for="inp12">${updtDtText}</label>
 						<div class="from-item">
 							<div class="input-box">
 								<input type="text" id="inp12" name="inp9" maxlength=40
 									placeholder="" class="ev-input-text-box">
 								<button type="button" class="btn-clear ev-click-btn-clear"
 									style="display: none;">
-									<span class="sr-only">글자삭제</span>
+									<span class="sr-only">${delInpText}</span>
 								</button>
 							</div>
 
 						</div>
 					</div>
 					<div class="form-row">
-						<label class="form-label" for="inp13">수정자</label>
+						<label class="form-label" for="inp13">${updtUserId}</label>
 						<div class="from-item">
 							<div class="textarea-box">
 								<textarea name="" id="inp13" cols="30" rows="3" placeholder=""></textarea>
@@ -338,21 +362,21 @@
 				</div>
 				<div class="form-box">
 					<div class="form-row">
-						<label class="form-label" for="inp14">등록일자</label>
+						<label class="form-label" for="inp14">${crtDtText}</label>
 						<div class="from-item">
 							<div class="input-box">
 								<input type="text" id="inp14" name="inp9" maxlength=40
 									placeholder="" class="ev-input-text-box">
 								<button type="button" class="btn-clear ev-click-btn-clear"
 									style="display: none;">
-									<span class="sr-only">글자삭제</span>
+									<span class="sr-only">${delInpText}</span>
 								</button>
 							</div>
 
 						</div>
 					</div>
 					<div class="form-row">
-						<label class="form-label" for="inp15">등록자</label>
+						<label class="form-label" for="inp15">${crtUserId}</label>
 						<div class="from-item">
 							<div class="textarea-box">
 								<textarea name="" id="inp15" cols="30" rows="3" placeholder=""></textarea>
@@ -367,55 +391,56 @@
 		</div>
 		<div class="btn-box">
 			<button type="button" class="btn-l-border" data-close>
-				<span>닫기</span>
+				<span>${closeText}</span>
 			</button>
 			<button type="button" class="btn-l-fill" id="btnCodeDtlEdtPopup"
 				data-target="#${dynamicId2}">
-				<span>수정</span>
+				<span>${cancelText}</span>
 			</button>
 		</div>
 	</form>
 </div>
 
+
 <%-- 상세코드 수정 팝업  --%>
-<div id="$dynamicId2" class="modal-wrap w-1350" tabindex="-1"
+<div id="$dynamicId6" class="modal-wrap w-1350" tabindex="-1"
 	role="dialog">
-	<form id="codeDtlEdtForm">
+	<form id="CodeDtlEdtForm">
 		<div class="modal-header">
 			<p class="modal-title">상세코드 등록</p>
-			<button type="button" class="btn-modal-close" title="닫기" data-close>
-				<span class="sr-only">닫기</span>
+			<button type="button" class="btn-modal-close" title="${closeText}" data-close>
+				<span class="sr-only">${closeText}</span>
 			</button>
 		</div>
 		<div class="modal-body">
 			<div class="from-wrap">
 				<div class="form-box">
 					<div class="form-row">
-						<label class="form-label" for="inp1">코드분류ID<i
+						<label class="form-label" for="inp1">${cdIdText}<i
 							class="asterick-mark">*</i>
 						</label>
 						<div class="from-item">
 							<div class="input-box">
-								<input type="text" id=inp1 name="inp1" , maxlength=40
+								<input type="text" id=inp1 name="inp1" maxlength=40
 									placeholder="" class="ev-input-text-box">
 								<button type="button" class="btn-clear ev-click-btn-clear"
 									style="display: none;">
-									<span class="sr-only">글자삭제</span>
+									<span class="sr-only">${delInpText}</span>
 								</button>
 							</div>
 
 						</div>
 					</div>
 					<div class="form-row">
-						<label class="form-label" for="inp2">코드분류명</label>
+						<label class="form-label" for="inp2">${cdNmText}</label>
 						<div class="from-item">
 							<div class="from-item">
 								<div class="input-box">
-									<input type="text" id=inp1 name="inp2" , maxlength=40
+									<input type="text" id="inp2" name="inp2" maxlength=40
 										placeholder="" class="ev-input-text-box">
 									<button type="button" class="btn-clear ev-click-btn-clear"
 										style="display: none;">
-										<span class="sr-only">글자삭제</span>
+										<span class="sr-only">${delInpText}</span>
 									</button>
 								</div>
 							</div>
@@ -424,7 +449,7 @@
 				</div>
 				<div class="form-box">
 					<div class="form-row">
-						<label class="form-label" for="inp3">상세코드<i
+						<label class="form-label" for="inp3">${dtlCdText}<i
 							class="asterick-mark">*</i>
 						</label>
 						<div class="from-item">
@@ -433,14 +458,14 @@
 									placeholder="" class="ev-input-text-box">
 								<button type="button" class="btn-clear ev-click-btn-clear"
 									style="display: none;">
-									<span class="sr-only">글자삭제</span>
+									<span class="sr-only">${delInpText}</span>
 								</button>
 							</div>
 
 						</div>
 					</div>
 					<div class="form-row">
-						<label class="form-label" for="inp4">코드사용길이<i
+						<label class="form-label" for="inp4">${sortSeqText}<i
 							class="asterick-mark">*</i>
 						</label>
 						<div class="from-item">
@@ -449,7 +474,7 @@
 									placeholder="" class="ev-input-text-box">
 								<button type="button" class="btn-clear ev-click-btn-clear"
 									style="display: none;">
-									<span class="sr-only">글자삭제</span>
+									<span class="sr-only">${delInpText}</span>
 								</button>
 							</div>
 
@@ -459,7 +484,7 @@
 				</div>
 				<div class="form-box">
 					<div class="form-row">
-						<label class="form-label" for="inp5">사용여부<i
+						<label class="form-label" for="inp5">${useYnText}<i
 							class="asterick-mark">*</i>
 						</label>
 						<div class="from-item">
@@ -478,7 +503,7 @@
 				</div>
 				<div class="form-box">
 					<div class="form-row">
-						<label class="form-label" for="inp6">한국어 코드분류명<i
+						<label class="form-label" for="inp6">${krText} ${cdNmText} <i
 							class="asterick-mark">*</i>
 						</label>
 						<div class="from-item">
@@ -487,14 +512,14 @@
 									placeholder="" class="ev-input-text-box">
 								<button type="button" class="btn-clear ev-click-btn-clear"
 									style="display: none;">
-									<span class="sr-only">글자삭제</span>
+									<span class="sr-only">${delInpText}</span>
 								</button>
 							</div>
 
 						</div>
 					</div>
 					<div class="form-row">
-						<label class="form-label" for="inp7">한국어 설명</label>
+						<label class="form-label" for="inp7">${krText} ${explnText}</label>
 						<div class="from-item">
 							<div class="textarea-box">
 								<textarea name="" id="" cols="30" rows="3" placeholder=""></textarea>
@@ -507,7 +532,7 @@
 				</div>
 				<div class="form-box">
 					<div class="form-row">
-						<label class="form-label" for="inp8">영어 코드분류명<i
+						<label class="form-label" for="inp8">${enText} ${cdNmText}<i
 							class="asterick-mark">*</i>
 						</label>
 						<div class="from-item">
@@ -516,14 +541,14 @@
 									placeholder="" class="ev-input-text-box">
 								<button type="button" class="btn-clear ev-click-btn-clear"
 									style="display: none;">
-									<span class="sr-only">글자삭제</span>
+									<span class="sr-only">${delInpText}</span>
 								</button>
 							</div>
 
 						</div>
 					</div>
 					<div class="form-row">
-						<label class="form-label" for="inp9">영어 설명</label>
+						<label class="form-label" for="inp9">${enText} $cdNmText}</label>
 						<div class="from-item">
 							<div class="textarea-box">
 								<textarea name="" id="" cols="30" rows="3" placeholder=""></textarea>
@@ -536,7 +561,7 @@
 				</div>
 				<div class="form-box">
 					<div class="form-row">
-						<label class="form-label" for="inp10">중국어 코드분류명<i
+						<label class="form-label" for="inp10">${zhText} ${cdNmText}<i
 							class="asterick-mark">*</i>
 						</label>
 						<div class="from-item">
@@ -545,14 +570,14 @@
 									placeholder="" class="ev-input-text-box">
 								<button type="button" class="btn-clear ev-click-btn-clear"
 									style="display: none;">
-									<span class="sr-only">글자삭제</span>
+									<span class="sr-only">${delInpText}</span>
 								</button>
 							</div>
 
 						</div>
 					</div>
 					<div class="form-row">
-						<label class="form-label" for="inp11">중국어 설명</label>
+						<label class="form-label" for="inp11">${zhText} ${explnText}</label>
 						<div class="from-item">
 							<div class="textarea-box">
 								<textarea name="" id="inp11" cols="30" rows="3" placeholder=""></textarea>
@@ -567,10 +592,10 @@
 		</div>
 		<div class="btn-box">
 			<button type="button" class="btn-l-border" data-close>
-				<span>취소</span>
+				<span>${cancelText}</span>
 			</button>
-			<button type="button" class="btn-l-fill" id="btnCodeDtlEdt">
-				<span>저장</span>
+			<button type="button" class="btn-l-fill" id="btnCodeDtlEdtSave">
+				<span>${saveText}</span>
 			</button>
 		</div>
 	</form>
@@ -587,62 +612,62 @@
 		{
 			name: "codeCdId",
 			fieldName: "codeCdId",
-			header: {text: "코드분류ID"},
+			header: {text: "${cdIdText}"},
 			editable: false
 		},
 		{
 			name: "codeCdNm",
 			fieldName: "codeCdNm",
-			header: {text: "코드분류명 "},
+			header: {text: "${cdNmText} "},
 			editable: false
 		},
 		{
 			name: "codeDtlCd",
 			fieldName: "codeDtlCd",
-			header: {text: "상세코드 "},
+			header: {text: "${dtlCdText}"},
 			editable: false
 		},
 		{
 			name: "codeDtlNm",
 			fieldName: "codeDtlNm",
-			header: {text: "상세코드명 "},
+			header: {text: "${dtlCdNmText}"},
 			editable: false
 		},
 		{
 			name: "codeSortSeq",
 			fieldName: "codeSortSeq",
-			header: {text: "정렬순서 "},
+			header: {text: "${sortSeqText}"},
 			editable: false
 		},
 		{
 			name: "codeDelYn",
 			fieldName: "codeDelYn",
-			header: {text: "사용여부 "},
+			header: {text: "${useYnText}"},
 			editable: false
 		},
 		{
 			name: "codeCrtDt",
 			fieldName: "codeCrtDt",
-			header: {text: "등록일자 "},
+			header: {text: "${crtDtText} "},
 			editable: false
 		},
 		{
 			name: "codeUpdtDt",
 			fieldName: "codeUpdtDt",
-			header: {text: "수정일자 "},
+			header: {text: "${updtDtText}"},
 			editable: false
 		}
 	];
 	
-	const field = [
-		{fieldname: "codeCdId", dataType: text},
-		{fieldname: "codeCdNm", dataType: text},
-		{fieldname: "codeDtlCd", dataType: text},
-		{fieldname: "codeDtlNm", dataType: text},
-		{fieldname: "codeSortSeq", dataType: text},
-		{fieldname: "codeDelYn", dataType: text},
-		{fieldname: "codeCrtDt", dataType: text},
-		{fieldname: "codeUpdtDt", dataType: text}
+	const fields = [
+		{fieldname: "cdId", dataType: text},
+		{fieldname: "cdNm", dataType: text},
+		{fieldname: "dtlCd", dataType: text},
+		{fieldname: "dtlCdNm", dataType: text},
+		{fieldname: "sortSeq", dataType: text},
+		{fieldname: "useYn", dataType: text},
+		{fieldname: "crtDt", dataType: text},
+		{fieldname: "updtDt", dataType: text}
 	];
 	
 	// 정의부
@@ -657,6 +682,8 @@
 			pagination: {handler: 'fn_codeClickPagination', eType: 'click'},
 			msgElemCode: {handler: 'fn_msgElemCodeChanged', eType: 'click'},
 			gridView: [{handler: 'fn_codeDtlRow', eType: 'onCellClicked'}], /* onCurrentRowChanged / onCurrentChanged / onCellClicked */
+			btnCodeDtlViwPopup: {handler: 'fn_btnCodeDtlViwPopup', eType: 'click'},
+			btnCodeDtlEdtPopup: {handler: 'fn_btnCodeDtlEdtPopup', eType: 'click'},
 			btnCodeDtlEdtSave: {handler: 'fn_btnCodeDtlEdtSave', eType: 'click'}
 		},
 		// 각 컴포넌트 별 이벤트핸들러 추가

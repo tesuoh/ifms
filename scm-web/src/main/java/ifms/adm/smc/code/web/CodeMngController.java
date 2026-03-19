@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import ifms.adm.smc.code.service.CodeMngService;
+import ifms.adm.smc.code.vo.CodeDtlMngVO;
+import ifms.adm.smc.code.vo.CodeMngVO;
 import ifms.cmn.support.Create;
 import ifms.common.constants.Const;
 import ifms.common.util.CommonUtils;
@@ -50,8 +52,8 @@ public class CodeMngController {
 		modelMap.addAttribute(Const.DYNAMIC_ID_2, CommonUtils.generateDynamicId());
 		modelMap.addAttribute(Const.DYNAMIC_ID_3, CommonUtils.generateDynamicId());
 		modelMap.addAttribute(Const.DYNAMIC_ID_4, CommonUtils.generateDynamicId());
-		modelMap.addAttribute(Const.DYNAMIC_ID_5, CommonUtils.generateDynamicId());
-		modelMap.addAttribute(Const.DYNAMIC_ID_6, CommonUtils.generateDynamicId());
+		modelMap.addAttribute("dynamicId5", CommonUtils.generateDynamicId());
+		modelMap.addAttribute("dynamicId6", CommonUtils.generateDynamicId());
 	}
 	
 	/**
@@ -78,7 +80,7 @@ public class CodeMngController {
 	 * @throws Exception
 	 */
 	@PostMapping("/codeMng.add")
-	public void inserCode(@Validated({Create.class} @RequestBody CodeMngVO codeMngVO) throws Exception {
+	public void inserCode(@Validated({Create.class}) @RequestBody CodeMngVO codeMngVO) throws Exception {
 		
 		int existCode = codeMngService.selectExistCode(codeMngVO);
 		
@@ -148,12 +150,12 @@ public class CodeMngController {
 	 * @throws Exception
 	 */
 	@PostMapping("/codeDtlMng.add")
-	public void inserCodeDtl(@Validated({Create.class} @RequestBody CodeDtlMngVO codeDtlMngVO) throws Exception {
+	public void inserCodeDtl(@Validated({Create.class}) @RequestBody CodeDtlMngVO codeDtlMngVO) throws Exception {
 		
 		int existCode = codeMngService.selectExistCodeDtl(codeDtlMngVO);
 		
 		if (existCode > 0) {
-			throw new CoreException(messageSource.getMessage("message.warning.code.exstDtlMsg", null, LocaleContextHolder.getLocale()));
+			throw new CoreException(messageSource.getMessage("message.warning.code.existDtlMsg", null, LocaleContextHolder.getLocale()));
 		}
 		
 		codeMngService.insertCodeDtlMng(codeMngVO);
