@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ifms.adm.bat.usr.dao.CommonDao;
 import ifms.adm.bat.usr.mapper.EsbLinkMapper;
 
 /**
@@ -25,6 +26,9 @@ public class UserSyncService {
 	
 	@Autowired
 	private EsbLinkMapper esbLinkMapper;
+	
+	@Autowired
+    private CommonDao commonDao;
 	
 	/**
 	 * ESB Link 모니터링 및 사용자 데이터 동기화
@@ -247,5 +251,27 @@ public class UserSyncService {
 		
 		return userParcoMap;
 	}
+	
+    @Transactional(rollbackFor = Exception.class)
+    public void syncUserTest() {
+
+        // 1) 동기화 대상 + 기존 user_id 매핑 + 신규 user insert + temp table 생성
+        commonDao.update("UserSyncMapper.createSyncAllIds", null);
+
+        // 2) tb_scm_user 업데이트
+        commonDao.update("UserSyncMapper.updateScmUser", null);
+
+        // 3) tb_scm_user_parco 신규 insert
+        commonDao.update("UserSyncMapper.insertScmUserParco", null);
+
+        // 4) tb_scm_user_parco 기존 update
+        commonDao.update("UserSyncMapper.updateScmUserParco", null);
+
+        // 5) EAI_USERTGT_RCV deal_stat = 'S'
+        commonDao.update("UserSyncMapper.updateEaiUsertgtRcv", null);
+
+        // 6) ESB Link 상태 완료
+        commonDao.update("UserSyncMapper.updateEsbLink", null);
+    }
 }
 

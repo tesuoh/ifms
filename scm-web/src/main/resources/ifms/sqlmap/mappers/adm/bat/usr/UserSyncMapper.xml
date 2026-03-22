@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ifms.sqlmap.mappers.adm.bat.usr.UserSyncMapper">
+
+    <!-- 1) temp table 생성 -->
+    <update id="createSyncAllIds">
+    <![CDATA[
+        CREATE TEMP TABLE IF NOT EXISTS sync_all_ids ON COMMIT DROP AS
+        WITH eai AS (
+            SELECT *
+            FROM itfown.eai_usertgt_rcv
+            WHERE LEFT(recv_time, 8) >= TO_CHAR(CURRENT_DATE, 'YYYYMMDD')
+              AND LEFT(recv_time, 8) < TO_CHAR(CURRENT_DATE + INTERVAL '1 day', 'YYYYMMDD')
+              AND (deal_stat IS NULL OR deal_stat = 'N')
+              AND userid IS NOT NULL
+              AND TRIM(userid) &lt;&gt; ''
+        ),
+        with_existing AS (
+            SELECT e.*, u.user_id AS existing_user_id
+            FROM eai e
+            LEFT JOIN fmsown.tb_scm_user u
+              ON u.lgn_id = e.userid
+             AND u.user_clsf_cd = 'PAR'
+        ),
+        new_users AS (
+            SELECT *
+            FROM with_existing
+            WHERE existing_user_id IS NULL
+        ),
+        inserted AS (
+            INSERT INTO fmsown.tb_scm_user (
+                user_id, user_clsf_cd, lgn_id, user_nm, emp_no,
+                crt_user_id, crt_dt, updt_user_id, updt_dt
+            )
+            SELECT
+                'PAR' || LPAD(NEXTVAL('FMSOWN.TB_SCM_USER_SEQ')::TEXT, 8, '0'),
+                'PAR',
+                userid,
+                username,
+                employeenumber,
+                'system',
+                CURRENT_TIMESTAMP,
+                'system',
+                CURRENT_TIMESTAMP
+            FROM new_users
+            RETURNING user_id, lgn_id
+        ),
+        all_ids AS (
+            SELECT e.*,
+                   COALESCE(e.existing_user_id, i.user_id) AS target_user_id
+            FROM with_existing e
+            LEFT JOIN inserted i
+              ON i.lgn_id = e.userid
+        )
+        SELECT * FROM all_ids
+    ]]>
+    </update>
+
+    <!-- 2) tb_scm_user update -->
+    <update id="updateScmUser">
+        UPDATE fmsown.tb_scm_user u
+        SET user_nm = a.username,
+            emp_no = a.employeenumber,
+            updt_user_id = 'system',
+            updt_dt = CURRENT_TIMESTAMP
+        FROM sync_all_ids a
+        WHERE u.lgn_id = a.userid
+          AND u.user_clsf_cd = 'PAR'
+    </update>
+
+    <!-- 3) tb_scm_user_parco insert -->
+    <insert id="insertScmUserParco">
+        INSERT INTO fmsown.tb_scm_user_parco (
+            user_id, parco_user_id, user_pswd, user_orgnl_id, user_photo_file,
+            user_nm, user_eng_nm, emp_no, dept_cd, dept_nm,
+            indct_jbps_cd, indct_jbps_cd_nm, jbgd_cd, jbgd_nm,
+            jbps_cd, jbps_nm, jbttl_cd, jbttl_nm, duty_cd, duty_nm,
+            reg_ynd, jncmp_ynd, rsgntn_ymd, eml_dmn_addr, work_stts_cd,
+            ofc_telno, co_fxno, co_zip, co_addr, co_daddr,
+            gndr_cd, ext_telno, emp_se_cd, co_cd, co_nm,
+            hghrk_dept_cd, hghrk_dept_nm, powk_cd, powk_nm,
+            ocpt_nm, ocpt_cd, cstct_nm, cstct_cd, work_rul_nm, work_rul_cd,
+            last_prmt_ymd, prp_grd_no, ntnlty_nm, if_dt,
+            crt_user_id, crt_ot, updt_user_id, updt_ot
+        )
+        SELECT
+            a.target_user_id,
+            a.userid,
+            a.passwd,
+            a.originaluid,
+            a.photo,
+            a.username,
+            a.engusername,
+            a.employeenumber,
+            a.oucode,
+            a.ou,
+            a.dippos,
+            a.dipposname,
+            a.grade,
+            a.gradename,
+            a.position,
+            a.positionname,
+            a.titlecode,
+            a.titlename,
+            a.dutycode,
+            a.dutyname,
+            a.createdate,
+            a.joindate,
+            a.deletedate,
+            a.email,
+            COALESCE(a.status, '0'),
+            a.officedeptphone,
+            a.officefax,
+            a.officezip,
+            a.officeaddress,
+            a.officeaddressdetail,
+            COALESCE(a.gender, '0'),
+            a.officepersonalphone,
+            COALESCE(a.usertype, '0'),
+            a.companyid,
+            a.companyname,
+            a.topoucode,
+            a.topou,
+            a.workplacecode,
+            a.workplace,
+            a.worktype,
+            a.worktypecode,
+            a.costcenter,
+            a.costcentercode,
+            a.workrule,
+            a.workrulecode,
+            a.lastpromotiondate,
+            a.proposalgrade,
+            a.nationality,
+            COALESCE(TO_TIMESTAMP(a.send_time, 'YYYYMMDDHH24MISS'), CURRENT_TIMESTAMP),
+            'system',
+            CURRENT_TIMESTAMP,
+            'system',
+            CURRENT_TIMESTAMP
+        FROM sync_all_ids a
+        WHERE NOT EXISTS (
+            SELECT 1
+            FROM fmsown.tb_scm_user_parco p
+            WHERE p.parco_user_id = a.userid
+        )
+    </insert>
+
+    <!-- 4) tb_scm_user_parco update -->
+    <update id="updateScmUserParco">
+        UPDATE fmsown.tb_scm_user_parco p
+        SET user_pswd = a.passwd,
+            user_orgnl_id = a.originaluid,
+            user_photo_file = a.photo,
+            user_nm = a.username,
+            user_eng_nm = a.engusername,
+            emp_no = a.employeenumber,
+            dept_cd = a.oucode,
+            dept_nm = a.ou,
+            indct_jbps_cd = a.dippos,
+            indct_jbps_cd_nm = a.dipposname,
+            jbgd_cd = a.grade,
+            jbgd_nm = a.gradename,
+            jbps_cd = a.position,
+            jbps_nm = a.positionname,
+            jbttl_cd = a.titlecode,
+            jbttl_nm = a.titlename,
+            duty_cd = a.dutycode,
+            duty_nm = a.dutyname,
+            reg_ynd = a.createdate,
+            jncmp_ynd = a.joindate,
+            rsgntn_ymd = a.deletedate,
+            eml_dmn_addr = a.email,
+            work_stts_cd = COALESCE(a.status, p.work_stts_cd),
+            ofc_telno = a.officedeptphone,
+            co_fxno = a.officefax,
+            co_zip = a.officezip,
+            co_addr = a.officeaddress,
+            co_daddr = a.officeaddressdetail,
+            gndr_cd = COALESCE(a.gender, p.gndr_cd),
+            ext_telno = a.officepersonalphone,
+            emp_se_cd = COALESCE(a.usertype, p.emp_se_cd),
+            co_cd = a.companyid,
+            co_nm = a.companyname,
+            hghrk_dept_cd = a.topoucode,
+            hghrk_dept_nm = a.topou,
+            powk_cd = a.workplacecode,
+            powk_nm = a.workplace,
+            ocpt_nm = a.worktype,
+            ocpt_cd = a.worktypecode,
+            cstct_nm = a.costcenter,
+            cstct_cd = a.costcentercode,
+            work_rul_nm = a.workrule,
+            work_rul_cd = a.workrulecode,
+            last_prmt_ymd = a.lastpromotiondate,
+            prp_grd_no = a.proposalgrade,
+            ntnlty_nm = a.nationality,
+            if_dt = COALESCE(TO_TIMESTAMP(a.send_time, 'YYYYMMDDHH24MISS'), p.if_dt),
+            updt_user_id = 'system',
+            updt_ot = CURRENT_TIMESTAMP
+        FROM sync_all_ids a
+        WHERE p.user_id = a.target_user_id
+          AND p.parco_user_id = a.userid
+    </update>
+
+    <!-- 5) deal_stat update -->
+    <update id="updateEaiUsertgtRcv">
+        UPDATE itfown.eai_usertgt_rcv r
+        SET deal_stat = 'S'
+        FROM sync_all_ids a
+        WHERE r.unitsystemid = a.unitsystemid
+          AND r.messageid = a.messageid
+          AND r.dateandtime = a.dateandtime
+    </update>
+
+    <!-- 6) esb_link update -->
+    <update id="updateEsbLink">
+        UPDATE itfown.esb_link
+        SET link_job_stts_cd = 'S'
+        WHERE link_tbl_nm = 'itfown.eai_usertgt_rcv'
+          AND link_job_stts_cd = 'N'
+          AND link_dt &gt;= CURRENT_DATE
+    </update>
+
+</mapper>
