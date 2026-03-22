@@ -36,14 +36,14 @@ public class UserSyncService {
 		
 		try {
 			// 1. ESB Link 테이블에서 새로운 레코드 확인
-			List<Map<String, Object>> esbLinkRecords = esbLinkMapper.selectNewEsbLinkRecords();
+			int esbLinkRecords = esbLinkMapper.selectNewEsbLinkRecord("itfown.eai_usertgt_rcv");
 			
-			if (esbLinkRecords == null || esbLinkRecords.isEmpty()) {
+			if (esbLinkRecords == 0) {
 				log.debug("동기화할 ESB Link 레코드가 없습니다.");
 				return;
 			}
 			
-			log.info("ESB Link 레코드 발견: {} 건", esbLinkRecords.size());
+			log.info("ESB Link 레코드 발견: {} 건", esbLinkRecords);
 			
 			// 2. EAI_USERTGT_RCV 인터페이스 테이블에서 동기화할 사용자 데이터 조회
 			List<Map<String, Object>> userAllList = esbLinkMapper.selectUserAllForSync();
@@ -134,6 +134,13 @@ public class UserSyncService {
 				}
 			}
 			
+			Map<String, Object> paramMap = new HashMap<>();
+			
+			paramMap.put("linkJobSttsCd", "S");
+			paramMap.put("linkTblNm", "itfown.eai_usertgt_rcv");
+			
+			esbLinkMapper.updateNewEsbLinkJobStatus(paramMap);
+			
 			log.info("사용자 데이터 동기화 완료 - tb_scm_user(삽입: {} 건, 업데이트: {} 건), tb_scm_user_parco(삽입: {} 건, 업데이트: {} 건)", 
 					scmUserInsertCount, scmUserUpdateCount, scmUserParcoInsertCount, scmUserParcoUpdateCount);
 			
@@ -200,7 +207,7 @@ public class UserSyncService {
 		userParcoMap.put("dutyCd", userAll.get("dutycode"));
 		userParcoMap.put("dutyNm", userAll.get("dutyname"));
 		
-		// 날짜 정보 (YYYYMMDD 형식으로 변환 필요)
+		// 날짜 정보 
 		userParcoMap.put("regYnd", userAll.get("createdate"));
 		userParcoMap.put("jncmpYnd", userAll.get("joindate"));
 		userParcoMap.put("rsgntnYmd", userAll.get("deletedate"));

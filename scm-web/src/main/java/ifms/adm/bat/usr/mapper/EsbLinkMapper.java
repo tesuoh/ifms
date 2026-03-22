@@ -17,7 +17,23 @@ public interface EsbLinkMapper {
 	 * @return
 	 * @throws Exception
 	 */
-	List<Map<String, Object>> selectNewEsbLinkRecords() throws Exception;
+	int selectNewEsbLinkRecord(String linkTblNm) throws Exception;
+	
+	/**
+	 * ESB Link 테이블에 동기화 결과 데이터 업데이트
+	 * @param status
+	 * @return
+	 * @throws Exception
+	 */
+	int updateNewEsbLinkJobStatus(Map<String, Object> paramMap) throws Exception;
+	
+	/**
+	 * ESB Link History 테이블에 동기화 결과 데이터 삽입
+	 * @param requestMap
+	 * @return
+	 * @throws Exception
+	 */
+	int insertNewEsbLinkHstryRecord(Map<String, Object> paramMap) throws Exception;
 	
 	/**
 	 * eai_usertgt_rcv 인터페이스 테이블에서 동기화할 사용자 데이터 조회
@@ -32,7 +48,7 @@ public interface EsbLinkMapper {
 	 * @return
 	 * @throws Exception
 	 */
-	int insertScmUser(Map<String, Object> requestMap) throws Exception;
+	int insertScmUser(Map<String, Object> paramMap) throws Exception;
 	
 	/**
 	 * tb_scm_user에 사용자 ID 존재 여부 확인
@@ -80,7 +96,7 @@ public interface EsbLinkMapper {
 	 * @return
 	 * @throws Exception
 	 */
-	int updateScmUserParco(Map<String, Object> requestMap) throws Exception;
+	int updateScmUserParco(Map<String, Object> paramMap) throws Exception;
 	
 	/**
 	 * userId String
@@ -95,7 +111,7 @@ public interface EsbLinkMapper {
 	 * @return
 	 * @throws Exception
 	 */
-	int updateEaiUsertgtRcvDealStat(Map<String, Object> requestMap) throws Exception;
+	int updateEaiUsertgtRcvDealStat(Map<String, Object> paramMap) throws Exception;
 	
 }
 

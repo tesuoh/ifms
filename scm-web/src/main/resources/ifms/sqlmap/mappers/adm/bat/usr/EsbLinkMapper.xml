@@ -2,24 +2,38 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ifms.adm.bat.usr.mapper.EsbLinkMapper">
 	
-	<!-- ESB Link 테이블에서 성공 상태인 새로운 레코드 조회 (if_tb_scm_user_all 테이블 대상) -->
-	<!-- ESB_LINK_HSTRY 테이블과 JOIN하여 아직 완료되지 않은 작업만 조회 -->
-	<select id="selectNewEsbLinkRecords" resultType="egovMap">
-		SELECT 
-			el.link_tbl_nm,
-			el.link_dt,
-			el.link_job_stts_cd
-		FROM itfown.esb_link el
-		LEFT JOIN itfown.esb_link_hstry elh 
-			ON el.link_tbl_nm = elh.link_tbl_nm 
-			AND elh.link_job_stts_cd = 'N'
-		WHERE (el.link_tbl_nm = 'if_tb_scm_user_all' OR el.link_tbl_nm = 'fmsif.if_tb_scm_user_all')
-			AND el.link_job_stts_cd = 'N'
-			AND el.link_dt >= CURRENT_DATE
-			AND elh.link_tbl_nm IS NULL
-		ORDER BY el.link_dt DESC
-		LIMIT 10
+	<!-- ESB Link 테이블에서 link_job_stts_cd='N' (미처리) 상태인 새로운 레코드 조 -->
+	<select id="selectNewEsbLinkRecord">
+		SELECT count(*)
+		  FROM itfown.esb_link
+		 WHERE link_job_stts_cd = 'N' 
+		   AND link_tbl_nm = #{linkTblNm}
+		   AND link_dt >= CURRENT_DATE
 	</select>
+	
+	<!-- ESB Link 테이블에 link_job_stts_cd 데이터 업데이트 -->
+	<update id="updateNewEsbLinkJobStatus" parameterType="map">
+		UPDATE itfown.esb_link
+		   SET link_job_stts_cd = #{linkJobSttsCd}
+		 WHERE link_tbl_nm = #{linkTblNm}
+		   AND link_job_stts_cd = 'N'
+		   AND link_dt >= CURRENT_DATE
+	</update>
+	
+	<!-- ESB Link History 테이블에 동기화 작업 데이터 삽입  -->
+	<insert id="insertNewEsbLinkHstryRecord" parameterType="map">
+		insert into itfown.esb_link_hstry (
+			link_tbl_nm,
+			link_job_hstry_dt,
+			link_job_stts_cd,
+			link_job_rslt_cn
+		) values (
+			#{linkTblNm},
+			,
+			#{linkJobSttsCd},
+			#{linkjobRsltCn}
+		)
+	</insert>
 	
 	<!-- ITFOWN.EAI_USERTGT_RCV 인터페이스 테이블에서 동기화할 사용자 데이터 조회 -->
 	<select id="selectUserAllForSync" resultType="egovMap">
@@ -40,7 +54,7 @@
 			dipposname,
 			grade,
 			gradename,
-			"POSITION",
+			position,
 			positionname,
 			titlecode,
 			titlename,
@@ -75,10 +89,10 @@
 			proposalgrade,
 			nationality
 		FROM ITFOWN.EAI_USERTGT_RCV
-		WHERE send_time >= to_char(current_date, 'YYYYMMDD') || '000000'
-  			AND send_time <  to_char(current_date + interval '1 day', 'YYYYMMDD') || '000000'
+		WHERE left(recv_time, 8) >= to_char(current_date, 'YYYYMMDD')
+  			AND left(recv_time, 8) <  to_char(current_date + interval '1 day', 'YYYYMMDD')
   			AND (deal_stat IS NULL OR deal_stat = 'N')
-		ORDER BY SEND_TIME DESC
+		ORDER BY recv_time DESC
 	]]>
 	</select>
 	
@@ -161,9 +175,8 @@
 			reg_ynd,
 			jncmp_ynd,
 			rsgntn_ymd,
-			eml_ador,
-			work_suts_cd,
-			mbl_telno,
+			eml_dmn_addr,
+			work_stts_cd,
 			ofc_telno,
 			co_fxno,
 			co_zip,
@@ -218,7 +231,6 @@
 			#{rsgntnYmd},
 			#{emlAddr},
 			COALESCE(#{workSutsCd}, '0'),
-			#{mblTelno},
 			#{ofcTelno},
 			#{coFxno},
 			#{coZip},
@@ -282,13 +294,12 @@
 			reg_ynd = #{regYnd},
 			jncmp_ynd = #{jncmpYnd},
 			rsgntn_ymd = #{rsgntnYmd},
-			eml_addr = #{emlAddr},
-			work_suts_cd = COALESCE(#{workSutsCd}, work_suts_cd),
-			mbl_telno = #{mblTelno},
+			eml_dmn_addr = #{emlAddr},
+			work_stts_cd = COALESCE(#{workSutsCd}, work_stts_cd),
 			ofc_telno = #{ofcTelno},
 			co_fxno = #{coFxno},
 			co_zip = #{coZip},
-			co_ador = #{coAddr},
+			co_addr = #{coAddr},
 			co_daddr = #{coDaddr},
 			gndr_cd = COALESCE(#{gndrCd}, gndr_cd),
 			ext_telno = #{extTelno},
@@ -311,12 +322,12 @@
 			if_dt = COALESCE(TO_TIMESTAMP(#{ifDt}, 'YYYYMMDDHH24MISS'), if_dt),
 			updt_user_id = 'system',
 			updt_ot = CURRENT_TIMESTAMP
-		WHERE userId = #{userId}
+		WHERE user_id = #{userId}
 	</update>
 	
 	<!-- user seq 에서 사용자 아이디 조회 (문자열)-->
 	<select id="selectUserId" resultType="string">
-		SELECT 'PAR' || LPAD(NEXTVAL('FMSOWN.SQ_SCM_USER_SEQ')::TEXT, 8, '0') AS user_id
+		SELECT 'PAR' || LPAD(NEXTVAL('FMSOWN.TB_SCM_USER_SEQ')::TEXT, 8, '0') AS user_id
 	</select>
 	
 	<!-- EAI_USERTGT_RCV 테이블의 deal_stat를 'S'로 업데이트 (복합키 사용) -->
