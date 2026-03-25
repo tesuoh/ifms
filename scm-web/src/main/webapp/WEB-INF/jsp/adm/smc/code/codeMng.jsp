@@ -132,7 +132,7 @@
 				</div>
 				<div class="btn-box">
 					<button type="button" class="btn-border btn-modal" id="btnCodeInsPopup"
-						data-target="#${dynamicId1}">
+						data-target="#${dynamicId2}">
 						<span>${newText}</span>
 					</button>
 				</div>
@@ -339,7 +339,7 @@
 </div>
 
 <%-- 분류코드 수정 팝업 --%>
-<div id="$dynamicId2" class="modal-wrap w-1350" tabindex="-1"
+<div id="${dynamicId2}" class="modal-wrap w-1350" tabindex="-1"
 	role="dialog">
 	<form id="CodeEdtForm">
 		<div class="modal-header">
